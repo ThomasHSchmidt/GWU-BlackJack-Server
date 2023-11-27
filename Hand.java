@@ -1,19 +1,21 @@
 import java.util.*;
 
 class Hand {
-    List<Card> hand = new LinkedList<>();
+    private List<Card> hand = new LinkedList<>();
 
     public Hand() {
 
     }
-
+    public void setCards(List<Card> hand) {
+        this.hand = hand;
+    }
     public int getHandValue() {
         int handValue = 0;
 
         for(Card card : hand) {
             handValue += card.getValue();
         }
-        
+
         return handValue;
     }
     public List<Card> getHand() {
