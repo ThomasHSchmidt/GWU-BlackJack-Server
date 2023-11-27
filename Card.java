@@ -3,10 +3,13 @@ class Card {
     private int rank;
     private int value;
 
-    public Card(int suit, int rank, int value) {
+    public Card(int suit, int rank) {
         this.suit = suit;
         this.rank = rank;
-        this.value = value;
+        if(rank < 10)
+            this.value = rank;
+        else
+            this.value = 10;
     }
 
     int getSuit() {
