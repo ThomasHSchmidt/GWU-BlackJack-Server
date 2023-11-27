@@ -1,24 +1,25 @@
 class Card {
     private int suit;
     private int rank;
-    private int value;
+    public static final int FACE_CARD_VALUE = 10;
 
+    // Dont need a value int because we can just take the rank and base
+    // it off of that.
     public Card(int suit, int rank) {
-        this.suit = suit;
-        this.rank = rank;
-        if(rank < 10)
-            this.value = rank;
-        else
-            this.value = 10;
+        this.suit = suit;   // 1-13 (1 = Ace | 13 = King)
+        this.rank = rank;   // 1-4 (1 = Club | 2 = Diamonds | 3 = Hearts | 4 = Spades)
     }
 
-    int getSuit() {
+    public int getSuit() {
         return this.suit;
     }
-    int getRank() {
+
+    public int getRank() {
         return this.rank;
     }
-    int getValue() {
-        return this.value;
+
+    public String getImagePath() {
+        return "CardFolder/" + rank + "_" + suit + ".png";
     }
+
 }

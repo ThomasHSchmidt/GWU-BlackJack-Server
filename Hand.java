@@ -13,7 +13,11 @@ class Hand {
         int handValue = 0;
 
         for(Card card : hand) {
-            handValue += card.getValue();
+            int add = card.getRank();
+            if(add < Card.FACE_CARD_VALUE)
+                handValue += add;
+            else
+                handValue += Card.FACE_CARD_VALUE;
         }
 
         return handValue;
