@@ -9,12 +9,14 @@ public class Deck {
 
     public Deck() {
         cards = new ArrayList<>();
-        // Iterate through each rank for all 4 suits
-        // Should create 52 cards (13 x 4 = 52)
-        for (String suit : SUIT) {
-            for (String rank : RANK) {
-                String card = rank + '_' + suit;
-                cards.add(card);
+        // Iterate through each rank for all 4 suits, 4 times
+        // Should create 208 cards (13 x 4 x 4 = 208)
+        for (int i = 0; i < 4; i++){
+            for (String suit : SUIT) {
+                for (String rank : RANK) {
+                    String card = rank + '_' + suit;
+                    cards.add(card);
+                }
             }
         }
     }
