@@ -8,7 +8,7 @@ public class BlackjackServer extends Thread {
     ArrayList<Socket> connections;
     ArrayList<String> members;
     int users;
-    boolean playerFold;
+    boolean playerIn;
     volatile boolean player1Confirm;
     volatile boolean player2Confirm;
 
@@ -58,6 +58,7 @@ public class BlackjackServer extends Thread {
         }
     }
 
+
     private class ClientHandler extends Thread{
 
         Socket sock;
@@ -67,7 +68,7 @@ public class BlackjackServer extends Thread {
         public ClientHandler(Socket sock, int id){
             this.sock=sock;
             this.id = id;
-            chips = 500;
+            chips = 1000;
         }
 
         public void run(){
@@ -95,69 +96,88 @@ public class BlackjackServer extends Thread {
 
                     // If player hits
                     if(msg.equals("Hit")){
-                        for(int i = 0; i < users; i++){
-                            if(id == i) {
-                                PrintWriter pw = new PrintWriter(connections.get(i).getOutputStream());
-                                int cardValue = drawCard();
+                        PrintWriter pw = new PrintWriter(connections.get(i).getOutputStream());
+                        int cardValue = drawCard();
 
-                                // Notify the player about the drawn card
-                                pw.println("Card drawn: " + cardValue);
+                        // Notify the player about the drawn card
+                        pw.println("Card drawn: " + cardValue);
 
-                                // Check if the player busts
-
-                                // NEED isBust FUNCTION
-                                if (isBust()) {
-                                    pw.println("Bust! You lose.");
-                                    playerFold = true;
-                                }
-                                playerFold = true;
-
-                            }
-                            else {
-                                PrintWriter pw = new PrintWriter(connections.get(i).getOutputStream());
-                                pw.println("Won Fold");
-                                pw.println(pot);
-                                pw.flush();
-                            }
+                        // Check if the player busts
+                        // NEED isBust FUNCTION
+                        if (isBust()) {
+                            pw.println("Bust! You lose.");
+                            playerIn = true;
                         }
+                        playerIn = true;
+                        pw.flush();
                     }
-
 
                     // If player Stands
                     if(msg.equals("Stand")){
-                        
-
+                        PrintWriter pw = new PrintWriter(sock.getOutputStream());           
+                        pw.println("You chose to stand. Your turn is over.");
+                        pw.flush();
                     }
 
 
                     // If player Double Downs
                     if(msg.equals("Double Down")){
-                        
+                        PrintWriter pw = new PrintWriter(sock.getOutputStream());
 
+                        // NEED getBet FUNCTION
+                        int newBet = id.getBet() * 2; // Double the bet
+
+                        pw.println("Your bet is now: " + newBet);
+
+                        // Draw one more card
+                        int cardValue = drawCard();
+                        pw.println("Card drawn: " + cardValue);
+
+                        // Check if the player busts
+                        if (isBust()) {
+                            pw.println("Bust! You lose.");
+
+                        }
                     }
 
 
                     // If player splits
                     if(msg.equals("Split")){
-                        
+                            Hand newHand = new Hand();
 
+                            // Draw a new card for the original and new hand
+                            newHand.addCard(drawCard());
+                            newHand.addCard(drawCard());
+                    
+                            // Duplicate the bet for the new hand
+                            int bet1 = getBet();
+                            int bet2 = getBet();
+                    
+                            // MISSING CODE
+                    
+                            pw.flush();
                     }   
+
                 }
+            } catch(Exception e){}
 
-            }catch(Exception e){}
-
-            //note the loss of the connection
-            System.out.println("Connection lost: " + sock.getRemoteSocketAddress());
-            System.out.println("This error is occurring");
+                //note the loss of the connection
+                System.out.println("Connection lost: " + sock.getRemoteSocketAddress());
+                System.out.println("This error is occurring");
 
         }
 
-    }
 
-    public static void main(String args[]){
-        int port = Integer.parseInt(args[0]);
-        BlackjackServer server = new BlackjackServer(port);
-        server.serve();
+        public isBust() {
+            
+        }
+
+
+        public static void main(String args[]){
+            int port = Integer.parseInt(args[0]);
+            BlackjackServer server = new BlackjackServer(port);
+            server.serve();
+        }
     }
 }
 
