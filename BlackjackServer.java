@@ -114,7 +114,7 @@ public class BlackjackServer extends Thread {
                         break;
                     }
 
-                    if (line.equals("NAME"))
+                    if (msg.equals("NAME"))
                     {
                         // Start name
                         name = true;
@@ -123,9 +123,9 @@ public class BlackjackServer extends Thread {
                     else if (name)
                     {
                         // Add name to user list
-                        members.add(line);
+                        members.add(msg);
                         sendUserList();
-                        curName = line;
+                        curName = msg;
                         name = false;
                         continue;
                     }
