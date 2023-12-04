@@ -6,7 +6,10 @@ import java.net.Socket;
 import javax.swing.JOptionPane;
 
 class Player extends Gambler {
+    public static final int MIN_BET = 25;
+    public static final int STARTING_MONEY = 200;
     private int bet;
+    private int cash;
     private TableGUI gui;
     private Socket sock;
     private PrintWriter pw;
@@ -17,6 +20,8 @@ class Player extends Gambler {
     public Player(String name, TableGUI gui, Deck deck, String ip, String port) {
         super(name, deck);
         try{
+            bet = MIN_BET;
+            cash = STARTING_MONEY;
             this.gui = gui;
             sock = new Socket(ip, Integer.parseInt(port));
             pw = new PrintWriter(sock.getOutputStream());
@@ -80,5 +85,18 @@ class Player extends Gambler {
                 JOptionPane.showMessageDialog(gui, "Error",  "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         }
+    }
+    
+    public int getBet() {
+        return this.bet;
+    }
+
+    public void setBet(int bet) {
+        this.bet = bet;
+    }
+
+    public int doubleDown() {
+        this.setBet(this.getBet()*2);;
+        return this.hit();
     }
 }
