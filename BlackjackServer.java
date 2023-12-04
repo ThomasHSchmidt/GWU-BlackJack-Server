@@ -1,4 +1,7 @@
 import java.util.*;
+
+import javax.security.auth.login.CredentialException;
+
 import java.net.*;
 import java.io.*;
 
@@ -251,10 +254,14 @@ public class BlackjackServer extends Thread {
         boolean dealing;
         boolean turns;
         boolean showdown;
+        Gambler player;
 
-        public GameTracker(){
+        public GameTracker() {
+            player0Cards = new HashSet<String>();
             player1Cards = new HashSet<String>();
             player2Cards = new HashSet<String>();
+            player3Cards = new HashSet<String>();
+            player4Cards = new HashSet<String>();
         }
 
 
@@ -270,6 +277,8 @@ public class BlackjackServer extends Thread {
                         for(int i = 0; i < connections.size(); i++) {
                             PrintWriter out = new PrintWriter(connections.get(i).getOutputStream());
                             out.println("Receiving initial cards");
+                            // player.dealCard(deck.drawCard());
+                            // player.dealCard(deck.drawCard());
                             if(i == 0) {
                                 String c1 = deck.drawCard();
                                 String c2 = deck.drawCard();
@@ -312,12 +321,14 @@ public class BlackjackServer extends Thread {
                             }
                             out.flush();
                         }
-                        dealing=false;
+                        dealing = false;
                     }
                     
                     turns = true;
                     while (turns) {
+                         if (playerIn == true) {
 
+                        }
                     }
                 }
             } catch(Exception e) {
@@ -364,3 +375,8 @@ public class BlackjackServer extends Thread {
         }
     }
 */
+
+
+For (Players in game)
+{
+}
