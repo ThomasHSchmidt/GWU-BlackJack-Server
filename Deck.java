@@ -36,7 +36,7 @@ public class Deck {
     }
 
     // Randomly create a String key to identify cards in the format RANK_SUIT
-    public String generateKey() {
+    private String generateKey() {
         // Generate key using random numbers between 1-RANK.length and 1-SUIT.length inclusive
         String key = (rand.nextInt(Card.RANK.length) + 1) + "_" + (rand.nextInt(Card.SUIT.length) + 1);
 
