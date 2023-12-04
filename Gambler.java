@@ -18,6 +18,10 @@ class Gambler {
     public Hand getHand() {
         return this.hand;
     }
+
+    public getBet() {
+        
+    }
     
     public void setHand(Hand hand) {
         this.hand = hand;

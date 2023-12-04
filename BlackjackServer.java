@@ -18,29 +18,27 @@ public class BlackjackServer extends Thread {
     public BlackjackServer(int port){
 
         //Instantiates all of the components, including the server socket, member names, and all active connections
-        try{
+        try {
             serverSock = new ServerSocket(port);
             users = 0;
             members = new ArrayList<String>();
             connections = new ArrayList<Socket>();
             System.out.println("BlackjackServer started on port " + port);
         }
-        catch(Exception e){
+        catch(Exception e) {
             System.err.println("Cannot establish server socket");
             System.exit(1);
         }
     }
 
     
-    public void serve(){
-        while(true){
-            try{
+    public void serve() {
+        while(true) {
+            try {
                 //accept incoming connection
                 Socket clientSock = serverSock.accept();
                 System.out.println("New connection: "+ clientSock.getRemoteSocketAddress());
                 
-                //If the first line is secret, then a password is created
-                BufferedReader in = new BufferedReader(new InputStreamReader(clientSock.getInputStream()));
                 PrintWriter out = new PrintWriter(clientSock.getOutputStream());
                 out.println("Established connection");
                 out.flush();
@@ -51,13 +49,9 @@ public class BlackjackServer extends Thread {
                     System.out.println("Connection " + users);
                     users++;
 
-                    if (connections.size() == 1){
-                        (new GameTracker()).start();
-                        System.out.println("GameTracker Thread Started");
-                    }
-
             //exit serve if exception
-            }catch(Exception e){}
+            } catch(Exception e) { 
+            }
         }
     }
 
@@ -91,13 +85,14 @@ public class BlackjackServer extends Thread {
         int chips;
         Deck deck;
         Gambler player;
+        boolean dealing;
+        String c1;
+        String c2;
 
         public ClientHandler(Socket sock, int id) {
             this.sock = sock;
             this.id = id;
             chips = 250;
-            Deck deck;
-            Gambler player;
         }
 
         public void run() {
@@ -158,6 +153,23 @@ public class BlackjackServer extends Thread {
                             }
                         }
                     }
+
+                    dealing = true;
+                    if(dealing) {
+                        Deck deck = new Deck();
+                        deck.shuffle();
+                        for(int i = 0; i < connections.size(); i++) {
+                            PrintWriter out = new PrintWriter(connections.get(i).getOutputStream());
+                            out.println("Receiving initial cards");
+                            c1 = player.dealCard(deck.drawCard());
+                            c2 = player.dealCard(deck.drawCard());
+                            out.println(c1);
+                            out.println(c2);
+                            out.flush();
+                        }
+                        dealing = false;
+                    }
+                    
 
                     if(msg.equals("Hit")) {
                         for(int i = 0; i < users; i++) {
@@ -235,7 +247,7 @@ public class BlackjackServer extends Thread {
                 }
             
             
-            } catch(Exception e){
+            } catch(Exception e) {
 
                 //note the loss of the connection
                 System.out.println("Connection lost: " + sock.getRemoteSocketAddress());
@@ -244,139 +256,4 @@ public class BlackjackServer extends Thread {
             }
         }
     }
-
-    private class GameTracker extends Thread {
-        HashSet<String> player0Cards;
-        HashSet<String> player1Cards;
-        HashSet<String> player2Cards;
-        HashSet<String> player3Cards;
-        HashSet<String> player4Cards;
-        boolean dealing;
-        boolean turns;
-        boolean showdown;
-        Gambler player;
-
-        public GameTracker() {
-            player0Cards = new HashSet<String>();
-            player1Cards = new HashSet<String>();
-            player2Cards = new HashSet<String>();
-            player3Cards = new HashSet<String>();
-            player4Cards = new HashSet<String>();
-        }
-
-
-        public void run() {
-            try {
-                dealing = true;
-                boolean turns = false;
-                while(true) {
-                    Deck deck = new Deck();
-                    deck.shuffle();
-                   
-                    if(dealing) {
-                        for(int i = 0; i < connections.size(); i++) {
-                            PrintWriter out = new PrintWriter(connections.get(i).getOutputStream());
-                            out.println("Receiving initial cards");
-                            // player.dealCard(deck.drawCard());
-                            // player.dealCard(deck.drawCard());
-                            if(i == 0) {
-                                String c1 = deck.drawCard();
-                                String c2 = deck.drawCard();
-                                player0Cards.add(c1);
-                                player0Cards.add(c2);
-                                out.println(c1);
-                                out.println(c2);
-                            }
-                            if(i == 1) {
-                                String c1 = deck.drawCard();
-                                String c2 = deck.drawCard();
-                                player1Cards.add(c1);
-                                player1Cards.add(c2);
-                                out.println(c1);
-                                out.println(c2);
-                            }
-                            if(i == 2) {
-                                String c1 = deck.drawCard();
-                                String c2 = deck.drawCard();
-                                player2Cards.add(c1);
-                                player2Cards.add(c2);
-                                out.println(c1);
-                                out.println(c2);
-                            }
-                            if(i == 3) {
-                                String c1 = deck.drawCard();
-                                String c2 = deck.drawCard();
-                                player3Cards.add(c1);
-                                player3Cards.add(c2);
-                                out.println(c1);
-                                out.println(c2);
-                            }
-                            if(i == 4) {
-                                String c1 = deck.drawCard();
-                                String c2 = deck.drawCard();
-                                player4Cards.add(c1);
-                                player4Cards.add(c2);
-                                out.println(c1);
-                                out.println(c2);
-                            }
-                            out.flush();
-                        }
-                        dealing = false;
-                    }
-                    
-                    turns = true;
-                    while (turns) {
-                         if (playerIn == true) {
-
-                        }
-                    }
-                }
-            } catch(Exception e) {
-                System.err.println("GameTracker failed");
-            }
-        }
-    }
-}
-
-
-/*   
-    private void handleBettingPhase() {
-        sendMessage("Place your bet.");
-    
-        try {
-            // Assume a simple bet amount for now, you may implement a more sophisticated input method
-            int bet = Integer.parseInt(in.readLine());
-    
-            // Validate the bet amount
-            if (bet < 0 || bet > chips) {
-                sendMessage("Invalid bet amount. Please place a bet within your available chips.");
-                handleBettingPhase(); // Allow the player to try again
-                return;
-            }
-    
-            // Deduct the bet from the player's chips
-            chips -= bet;
-    
-            // Continue with the game, perhaps move to the card dealing phase
-            sendMessage("Betting phase complete. Starting the game.");
-            // Add logic to deal cards, manage turns, etc.
-            // ...
-    
-        } catch (NumberFormatException e) {
-            sendMessage("Invalid input. Please enter a numeric value for your bet.");
-            handleBettingPhase(); // Allow the player to try again
-        }
-    }
-
-        public static void main(String args[]){
-            int port = Integer.parseInt(args[0]);
-            BlackjackServer server = new BlackjackServer(port);
-            server.serve();
-        }
-    }
-*/
-
-
-For (Players in game)
-{
 }
