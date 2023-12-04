@@ -1,44 +1,64 @@
-import java.util.Collections;
-import java.util.ArrayList;
+import java.util.*;
 
 public class Deck {
-    private ArrayList<String> cards;
+    private HashMap<String, Integer> deck;
     
     private static final String[] RANK = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"};
     private static final String[] SUIT = {"1", "2", "3", "4"};
+    public static final int DECK_SIZE = 52;
+    public static final int NUM_DECKS = 4;
+    private Random rand;
+    private int cardCount;
+    
 
     public Deck() {
-        cards = new ArrayList<>();
-        // Iterate through each rank for all 4 suits, 4 times
-        // Should create 208 cards (13 x 4 x 4 = 208)
-        for (int i = 0; i < 4; i++){
-            for (String suit : SUIT) {
-                for (String rank : RANK) {
-                    String card = rank + '_' + suit;
-                    cards.add(card);
-                }
+        deck = new HashMap<String, Integer>(DECK_SIZE);
+        this.rand = new Random();
+        cardCount = NUM_DECKS * DECK_SIZE;
+
+        // Iterate through each rank for all SUIT.length suits, and for each suit, RANK.length ranks
+        // Create map of DECK_SIZE size, filling each entry with NUM_DECKS cards (NUM_DECKS * DECK_SIZE cards total)
+        for (String suit : SUIT) {
+            for (String rank : RANK) {
+                deck.put(rank + '_' + suit, NUM_DECKS);
             }
         }
     }
 
-    // Get deck size
-    public int size() {
-        return cards.size();
+    // Return number of cards remaining in deck
+    public int getCardCount() {
+        return cardCount;
     }
 
-    // For shuffling the deck, creating a random order of cards that we can just
-    // take from cards[0] each time
+    // Setting number of cards of each suit and rank back to NUM_DECKS
     public void shuffle() {
-        Collections.shuffle(cards);
+        for(Map.Entry<String, Integer> entry : deck.entrySet()) {
+            entry.setValue(NUM_DECKS);
+        }
     }
 
-    // If we want to take a card from the deck
+    // Randomly create a String key to identify cards in the format SUIT_RANK
+    public String generateKey() {
+        // Generate key using random numbers between 1-SUIT.length and 1-RANK.length inclusive
+        String key = (rand.nextInt(SUIT.length) + 1) + "_" + (rand.nextInt(RANK.length) + 1);
+
+        return key;
+    }
+
+    // Remove a random card from deck
     public String drawCard() {
-        // Check if deck is empty
-        if (cards.isEmpty()) {
-            throw new IllegalStateException("The deck is empty.");
+        String key = generateKey();
+
+        // Ensure at least one card of the suit and rank specified by key are still
+        // in deck before removal
+        while(deck.get(key) == 0) {
+            key = generateKey();
         }
-        return cards.remove(0);
+        // Remove card from deck
+        deck.put(key, deck.get(key) - 1);
+        cardCount--;
+
+        return key;
     }
 
 }
