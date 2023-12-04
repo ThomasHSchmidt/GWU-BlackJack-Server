@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+
 class Gambler {
     private Hand hand;
     private String name;
@@ -22,5 +24,13 @@ class Gambler {
     public void dealCard(String key) {
         Token temp = new Token(key);
         this.hand.addCard(temp);
+    }
+
+    public int getHandValue() {
+        return hand.getHandValue();
+    }
+
+    public void resetHand() {
+        hand.setCards(new LinkedList<Card>());
     }
 }

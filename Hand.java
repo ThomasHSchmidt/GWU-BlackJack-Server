@@ -6,6 +6,7 @@ class Hand {
     public Hand() {
         this.hand = new LinkedList<>();
     }
+    
     // Creates and adds a new card to a hand of suit and rank specified 
     // by token
     public void addCard(Token token)  {
@@ -21,6 +22,7 @@ class Hand {
         return this.hand;
     }
 
+    // Sum the value of cards in a hand and return that sum
     public int getHandValue() {
         int handValue = 0;
 
