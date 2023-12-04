@@ -1,9 +1,15 @@
 import java.util.*;
 
 class Hand {
-    private List<Card> hand = new LinkedList<>();
+    private List<Card> hand;
 
-    public void addCard(Card newCard)  {
+    public Hand() {
+        this.hand = new LinkedList<>();
+    }
+    // Creates and adds a new card to a hand of suit and rank specified 
+    // by token
+    public void addCard(Token token)  {
+        Card newCard = new Card(token);
         hand.add(newCard);
     }
 
