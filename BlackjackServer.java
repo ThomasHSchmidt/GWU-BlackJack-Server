@@ -97,9 +97,9 @@ public class BlackjackServer extends Thread {
             Gambler player;
         }
 
-        public void run(){
+        public void run() {
             BufferedReader in=null;
-            try{
+            try {
                 in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 
                 // Data being taken from the socket
@@ -109,7 +109,7 @@ public class BlackjackServer extends Thread {
                 boolean logIn = false;
                 playerIn = true;
 
-                while(true){
+                while(true) {
                     String msg = in.readLine();
                     if (!logIn)
                     {
@@ -243,43 +243,81 @@ public class BlackjackServer extends Thread {
     }
 
     private class GameTracker extends Thread {
-        memberNumbers = 2;
-        player1Cards = new HashSet<String>();
-        player2Cards = new HashSet<String>();
+        HashSet<String> player0Cards;
+        HashSet<String> player1Cards;
+        HashSet<String> player2Cards;
+        HashSet<String> player3Cards;
+        HashSet<String> player4Cards;
+        boolean dealing;
+        boolean turns;
+        boolean showdown;
 
-        public void run(){
-            try{
-                boolean dealing = true;
+        public GameTracker(){
+            player1Cards = new HashSet<String>();
+            player2Cards = new HashSet<String>();
+        }
+
+
+        public void run() {
+            try {
+                dealing = true;
                 boolean turns = false;
-                while(true){
+                while(true) {
                     Deck deck = new Deck();
                     deck.shuffle();
                    
-                    if(dealing){
-                        for(int i = 0; i < connections.size(); i++){
+                    if(dealing) {
+                        for(int i = 0; i < connections.size(); i++) {
                             PrintWriter out = new PrintWriter(connections.get(i).getOutputStream());
                             out.println("Receiving initial cards");
-                            if(i == 0){
-                                String str = deck.drawCard();
-                                String strTwo = deck.drawCard();
-                                player1Cards.add(str);
-                                player1Cards.add(strTwo);
-                                out.println(str);
-                                out.println(strTwo);
+                            if(i == 0) {
+                                String c1 = deck.drawCard();
+                                String c2 = deck.drawCard();
+                                player0Cards.add(c1);
+                                player0Cards.add(c2);
+                                out.println(c1);
+                                out.println(c2);
                             }
-
-                            if(i == 1){
-                                String str = deck.drawCard();
-                                String strTwo = deck.drawCard();
-                                player2Cards.add(str);
-                                player2Cards.add(strTwo);
-                                out.println(str);
-                                out.println(strTwo);
+                            if(i == 1) {
+                                String c1 = deck.drawCard();
+                                String c2 = deck.drawCard();
+                                player1Cards.add(c1);
+                                player1Cards.add(c2);
+                                out.println(c1);
+                                out.println(c2);
                             }
-                            
+                            if(i == 2) {
+                                String c1 = deck.drawCard();
+                                String c2 = deck.drawCard();
+                                player2Cards.add(c1);
+                                player2Cards.add(c2);
+                                out.println(c1);
+                                out.println(c2);
+                            }
+                            if(i == 3) {
+                                String c1 = deck.drawCard();
+                                String c2 = deck.drawCard();
+                                player3Cards.add(c1);
+                                player3Cards.add(c2);
+                                out.println(c1);
+                                out.println(c2);
+                            }
+                            if(i == 4) {
+                                String c1 = deck.drawCard();
+                                String c2 = deck.drawCard();
+                                player4Cards.add(c1);
+                                player4Cards.add(c2);
+                                out.println(c1);
+                                out.println(c2);
+                            }
                             out.flush();
                         }
-                        initial=false;
+                        dealing=false;
+                    }
+                    
+                    turns = true;
+                    while (turns) {
+
                     }
                 }
             } catch(Exception e) {
