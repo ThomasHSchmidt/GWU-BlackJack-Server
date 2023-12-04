@@ -8,7 +8,6 @@ import javax.swing.text.TabExpander;
 
 public class TableGUI extends JFrame {
 
-    private JTextField name;
     private JTextField betAmt;
 
     private JButton bet;
@@ -37,8 +36,6 @@ public class TableGUI extends JFrame {
 
     public TableGUI() {
         super();
-
-        name = new JTextField("Name", 4);
         betAmt =  new JTextField("Bet Amount", 6);
         bet = new JButton("Bet");
         stand = new JButton("Stand");
@@ -58,7 +55,6 @@ public class TableGUI extends JFrame {
         betpanel.add(bet, BorderLayout.CENTER);
 
         JPanel bpanel = new JPanel(new FlowLayout());
-        bpanel.add(name);
         bpanel.add(betpanel);
         bpanel.add(hit);
         bpanel.add(stand);
@@ -145,9 +141,4 @@ public class TableGUI extends JFrame {
     }
 
 
-    public static void main(String args[]) {
-        TableGUI f = new TableGUI();
-        f.pack();
-        f.setVisible(true);
-    }
 }
