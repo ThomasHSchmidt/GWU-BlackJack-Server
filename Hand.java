@@ -37,6 +37,46 @@ class Hand {
         return handValue;
     }
 
+    public boolean hasAce() {
+        for (Card card : hand) {
+            if (card.getRank() == 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isBlackjack(boolean hasAce) {
+        int total = 0;
+        if (hasAce == false) {
+            for (Card card : hand) {
+                total = card.getRank();
+            }
+            if (total == 21) {
+                return true;
+            }
+        }
+        
+        if(hasAce == true) {
+            for (Card card : hand) {
+                if (total > 21)
+                {
+                    total -= 10;
+                }
+                total = card.getRank();
+            }
+            if (total == 21) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+
+/*
+If we want to try and implement the ability to split
+
     public boolean isPair() {
         if (hand.size() == 2) {
             Card c1 = hand.get(0);
@@ -47,5 +87,4 @@ class Hand {
 
         return false;
     }
-
-}
+*/

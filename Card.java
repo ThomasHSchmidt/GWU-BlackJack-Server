@@ -17,6 +17,10 @@ class Card {
         return token.getTokenSuit();
     }
 
+    public boolean isFaceCard() {
+        return rank > 10 && rank <= 13;
+    }
+
     public String getImagePath() {
         return "CardFolder/" + this.getRank() + "_" + this.getSuit() + ".png";
     }
