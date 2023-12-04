@@ -1,6 +1,6 @@
 import java.util.*;
 
-class Hand {
+public class Hand {
     private List<Card> hand;
 
     public Hand() {
