@@ -101,18 +101,12 @@ public class BlackjackServer extends Thread {
                 in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 
                 // Data being taken from the socket
-                String line;
                 String curName = "";
                 boolean name = false;
-                boolean logIn = false;
                 playerIn = true;
 
                 while(true) {
                     String msg = in.readLine();
-                    if (!logIn)
-                    {
-                        break;
-                    }
 
                     if (msg.equals("NAME"))
                     {
