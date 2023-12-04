@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.text.TabExpander;
 
 public class TableGUI extends JFrame {
 
@@ -26,7 +27,11 @@ public class TableGUI extends JFrame {
     private JLabel p3Bet;
     private JLabel p4Bet;
     private JLabel p5Bet;
-
+    private JLabel p1tot;
+    private JLabel p2tot;
+    private JLabel p3tot;
+    private JLabel p4tot;
+    private JLabel p5tot;
 
     private ImageIcon img;
 
@@ -71,7 +76,7 @@ public class TableGUI extends JFrame {
         p1Bet = new JLabel("$25");
         p1Bet.setForeground(Color.BLACK);
         p1Bet.setFont(new Font("Serif", Font.BOLD, 20));
-        p1Bet.setBounds(95, 348, 100, 100);
+        p1Bet.setBounds(675, 348, 100, 100);
 
         p2Bet = new JLabel("$25");
         p2Bet.setForeground(Color.BLACK);
@@ -91,7 +96,32 @@ public class TableGUI extends JFrame {
         p5Bet = new JLabel("$25");
         p5Bet.setForeground(Color.BLACK);
         p5Bet.setFont(new Font("Serif", Font.BOLD, 20));
-        p5Bet.setBounds(675, 350, 100, 100);
+        p5Bet.setBounds(95, 350, 100, 100);
+
+        p1tot = new JLabel("10");
+        p1tot.setForeground(Color.BLACK);
+        p1tot.setFont(new Font("Serif", Font.BOLD, 25));
+        p1tot.setBounds(630, 390, 100, 100);
+
+        p2tot = new JLabel("10");
+        p2tot.setForeground(Color.BLACK);
+        p2tot.setFont(new Font("Serif", Font.BOLD, 25));
+        p2tot.setBounds(493, 470, 100, 100);
+
+        p3tot = new JLabel("10");
+        p3tot.setForeground(Color.BLACK);
+        p3tot.setFont(new Font("Serif", Font.BOLD, 25));
+        p3tot.setBounds(340, 553, 100, 100);
+
+        p4tot = new JLabel("10");
+        p4tot.setForeground(Color.BLACK);
+        p4tot.setFont(new Font("Serif", Font.BOLD, 25));
+        p4tot.setBounds(190, 470, 100, 100);
+
+        p5tot = new JLabel("10");
+        p5tot.setForeground(Color.BLACK);
+        p5tot.setFont(new Font("Serif", Font.BOLD, 25));
+        p5tot.setBounds(50, 390, 100, 100);
                
         table.add(total);
         table.add(p1Bet);
@@ -99,6 +129,11 @@ public class TableGUI extends JFrame {
         table.add(p3Bet);
         table.add(p4Bet);
         table.add(p5Bet);
+        table.add(p1tot);
+        table.add(p2tot);
+        table.add(p3tot);
+        table.add(p4tot);
+        table.add(p5tot);
 
 
 

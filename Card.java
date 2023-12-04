@@ -1,4 +1,4 @@
-class Card {
+public class Card {
     public static final String[] RANK = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"};
     public static final String[] SUIT = {"1", "2", "3", "4"};
     private Token token;
@@ -15,6 +15,10 @@ class Card {
 
     public int getSuit() {
         return token.getTokenSuit();
+    }
+
+    public boolean isFaceCard() {
+        return token.getTokenRank() > 10 && token.getTokenRank() <= 13;
     }
 
     public String getImagePath() {
