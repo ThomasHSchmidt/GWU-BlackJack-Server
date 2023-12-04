@@ -14,9 +14,8 @@ class Player extends Gambler {
     private boolean connected;
     private Thread thr;
 
-
-    public Player(String name, TableGUI gui, String ip, String port) {
-        super(name);
+    public Player(String name, TableGUI gui, Deck deck, String ip, String port) {
+        super(name, deck);
         try{
             this.gui = gui;
             sock = new Socket(ip, Integer.parseInt(port));

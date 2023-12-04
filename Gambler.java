@@ -3,10 +3,12 @@ import java.util.LinkedList;
 class Gambler {
     private Hand hand;
     private String name;
+    private Deck deck;
 
-    public Gambler(String name) {
+    public Gambler(String name, Deck deck) {
         this.name = name;
         this.hand = new Hand();
+        this.deck = deck;
     }
 
     public String getName() {
@@ -21,9 +23,14 @@ class Gambler {
         this.hand = hand;
     }
 
-    public void dealCard(String key) {
+    // Takes a key (RANK_SUIT), creates a card, and adds it to a
+    // players hand
+    //
+    // Returns key used to generate token and card
+    public String dealCard(String key) {
         Token temp = new Token(key);
         this.hand.addCard(temp);
+        return key;
     }
 
     public int getHandValue() {
@@ -32,5 +39,14 @@ class Gambler {
 
     public void resetHand() {
         hand.setCards(new LinkedList<Card>());
+    }
+
+    // To be used when a player presses hit button on GUI or 
+    // when dealer is playing its turn
+    // 
+    // Updates player hand and returns player's new hand value
+    public int hit() {
+        this.dealCard(deck.drawCard());
+        return this.getHandValue();
     }
 }
