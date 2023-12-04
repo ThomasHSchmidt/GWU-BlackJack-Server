@@ -69,13 +69,10 @@ public class ConnectGUI extends JFrame {
 
             connect.addActionListener(new ActionListener(){  
                 public void actionPerformed(ActionEvent f) { 
-                   TableGUI t = new TableGUI();
-                   t.setVisible(true);
 				// Change button text
 				connect.setText("Connecting...");
 
-				// Set title to state that user is connected
-				t.setTitle("BlackJack (Connected)");
+				
 
 				// Disable inputs
 				name.setEnabled(false);
@@ -90,10 +87,15 @@ public class ConnectGUI extends JFrame {
 					ip.setEnabled(true);
 					port.setEnabled(true);
 
+
 					// Change button text
 					connect.setText("Connect");
-				}
-                   ConnectGUI.this.dispose();
+				} else {
+                    TableGUI t = new TableGUI();
+                    t.setVisible(true);
+                    t.setTitle("BlackJack (Connected)");
+                    ConnectGUI.this.dispose();
+                }
                 }  
             });
 
