@@ -46,6 +46,21 @@ public class Hand {
         return false;
     }
 
+    public boolean isBust() {
+        int total = 0;
+        for (Card card : hand) {
+            total = card.getRank();
+            if(((Hand) hand).hasAce() == true) {
+                total -= 10;
+            }
+            if (total > 21)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean isBlackjack(boolean hasAce) {
         int total = 0;
         if (hasAce == false) {
@@ -59,6 +74,7 @@ public class Hand {
         
         if(hasAce == true) {
             for (Card card : hand) {
+                total = card.getRank();
                 if (total > 21)
                 {
                     total -= 10;
