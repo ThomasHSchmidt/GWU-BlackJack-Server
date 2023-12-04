@@ -81,20 +81,20 @@ public class BlackjackServer extends Thread {
         }
     }
 
-    private class ClientHandler extends Thread{
+    private class ClientHandler extends Thread {
 
         Socket sock;
         int id;
         int chips;
-        Hand hand;
         Deck deck;
+        Gambler player;
 
-        public ClientHandler(Socket sock, int id){
+        public ClientHandler(Socket sock, int id) {
             this.sock = sock;
             this.id = id;
             chips = 250;
-            Hand hand;
             Deck deck;
+            Gambler player;
         }
 
         public void run(){
@@ -132,18 +132,38 @@ public class BlackjackServer extends Thread {
                         continue;
                     }
 
-                    if(msg.equals("Hit")){
-                        for(int i = 0; i < users; i++){
-                            if(id == i){
-                                PrintWriter pw = new PrintWriter(connections.get(i).getOutputStream());
-                                int cardValue = hand.addCard(deck.drawCard());
 
-                                // Notify the player about the drawn card
-                                pw.println("Card drawn: " + cardValue);
+                    for(int i = 0; i < users; i++) {
+                        if(id == i) {
+                            PrintWriter pw = new PrintWriter(connections.get(i).getOutputStream());
+                            pw.println("Place your bet.");
+                            try {
+                                int bet = Integer.parseInt(in.readLine());
+                        
+                                // Validate the bet amount
+                                if (bet < 25 || bet > chips) {
+                                    pw.println("Invalid bet amount. Please place a bet within your available chips next round.");
+                                    playerIn = false;
+                                    return;
+                                }
+                                chips -= bet;
+                        
+                                pw.println("Betting phase complete. Starting the game.");
+                        
+                            } catch (NumberFormatException e) {
+                                pw.println("Invalid input. Please enter a valid numeric value for your bet next round.");
+                            }
+                        }
+                    }
+
+                    if(msg.equals("Hit")) {
+                        for(int i = 0; i < users; i++) {
+                            if(id == i) {
+                                PrintWriter pw = new PrintWriter(connections.get(i).getOutputStream());
+                                player.dealCard(deck.drawCard());
 
                                 // Check if the player busts
-                                // NEED isBust FUNCTION
-                                if (isBust()) {
+                                if (player.getHand().isBust()) {
                                     pw.println("Bust! You lose.");
                                     playerIn = false;
                                 }
@@ -152,35 +172,45 @@ public class BlackjackServer extends Thread {
                         }
                     }
 
+
                     // If player Stands
-                    if(msg.equals("Stand")){
-                        PrintWriter pw = new PrintWriter(sock.getOutputStream());           
-                        pw.println("You chose to stand. Your turn is over.");
-                        pw.flush();
+                    if(msg.equals("Stand")) {
+                        for(int i = 0; i < users; i++) {
+                            if(id == i) {
+                                PrintWriter pw = new PrintWriter(sock.getOutputStream());           
+                                pw.println("You chose to stand. Your turn is over.");
+                                pw.flush();
+                            }
+                        }
                     }
 
 
                     // If player Double Downs
                     if(msg.equals("Double Down")){
-                        PrintWriter pw = new PrintWriter(sock.getOutputStream());
+                        for(int i = 0; i < users; i++) {
+                            if(id == i) {
+                                PrintWriter pw = new PrintWriter(sock.getOutputStream());
 
-                        // NEED getBet FUNCTION
-                        int newBet = id.getBet() * 2; // Double the bet
+                                // NEED getBet FUNCTION
+                                // Double the bet
+                                int newBet = player.getBet() * 2;
 
-                        pw.println("Your bet is now: " + newBet);
+                                pw.println("Your bet is now: " + newBet);
 
-                        // Draw one more card
-                        int cardValue = drawCard();
-                        pw.println("Card drawn: " + cardValue);
+                                // Draw one more card
+                                player.dealCard(deck.drawCard());
 
-                        // Check if the player busts
-                        if (isBust()) {
-                            pw.println("Bust! You lose.");
-
+                                // Check if the player busts
+                                if (player.getHand().isBust()) {
+                                    pw.println("Bust! You lose.");
+                                    playerIn = false;
+                                }
+                                pw.flush();
+                            }
                         }
                     }
 
-
+/*
                     // If player splits
                     if(msg.equals("Split")){
                             Hand newHand = new Hand();
@@ -196,7 +226,8 @@ public class BlackjackServer extends Thread {
                             // MISSING CODE
                     
                             pw.flush();
-                    }   
+                    } 
+*/  
 
                 }
             
@@ -210,6 +241,53 @@ public class BlackjackServer extends Thread {
             }
         }
     }
+
+    private class GameTracker extends Thread {
+        memberNumbers = 2;
+        player1Cards = new HashSet<String>();
+        player2Cards = new HashSet<String>();
+
+        public void run(){
+            try{
+                boolean dealing = true;
+                boolean turns = false;
+                while(true){
+                    Deck deck = new Deck();
+                    deck.shuffle();
+                   
+                    if(dealing){
+                        for(int i = 0; i < connections.size(); i++){
+                            PrintWriter out = new PrintWriter(connections.get(i).getOutputStream());
+                            out.println("Receiving initial cards");
+                            if(i == 0){
+                                String str = deck.drawCard();
+                                String strTwo = deck.drawCard();
+                                player1Cards.add(str);
+                                player1Cards.add(strTwo);
+                                out.println(str);
+                                out.println(strTwo);
+                            }
+
+                            if(i == 1){
+                                String str = deck.drawCard();
+                                String strTwo = deck.drawCard();
+                                player2Cards.add(str);
+                                player2Cards.add(strTwo);
+                                out.println(str);
+                                out.println(strTwo);
+                            }
+                            
+                            out.flush();
+                        }
+                        initial=false;
+                    }
+                }
+            } catch(Exception e) {
+                System.err.println("GameTracker failed");
+            }
+        }
+    }
+}
 
 
 /*   
