@@ -14,8 +14,6 @@ public class TableGUI extends JFrame {
     private JButton stand;
     private JButton hit;
     private JButton doble;
-    private JButton split;
-    private JButton join;
     private JButton start;
     private JButton leave;
 
@@ -41,8 +39,6 @@ public class TableGUI extends JFrame {
         stand = new JButton("Stand");
         hit = new JButton("Hit");
         doble = new JButton("Double Down");
-        split = new JButton("Split");
-        join = new JButton("Join");
         leave = new JButton("Leave");
         start = new JButton("Start");
         table = new JLabel();
@@ -59,12 +55,10 @@ public class TableGUI extends JFrame {
         bpanel.add(hit);
         bpanel.add(stand);
         bpanel.add(doble);
-        bpanel.add(split);
-        bpanel.add(join);
         bpanel.add(start);
 
     
-        total = new JLabel("$500");
+        total = new JLabel("$250");
         total.setForeground(Color.BLACK);
         total.setFont(new Font("Serif", Font.BOLD, 40));
         total.setBounds(700, 625, 100, 100);
@@ -138,6 +132,11 @@ public class TableGUI extends JFrame {
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.pack();
+    }
+
+    public static void main (String[] argv) {
+        TableGUI t = new TableGUI();
+        t.setVisible(true);
     }
 
 
