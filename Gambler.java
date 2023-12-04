@@ -3,6 +3,7 @@ import java.util.LinkedList;
 class Gambler {
     private Hand hand;
     private String name;
+    private int bet;
     private Deck deck;
 
     public Gambler(String name, Deck deck) {
@@ -19,8 +20,12 @@ class Gambler {
         return this.hand;
     }
 
-    public getBet() {
-        
+    public int getBet() {
+        return bet;
+    }
+
+    public void setBet(int b) {
+        bet = b;
     }
     
     public void setHand(Hand hand) {

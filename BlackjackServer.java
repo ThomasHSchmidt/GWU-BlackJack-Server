@@ -209,6 +209,7 @@ public class BlackjackServer extends Thread {
                                 // NEED getBet FUNCTION
                                 // Double the bet
                                 int newBet = player.getBet() * 2;
+                                player.setBet(newBet);
 
                                 pw.println("Your bet is now: " + newBet);
 
