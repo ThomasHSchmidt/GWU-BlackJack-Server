@@ -9,8 +9,7 @@ public class BlackjackServer extends Thread {
 
     ServerSocket serverSock;
     ArrayList<Socket> connections;
-    ArrayList<String> members;
-    int users;
+    ArrayList<String> playerList;
     boolean playerIn;
     volatile boolean player1Confirm;
     volatile boolean player2Confirm;
@@ -20,8 +19,7 @@ public class BlackjackServer extends Thread {
         //Instantiates all of the components, including the server socket, member names, and all active connections
         try {
             serverSock = new ServerSocket(port);
-            users = 0;
-            members = new ArrayList<String>();
+            playerList = new ArrayList<String>();
             connections = new ArrayList<Socket>();
             System.out.println("BlackjackServer started on port " + port);
         }
@@ -68,7 +66,7 @@ public class BlackjackServer extends Thread {
                     else if (name)
                     {
                         // Add name to user list
-                        members.add(msg);
+                        playerList.add(msg);
                         sendUserList();
                         curName = msg;
                         name = false;
@@ -76,7 +74,7 @@ public class BlackjackServer extends Thread {
                     }
 
 
-                    for(int i = 0; i < users; i++) {
+                    for(int i = 0; i < playerList.size(); i++) {
                         if(id == i) {
                             PrintWriter pw = new PrintWriter(connections.get(i).getOutputStream());
                             pw.println("Place your bet.");
@@ -117,7 +115,7 @@ public class BlackjackServer extends Thread {
                     
 
                     if(msg.equals("Hit")) {
-                        for(int i = 0; i < users; i++) {
+                        for(int i = 0; i < playerList.size(); i++) {
                             if(id == i) {
                                 PrintWriter pw = new PrintWriter(connections.get(i).getOutputStream());
                                 player.dealCard(deck.drawCard());
@@ -135,7 +133,7 @@ public class BlackjackServer extends Thread {
 
                     // If player Stands
                     if(msg.equals("Stand")) {
-                        for(int i = 0; i < users; i++) {
+                        for(int i = 0; i < playerList.size(); i++) {
                             if(id == i) {
                                 PrintWriter pw = new PrintWriter(sock.getOutputStream());           
                                 pw.println("You chose to stand. Your turn is over.");
@@ -147,7 +145,7 @@ public class BlackjackServer extends Thread {
 
                     // If player Double Downs
                     if(msg.equals("Double Down")){
-                        for(int i = 0; i < users; i++) {
+                        for(int i = 0; i < playerList.size(); i++) {
                             if(id == i) {
                                 PrintWriter pw = new PrintWriter(sock.getOutputStream());
 
@@ -217,9 +215,8 @@ public class BlackjackServer extends Thread {
                
                 connections.add(clientSock);
                     //start the thread
-                    (new ClientHandler(clientSock, users)).start();   
-                    System.out.println("Connection " + users);
-                    users++;
+                    (new ClientHandler(clientSock, playerList.size())).start();   
+                    System.out.println("Connection " + playerList.size());
 
             //exit serve if exception
             } 
@@ -236,7 +233,7 @@ public class BlackjackServer extends Thread {
             {
                 PrintWriter pw = new PrintWriter(s.getOutputStream());
                 pw.println("START_CLIENT_LIST");
-                for (String user : members)
+                for (String user : playerList)
                 {
                     pw.println(user);
                 }
