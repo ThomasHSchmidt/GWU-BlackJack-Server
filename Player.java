@@ -20,12 +20,24 @@ class Player extends Gambler {
     public Player(String name, TableGUI gui, Deck deck, String ip, String port) {
         super(name, deck);
         try{
+            // Initialize fields
             bet = MIN_BET;
             cash = STARTING_MONEY;
             this.gui = gui;
             sock = new Socket(ip, Integer.parseInt(port));
             pw = new PrintWriter(sock.getOutputStream());
             br = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+            thr = new ReadingThread();
+
+            // Send initial handshake and name
+            pw.println("SECRET");
+            pw.println("3c3c4ac618656ae32b7f3431e75f7b26b1a14a87");
+            pw.println("NAME");
+            pw.println(name);
+            pw.flush();
+
+            // Start client thread
+            thr.start();
         }
         catch(Exception e) {
             JOptionPane.showMessageDialog(gui, "Failed connection",  "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -93,6 +105,14 @@ class Player extends Gambler {
 
     public void setBet(int bet) {
         this.bet = bet;
+    }
+
+    public int getCash() {
+        return this.cash;
+    }
+
+    public void setCash(int cash) {
+        this.cash = cash;
     }
 
     public int doubleDown() {

@@ -31,60 +31,12 @@ public class BlackjackServer extends Thread {
         }
     }
 
-    
-    public void serve() {
-        while(true) {
-            try {
-                //accept incoming connection
-                Socket clientSock = serverSock.accept();
-                System.out.println("New connection: "+ clientSock.getRemoteSocketAddress());
-                
-                PrintWriter out = new PrintWriter(clientSock.getOutputStream());
-                out.println("Established connection");
-                out.flush();
-               
-                connections.add(clientSock);
-                    //start the thread
-                    (new ClientHandler(clientSock, users)).start();   
-                    System.out.println("Connection " + users);
-                    users++;
-
-            //exit serve if exception
-            } catch(Exception e) { 
-            }
-        }
-    }
-
-    public void sendUserList()
-    {
-        // Send user list to all clients
-        for (Socket s : connections)
-        {
-            try
-            {
-                PrintWriter pw = new PrintWriter(s.getOutputStream());
-                pw.println("START_CLIENT_LIST");
-                for (String user : members)
-                {
-                    pw.println(user);
-                }
-                pw.println("END_CLIENT_LIST");
-                pw.flush();
-            }
-            catch (Exception e)
-            {
-                System.err.println("Error sending user list");
-            }
-        }
-    }
-
     private class ClientHandler extends Thread {
 
         Socket sock;
         int id;
-        int chips;
         Deck deck;
-        Gambler player;
+        Player player;
         boolean dealing;
         String c1;
         String c2;
@@ -92,11 +44,10 @@ public class BlackjackServer extends Thread {
         public ClientHandler(Socket sock, int id) {
             this.sock = sock;
             this.id = id;
-            chips = 250;
         }
 
         public void run() {
-            BufferedReader in=null;
+            BufferedReader in = null;
             try {
                 in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 
@@ -133,12 +84,12 @@ public class BlackjackServer extends Thread {
                                 int bet = Integer.parseInt(in.readLine());
                         
                                 // Validate the bet amount
-                                if (bet < 25 || bet > chips) {
+                                if (bet < Player.MIN_BET || bet > player.getCash()) {
                                     pw.println("Invalid bet amount. Please place a bet within your available chips next round.");
                                     playerIn = false;
                                     return;
                                 }
-                                chips -= bet;
+                                player.setCash(player.getCash() - bet);
                         
                                 pw.println("Betting phase complete. Starting the game.");
                         
@@ -248,6 +199,53 @@ public class BlackjackServer extends Thread {
                 System.out.println("Connection lost: " + sock.getRemoteSocketAddress());
                 System.out.println("This error is occurring");
 
+            }
+        }
+    }
+
+    
+    public void serve() {
+        while(true) {
+            try {
+                //accept incoming connection
+                Socket clientSock = serverSock.accept();
+                System.out.println("New connection: "+ clientSock.getRemoteSocketAddress());
+                
+                PrintWriter out = new PrintWriter(clientSock.getOutputStream());
+                out.println("Established connection");
+                out.flush();
+               
+                connections.add(clientSock);
+                    //start the thread
+                    (new ClientHandler(clientSock, users)).start();   
+                    System.out.println("Connection " + users);
+                    users++;
+
+            //exit serve if exception
+            } 
+            catch(Exception e) {}
+        }
+    }
+
+    public void sendUserList()
+    {
+        // Send user list to all clients
+        for (Socket s : connections)
+        {
+            try
+            {
+                PrintWriter pw = new PrintWriter(s.getOutputStream());
+                pw.println("START_CLIENT_LIST");
+                for (String user : members)
+                {
+                    pw.println(user);
+                }
+                pw.println("END_CLIENT_LIST");
+                pw.flush();
+            }
+            catch (Exception e)
+            {
+                System.err.println("Error sending user list");
             }
         }
     }
