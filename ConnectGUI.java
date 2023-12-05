@@ -1,12 +1,8 @@
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.awt.event.*;
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.text.TabExpander;
 
 public class ConnectGUI extends JFrame {
 
@@ -145,8 +141,8 @@ public class ConnectGUI extends JFrame {
 		return true;
 	}
     }
-    public static void main(String args[]) {
-        ConnectGUI f = new ConnectGUI();
-        f.setVisible(true);
+    public static void main (String[] argv) {
+        ConnectGUI c = new ConnectGUI();
+        c.setVisible(true);
     }
 }

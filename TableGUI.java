@@ -29,6 +29,16 @@ public class TableGUI extends JFrame {
     private JLabel p3tot;
     private JLabel p4tot;
     private JLabel p5tot;
+    private int p1x;
+    private int p1y;
+    private int p2x;
+    private int p2y;
+    private int p3x;
+    private int p3y;
+    private int p4x;
+    private int p4y;
+    private int p5x;
+    private int p5y;
 
     private ImageIcon img;
 
@@ -56,7 +66,11 @@ public class TableGUI extends JFrame {
         bpanel.add(stand);
         bpanel.add(doble);
         bpanel.add(start);
-
+        
+        ImageIcon img2 = new ImageIcon(new ImageIcon("star.png").getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        JLabel img22 = new JLabel();
+        img22.setIcon(img2);
+        img22.setBounds(200, 300, 25, 25);
     
         total = new JLabel("$250");
         total.setForeground(Color.BLACK);
@@ -124,6 +138,7 @@ public class TableGUI extends JFrame {
         table.add(p3tot);
         table.add(p4tot);
         table.add(p5tot);
+        table.add(img22);
 
 
 
@@ -134,10 +149,10 @@ public class TableGUI extends JFrame {
         this.pack();
     }
 
-    public static void main (String[] argv) {
-        TableGUI t = new TableGUI();
-        t.setVisible(true);
-    }
+    // public static void main (String[] argv) {
+    //     TableGUI t = new TableGUI();
+    //     t.setVisible(true);
+    // }
 
 
 }
