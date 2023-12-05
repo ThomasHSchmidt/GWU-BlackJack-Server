@@ -6,8 +6,7 @@ public class BlackjackServer extends Thread {
 
     ServerSocket serverSock;
     ArrayList<Socket> connections;
-    ArrayList<String> members;
-    int users;
+    ArrayList<String> playerList;
     boolean playerIn;
 
     public BlackjackServer(int port){
@@ -15,8 +14,7 @@ public class BlackjackServer extends Thread {
         //Instantiates all of the components, including the server socket, member names, and all active connections
         try {
             serverSock = new ServerSocket(port);
-            users = 0;
-            members = new ArrayList<String>();
+            playerList = new ArrayList<String>();
             connections = new ArrayList<Socket>();
             System.out.println("BlackjackServer started on port " + port);
         }
@@ -34,9 +32,8 @@ public class BlackjackServer extends Thread {
                 connections.add(clientSock);
 
                 //start the thread
-                (new ClientHandler(clientSock, users)).start();   
-                users++;
-
+                (new ClientHandler(clientSock, playerList.size())).start();   
+                
             //exit serve if exception
             } catch(Exception e) { }
         }
@@ -51,7 +48,7 @@ public class BlackjackServer extends Thread {
             {
                 PrintWriter pw = new PrintWriter(s.getOutputStream());
                 pw.println("START_CLIENT_LIST");
-                for (String user : members)
+                for (String user : playerList)
                 {
                     pw.println(user);
                 }
@@ -102,7 +99,7 @@ public class BlackjackServer extends Thread {
                     else if (name)
                     {
                         // Add name to user list
-                        members.add(msg);
+                        playerList.add(msg);
                         sendUserList();
                         curName = msg;
                         name = false;

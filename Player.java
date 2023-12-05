@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 
 class Player extends Gambler {
     public static final int MIN_BET = 25;
-    public static final int STARTING_MONEY = 200;
+    public static final int STARTING_MONEY = 250;
     private int bet;
     private int cash;
     private TableGUI gui;
@@ -16,6 +16,7 @@ class Player extends Gambler {
     private BufferedReader br;
     private boolean connected;
     private Thread thr;
+    private int id;
 
     public Player(String name, TableGUI gui, Deck deck, String ip, String port) {
         super(name, deck);
