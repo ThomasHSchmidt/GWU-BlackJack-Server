@@ -6,23 +6,62 @@ public class BlackjackServer extends Thread {
 
     ServerSocket serverSock;
     ArrayList<Socket> connections;
-    ArrayList<String> playerList;
+    ArrayList<String> members;
+    int users;
     boolean playerIn;
-    volatile boolean player1Confirm;
-    volatile boolean player2Confirm;
 
     public BlackjackServer(int port){
 
         //Instantiates all of the components, including the server socket, member names, and all active connections
         try {
             serverSock = new ServerSocket(port);
-            playerList = new ArrayList<String>();
+            users = 0;
+            members = new ArrayList<String>();
             connections = new ArrayList<Socket>();
             System.out.println("BlackjackServer started on port " + port);
         }
         catch(Exception e) {
             System.err.println("Cannot establish server socket");
             System.exit(1);
+        }
+    }
+
+    public void serve() {
+        while(true) {
+            try {
+                //accept incoming connection
+                Socket clientSock = serverSock.accept();
+                connections.add(clientSock);
+
+                //start the thread
+                (new ClientHandler(clientSock, users)).start();   
+                users++;
+
+            //exit serve if exception
+            } catch(Exception e) { }
+        }
+    }
+
+    public void sendUserList()
+    {
+        // Send user list to all clients
+        for (Socket s : connections)
+        {
+            try
+            {
+                PrintWriter pw = new PrintWriter(s.getOutputStream());
+                pw.println("START_CLIENT_LIST");
+                for (String user : members)
+                {
+                    pw.println(user);
+                }
+                pw.println("END_CLIENT_LIST");
+                pw.flush();
+            }
+            catch (Exception e)
+            {
+                System.err.println("Error sending user list");
+            }
         }
     }
 
@@ -63,7 +102,7 @@ public class BlackjackServer extends Thread {
                     else if (name)
                     {
                         // Add name to user list
-                        playerList.add(msg);
+                        members.add(msg);
                         sendUserList();
                         curName = msg;
                         name = false;
@@ -165,6 +204,18 @@ public class BlackjackServer extends Thread {
                             }
                         }
                     }
+                }
+            } catch(Exception e) {
+
+                //note the loss of the connection
+                System.out.println("Connection lost: " + sock.getRemoteSocketAddress());
+                System.out.println("This error is occurring");
+
+            }
+        }
+    }
+}
+
 
 /*
                     // If player splits
@@ -184,63 +235,3 @@ public class BlackjackServer extends Thread {
                             pw.flush();
                     } 
 */  
-
-                }
-            
-            
-            } catch(Exception e) {
-
-                //note the loss of the connection
-                System.out.println("Connection lost: " + sock.getRemoteSocketAddress());
-                System.out.println("This error is occurring");
-
-            }
-        }
-    }
-
-    
-    public void serve() {
-        while(true) {
-            try {
-                //accept incoming connection
-                Socket clientSock = serverSock.accept();
-                System.out.println("New connection: "+ clientSock.getRemoteSocketAddress());
-                
-                PrintWriter out = new PrintWriter(clientSock.getOutputStream());
-                out.println("Established connection");
-                out.flush();
-               
-                connections.add(clientSock);
-                    //start the thread
-                    (new ClientHandler(clientSock, playerList.size())).start();   
-                    System.out.println("Connection " + playerList.size());
-
-            //exit serve if exception
-            } 
-            catch(Exception e) {}
-        }
-    }
-
-    public void sendUserList()
-    {
-        // Send user list to all clients
-        for (Socket s : connections)
-        {
-            try
-            {
-                PrintWriter pw = new PrintWriter(s.getOutputStream());
-                pw.println("START_CLIENT_LIST");
-                for (String user : playerList)
-                {
-                    pw.println(user);
-                }
-                pw.println("END_CLIENT_LIST");
-                pw.flush();
-            }
-            catch (Exception e)
-            {
-                System.err.println("Error sending user list");
-            }
-        }
-    }
-}
