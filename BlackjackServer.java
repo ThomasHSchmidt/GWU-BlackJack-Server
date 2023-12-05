@@ -211,8 +211,13 @@ public class BlackjackServer extends Thread {
             }
         }
     }
-}
 
+    public static void main(String args[]){
+        int port = Integer.parseInt(args[0]);
+        BlackjackServer server = new BlackjackServer(port);
+        server.serve();
+    }
+}
 
 /*
                     // If player splits

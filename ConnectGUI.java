@@ -96,7 +96,7 @@ public class ConnectGUI extends JFrame {
             });
 
         }
-        public static void connectionErrorFrame(JFrame frame, String error)
+        public void connectionErrorFrame(JFrame frame, String error)
 	{
 		JOptionPane.showMessageDialog(frame, error, "Error", JOptionPane.ERROR_MESSAGE);
 	}
