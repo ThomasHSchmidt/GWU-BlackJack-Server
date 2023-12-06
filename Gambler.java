@@ -4,12 +4,12 @@ class Gambler {
     private Hand hand;
     private String name;
     private int bet;
-    private Deck deck;
+    private int id;
 
-    public Gambler(String name, Deck deck) {
+    public Gambler(String name, int id) {
         this.name = name;
         this.hand = new Hand();
-        this.deck = deck;
+        this.id = id;
     }
 
     public String getName() {
@@ -46,8 +46,8 @@ class Gambler {
     // when dealer is playing its turn
     // 
     // Updates player hand and returns player's new hand value
-    public int hit() {
-        this.dealCard(deck.drawCard());
-        return this.getHandValue();
-    }
+    // public int hit() {
+    //     this.dealCard(deck.drawCard());
+    //     return this.getHandValue();
+    // }
 }

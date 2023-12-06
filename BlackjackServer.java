@@ -78,7 +78,6 @@ public class BlackjackServer extends Thread {
         public ClientHandler(Socket sock, int id) {
             this.sock = sock;
             this.id = id;
-            this.player = player;
         }
 
         public void run() {
@@ -151,6 +150,7 @@ public class BlackjackServer extends Thread {
                             PrintWriter out = new PrintWriter(connections.get(i).getOutputStream());
                             System.out.println("12");
                             out.println("Receiving initial cards");
+                            player = new Player(curName, i);
                             c1 = player.dealCard(deck.drawCard());
                             c2 = player.dealCard(deck.drawCard());
                             out.println(c1);

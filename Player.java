@@ -18,27 +18,27 @@ class Player extends Gambler {
     private Thread thr;
     private int id;
 
-    public Player(String name, TableGUI gui, Deck deck, String ip, String port) {
-        super(name, deck);
+    public Player(String name, int id) {
+        super(name, id);
         try{
             // Initialize fields
             bet = MIN_BET;
             cash = STARTING_MONEY;
-            this.gui = gui;
-            sock = new Socket(ip, Integer.parseInt(port));
-            pw = new PrintWriter(sock.getOutputStream());
-            br = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-            thr = new ReadingThread();
+            // this.gui = gui;
+            // sock = new Socket(ip, Integer.parseInt(port));
+            // pw = new PrintWriter(sock.getOutputStream());
+            // br = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+            // thr = new ReadingThread();
 
-            // Send initial handshake and name
-            pw.println("SECRET");
-            pw.println("3c3c4ac618656ae32b7f3431e75f7b26b1a14a87");
-            pw.println("NAME");
-            pw.println(name);
-            pw.flush();
+            // // Send initial handshake and name
+            // pw.println("SECRET");
+            // pw.println("3c3c4ac618656ae32b7f3431e75f7b26b1a14a87");
+            // pw.println("NAME");
+            // pw.println(name);
+            // pw.flush();
 
-            // Start client thread
-            thr.start();
+            // // Start client thread
+            // thr.start();
         }
         catch(Exception e) {
             JOptionPane.showMessageDialog(gui, "Failed connection",  "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -116,8 +116,8 @@ class Player extends Gambler {
         this.cash = cash;
     }
 
-    public int doubleDown() {
-        this.setBet(this.getBet()*2);;
-        return this.hit();
-    }
+    // public int doubleDown() {
+    //     this.setBet(this.getBet()*2);;
+    //     return this.hit();
+    // }
 }
