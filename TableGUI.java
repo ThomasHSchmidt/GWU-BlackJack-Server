@@ -51,7 +51,7 @@ public class TableGUI extends JFrame implements ActionListener {
     private JTextField port;
     private JLabel idLabel;
     private JComboBox id;
-    private String[] playerIDs = {"0, 1, 2, 3, 4"};
+    private Integer[] playerIDs = {0, 1, 2, 3, 4};
     private JTextArea rules;
     private JButton connect;
     private Socket sock = null;
@@ -185,7 +185,7 @@ public class TableGUI extends JFrame implements ActionListener {
         portLabel = new JLabel("Port");
         port =  new JTextField("", 6);
         idLabel = new JLabel("Player ID");
-        id = new JComboBox();
+        id = new JComboBox<Integer>(playerIDs);
         rules = new JTextArea(" Welcome to BlackJack! \n The goal of this game is to draw cards and get as close to 21 without going over it. \n In this game, everyone plays against the dealer and tries to end up closer to 21 than the dealer. \n Minimum bet is $25, and each player will start with a balance of $250 \n Number cards are worth the numbers written on them. Face cards are worth 10. Aces are worth either 1 or 11 depending on your current total. \n Everyone will start with 2 cards, and have 3 options to choose from. \n Hit: Draw another card from the deck \n Stand: End your turn with the cards you have. \n Double Down: Double your bet (Only available at the beginning of your turn). \n Beating the dealer pays 1:1. \n BlackJack(Getting 21 from your first 2 dealt cards) pays 3:2. \n Your position on the table is shown by a star.");
         rules.setEditable(false);
         connect = new JButton("Connect");
@@ -301,9 +301,9 @@ public class TableGUI extends JFrame implements ActionListener {
 	private boolean connectToServer(JFrame frame)
 	{
 		// Ensure name, host, and port are given
-		if (name.getText().equals("") || ip.getText().equals("") || port.getText().equals(""))
+		if (name.getText().equals("") || ip.getText().equals("") || port.getText().equals("") || id.getSelectedItem() == null)
 		{
-			connectionErrorFrame(frame, "Please enter a username, host, and port.");
+			connectionErrorFrame(frame, "Please enter a username, host, port, and Player ID.");
 			return false;
 		}
       

@@ -78,6 +78,7 @@ public class BlackjackServer extends Thread {
         public ClientHandler(Socket sock, int id) {
             this.sock = sock;
             this.id = id;
+            this.player = player;
         }
 
         public void run() {
@@ -87,6 +88,7 @@ public class BlackjackServer extends Thread {
 
                 // Data being taken from the socket
                 String curName = "";
+                System.out.println("1");
                 boolean name = false;
                 playerIn = true;
 
@@ -96,11 +98,14 @@ public class BlackjackServer extends Thread {
                     if (msg.equals("NAME"))
                     {
                         // Start name
+                        System.out.println("2");
                         name = true;
                         continue;
                     }
                     else if (name)
                     {
+                        System.out.println("3");
+
                         // Add name to user list
                         playerList.add(msg);
                         sendUserList();
@@ -133,12 +138,18 @@ public class BlackjackServer extends Thread {
                         }
                     }
 
+                    System.out.println("4");
+
                     dealing = true;
                     if(dealing) {
+                        System.out.println("5");
+
                         Deck deck = new Deck();
                         deck.shuffle();
                         for(int i = 0; i < connections.size(); i++) {
+                            System.out.println("11");
                             PrintWriter out = new PrintWriter(connections.get(i).getOutputStream());
+                            System.out.println("12");
                             out.println("Receiving initial cards");
                             c1 = player.dealCard(deck.drawCard());
                             c2 = player.dealCard(deck.drawCard());
@@ -146,11 +157,14 @@ public class BlackjackServer extends Thread {
                             out.println(c2);
                             out.flush();
                         }
+                        System.out.println("6");
                         dealing = false;
                     }
                     
 
                     if(msg.equals("Hit")) {
+                        System.out.println("7");
+
                         for(int i = 0; i < connections.size(); i++) {
                             if(id == i) {
                                 PrintWriter pw = new PrintWriter(connections.get(i).getOutputStream());
@@ -169,6 +183,8 @@ public class BlackjackServer extends Thread {
 
                     // If player Stands
                     if(msg.equals("Stand")) {
+                        System.out.println("8");
+
                         for(int i = 0; i < connections.size(); i++) {
                             if(id == i) {
                                 PrintWriter pw = new PrintWriter(sock.getOutputStream());           
@@ -181,6 +197,8 @@ public class BlackjackServer extends Thread {
 
                     // If player Double Downs
                     if(msg.equals("Double Down")){
+                        System.out.println("9");
+
                         for(int i = 0; i < connections.size(); i++) {
                             if(id == i) {
                                 PrintWriter pw = new PrintWriter(sock.getOutputStream());
@@ -210,6 +228,7 @@ public class BlackjackServer extends Thread {
                 //note the loss of the connection
                 System.out.println("Connection lost: " + sock.getRemoteSocketAddress());
                 System.out.println("This error is occurring");
+                System.out.println(e.getMessage());
 
             }
         }
