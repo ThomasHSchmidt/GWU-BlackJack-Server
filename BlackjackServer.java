@@ -4,6 +4,7 @@ import java.io.*;
 
 public class BlackjackServer extends Thread {
 
+    private Deck deck;
     ServerSocket serverSock;
     static ArrayList<Socket> connections;
     ArrayList<String> playerList;
@@ -13,6 +14,7 @@ public class BlackjackServer extends Thread {
 
         //Instantiates all of the components, including the server socket, member names, and all active connections
         try {
+            deck = new Deck();
             serverSock = new ServerSocket(port);
             playerList = new ArrayList<String>();
             connections = new ArrayList<Socket>();
@@ -35,7 +37,7 @@ public class BlackjackServer extends Thread {
                 connections.add(clientSock);
 
                 //start the thread
-                (new ClientHandler(clientSock, playerList.size())).start();   
+                (new ClientHandler(clientSock, playerList.size(), this.deck)).start();   
                 
             //exit serve if exception
             } catch(Exception e) { }
@@ -75,7 +77,8 @@ public class BlackjackServer extends Thread {
         String c1;
         String c2;
 
-        public ClientHandler(Socket sock, int id) {
+        public ClientHandler(Socket sock, int id, Deck deck) {
+            this.deck = deck;
             this.sock = sock;
             this.id = id;
         }
@@ -143,7 +146,6 @@ public class BlackjackServer extends Thread {
                     if(dealing) {
                         System.out.println("5");
 
-                        Deck deck = new Deck();
                         deck.shuffle();
                         for(int i = 0; i < connections.size(); i++) {
                             System.out.println("11");
