@@ -5,7 +5,7 @@ import java.io.*;
 public class BlackjackServer extends Thread {
 
     ServerSocket serverSock;
-    ArrayList<Socket> connections;
+    static ArrayList<Socket> connections;
     ArrayList<String> playerList;
     boolean playerIn;
 
@@ -23,6 +23,9 @@ public class BlackjackServer extends Thread {
             System.exit(1);
         }
     }
+    // public static int getID() {
+    //     return connections.size();
+    // }
 
     public void serve() {
         while(true) {

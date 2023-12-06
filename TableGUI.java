@@ -1,4 +1,7 @@
 import java.awt.*;
+import java.awt.event.*;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.io.File;
 import java.io.IOException;
 
@@ -6,7 +9,11 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.TabExpander;
 
-public class TableGUI extends JFrame {
+public class TableGUI extends JFrame implements ActionListener {
+
+    private JPanel cards;
+    private JPanel connectCard;
+    private JPanel tableCard;
 
     private JTextField betAmt;
 
@@ -15,7 +22,7 @@ public class TableGUI extends JFrame {
     private JButton hit;
     private JButton doble;
     private JButton start;
-    private JButton leave;
+    //private JButton leave;
 
     private JLabel table;
     private JLabel total;
@@ -29,32 +36,52 @@ public class TableGUI extends JFrame {
     private JLabel p3tot;
     private JLabel p4tot;
     private JLabel p5tot;
-    private int p1x;
-    private int p1y;
-    private int p2x;
-    private int p2y;
-    private int p3x;
-    private int p3y;
-    private int p4x;
-    private int p4y;
-    private int p5x;
-    private int p5y;
+    private JLabel dtot;
+    private static JLabel star = new JLabel();;
 
-    private ImageIcon img;
+    private ImageIcon tablepng;
+
+    private int bets;
+
+    private JLabel nameLabel;
+    private JTextField name;
+    private JLabel ipLabel;
+    private JTextField ip;
+    private JLabel portLabel;
+    private JTextField port;
+    private JLabel idLabel;
+    private JTextField id;
+    private JTextArea rules;
+    private JButton connect;
+    private Socket sock = null;
+    private PrintWriter pw = null;
+    private JPanel playerPanel;
+	private JLabel playerTitle;
+	private JScrollPane playerScoller;
+	private JList<String> playerList;
+
+    CardLayout crd;
 
     public TableGUI() {
         super();
+
+        cards = new JPanel();
+        crd = new CardLayout();
+        cards.setLayout(crd);
+        connectCard = new JPanel();
+        tableCard = new JPanel();
+
         betAmt =  new JTextField("Bet Amount", 6);
         bet = new JButton("Bet");
         stand = new JButton("Stand");
         hit = new JButton("Hit");
         doble = new JButton("Double Down");
-        leave = new JButton("Leave");
+        //leave = new JButton("Leave");
         start = new JButton("Start");
         table = new JLabel();
         total = new JLabel("500");
-        img = new ImageIcon(new ImageIcon("casino.png").getImage().getScaledInstance(800, 800, Image.SCALE_DEFAULT));
-        table.setIcon(img);
+        tablepng = new ImageIcon(new ImageIcon("casino.png").getImage().getScaledInstance(800, 800, Image.SCALE_DEFAULT));
+        table.setIcon(tablepng);
 
         JPanel betpanel = new JPanel(new BorderLayout());
         betpanel.add(betAmt, BorderLayout.WEST);
@@ -67,65 +94,69 @@ public class TableGUI extends JFrame {
         bpanel.add(doble);
         bpanel.add(start);
         
-        ImageIcon img2 = new ImageIcon(new ImageIcon("star.png").getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
-        JLabel img22 = new JLabel();
-        img22.setIcon(img2);
-        img22.setBounds(200, 300, 25, 25);
+        ImageIcon img = new ImageIcon(new ImageIcon("star.png").getImage().getScaledInstance(25, 25, Image.SCALE_DEFAULT));
+        star.setIcon(img);
+        //star.setBounds(100, 100, 25, 25);
     
         total = new JLabel("$250");
         total.setForeground(Color.BLACK);
         total.setFont(new Font("Serif", Font.BOLD, 40));
         total.setBounds(700, 625, 100, 100);
 
-        p1Bet = new JLabel("$25");
+        p1Bet = new JLabel("");
         p1Bet.setForeground(Color.BLACK);
         p1Bet.setFont(new Font("Serif", Font.BOLD, 20));
         p1Bet.setBounds(675, 348, 100, 100);
 
-        p2Bet = new JLabel("$25");
+        p2Bet = new JLabel("");
         p2Bet.setForeground(Color.BLACK);
         p2Bet.setFont(new Font("Serif", Font.BOLD, 20));
         p2Bet.setBounds(538, 429, 100, 100);
 
-        p3Bet = new JLabel("$25");
+        p3Bet = new JLabel("");
         p3Bet.setForeground(Color.BLACK);
         p3Bet.setFont(new Font("Serif", Font.BOLD, 20));
         p3Bet.setBounds(385, 508, 100, 100);
 
-        p4Bet = new JLabel("$25");
+        p4Bet = new JLabel("");
         p4Bet.setForeground(Color.BLACK);
         p4Bet.setFont(new Font("Serif", Font.BOLD, 20));
         p4Bet.setBounds(234, 429, 100, 100);
 
-        p5Bet = new JLabel("$25");
+        p5Bet = new JLabel("");
         p5Bet.setForeground(Color.BLACK);
         p5Bet.setFont(new Font("Serif", Font.BOLD, 20));
         p5Bet.setBounds(95, 350, 100, 100);
 
-        p1tot = new JLabel("10");
+        p1tot = new JLabel("");
         p1tot.setForeground(Color.BLACK);
         p1tot.setFont(new Font("Serif", Font.BOLD, 25));
         p1tot.setBounds(630, 390, 100, 100);
 
-        p2tot = new JLabel("10");
+        p2tot = new JLabel("");
         p2tot.setForeground(Color.BLACK);
         p2tot.setFont(new Font("Serif", Font.BOLD, 25));
         p2tot.setBounds(493, 470, 100, 100);
 
-        p3tot = new JLabel("10");
+        p3tot = new JLabel("");
         p3tot.setForeground(Color.BLACK);
         p3tot.setFont(new Font("Serif", Font.BOLD, 25));
         p3tot.setBounds(340, 553, 100, 100);
 
-        p4tot = new JLabel("10");
+        p4tot = new JLabel("");
         p4tot.setForeground(Color.BLACK);
         p4tot.setFont(new Font("Serif", Font.BOLD, 25));
         p4tot.setBounds(190, 470, 100, 100);
 
-        p5tot = new JLabel("10");
+        p5tot = new JLabel("");
         p5tot.setForeground(Color.BLACK);
         p5tot.setFont(new Font("Serif", Font.BOLD, 25));
         p5tot.setBounds(50, 390, 100, 100);
+
+        dtot = new JLabel("10");
+        dtot.setForeground(Color.BLACK);
+        dtot.setFont(new Font("Serif", Font.BOLD, 25));
+        dtot.setBounds(400, 100, 100, 100);
                
         table.add(total);
         table.add(p1Bet);
@@ -138,21 +169,175 @@ public class TableGUI extends JFrame {
         table.add(p3tot);
         table.add(p4tot);
         table.add(p5tot);
-        table.add(img22);
+        table.add(dtot);
+        table.add(star);
 
 
+        tableCard.add(table, BorderLayout.CENTER);
+        tableCard.add(bpanel, BorderLayout.SOUTH);
 
-        this.add(table, BorderLayout.CENTER);
-        this.add(bpanel, BorderLayout.SOUTH);
 
+        nameLabel = new JLabel("Name");
+        name =  new JTextField("", 6);
+        ipLabel = new JLabel("IP Address");
+        ip =  new JTextField("", 8);
+        portLabel = new JLabel("Port");
+        port =  new JTextField("", 6);
+        idLabel = new JLabel("Player ID");
+        id = new JTextField("", 3);
+        rules = new JTextArea(" Welcome to BlackJack! \n The goal of this game is to draw cards and get as close to 21 without going over it. \n In this game, everyone plays against the dealer and tries to end up closer to 21 than the dealer. \n Minimum bet is $25, and each player will start with a balance of $250 \n Number cards are worth the numbers written on them. Face cards are worth 10. Aces are worth either 1 or 11 depending on your current total. \n Everyone will start with 2 cards, and have 3 options to choose from. \n Hit: Draw another card from the deck \n Stand: End your turn with the cards you have. \n Double Down: Double your bet (Only available at the beginning of your turn). \n Beating the dealer pays 1:1. \n BlackJack(Getting 21 from your first 2 dealt cards) pays 3:2. \n Your position on the table is shown by a star.");
+        rules.setEditable(false);
+        connect = new JButton("Connect");
+
+        JPanel tPanel = new JPanel(new FlowLayout());
+        tPanel.add(nameLabel);
+        tPanel.add(name);
+        tPanel.add(ipLabel);
+        tPanel.add(ip);
+        tPanel.add(portLabel);
+        tPanel.add(port);
+        tPanel.add(id);
+
+        JPanel connectPanel = new JPanel(new BorderLayout());
+        connectPanel.add(connect, BorderLayout.EAST);
+
+
+        connect.addActionListener(this);
+
+        connectCard.add(tPanel, BorderLayout.NORTH);
+        connectCard.add(rules, BorderLayout.CENTER);
+        connectCard.add(connectPanel, BorderLayout.SOUTH);
+
+        cards.add(connectCard);
+        cards.add(tableCard);
+
+    
+
+        this.add(cards);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.pack();
     }
 
-    // public static void main (String[] argv) {
-    //     TableGUI t = new TableGUI();
-    //     t.setVisible(true);
-    // }
 
 
+        public void actionPerformed(ActionEvent e) {
+
+            
+
+            bet.addActionListener(new ActionListener(){  
+                public void actionPerformed(ActionEvent f1) { 
+				bets = Integer.parseInt(betAmt.getText());
+                }  
+            });
+            hit.addActionListener(new ActionListener(){  
+                public void actionPerformed(ActionEvent f2) { 
+				bets = Integer.parseInt(betAmt.getText());
+                }  
+            });
+            stand.addActionListener(new ActionListener(){  
+                public void actionPerformed(ActionEvent f3) { 
+				bets = Integer.parseInt(betAmt.getText());
+                }  
+            });
+            doble.addActionListener(new ActionListener(){  
+                public void actionPerformed(ActionEvent f4) { 
+				bets = Integer.parseInt(betAmt.getText());
+                }  
+            });
+            start.addActionListener(new ActionListener(){  
+                public void actionPerformed(ActionEvent f5) { 
+				bets = Integer.parseInt(betAmt.getText());
+                }  
+            });
+            connect.addActionListener(new ActionListener(){  
+                public void actionPerformed(ActionEvent f) { 
+				// Change button text
+				connect.setText("Connecting...");
+                //id = BlackjackServer.getID();
+
+				
+
+				// Disable inputs
+				name.setEnabled(false);
+				ip.setEnabled(false);
+				port.setEnabled(false);
+
+				// Connect to server
+				if(!connectToServer(TableGUI.this))
+				{
+					// Re-enable inputs
+					name.setEnabled(true);
+					ip.setEnabled(true);
+					port.setEnabled(true);
+
+
+					// Change button text
+					connect.setText("Connect");
+				} else {
+                    
+                    TableGUI.this.setTitle("BlackJack (Connected)");
+                    crd.next(cards);
+                    connectCard.setVisible(false);
+                    setSize(800,900);
+                }
+                }  
+            });
+
+        }
+
+
+    public static void setStar(int x, int y) {
+        star.setBounds(x, y, 25, 25);
+    }
+
+
+        public void connectionErrorFrame(JFrame frame, String error)
+	{
+		JOptionPane.showMessageDialog(frame, error, "Error", JOptionPane.ERROR_MESSAGE);
+	}
+
+	private boolean connectToServer(JFrame frame)
+	{
+		// Ensure name, host, and port are given
+		if (name.getText().equals("") || ip.getText().equals("") || port.getText().equals(""))
+		{
+			connectionErrorFrame(frame, "Please enter a username, host, and port.");
+			return false;
+		}
+      
+        try
+		{
+           sock = new Socket(ip.getText(),Integer.parseInt(port.getText()));
+        }
+		catch (Exception e)
+		{
+			connectionErrorFrame(frame, "Cannot connect to server");
+			return false;
+        }
+
+        try
+		{
+            pw = new PrintWriter(sock.getOutputStream(), true);
+			// Login to server
+            pw.println("SECRET");
+			pw.println("3c3c4ac618656ae32b7f3431e75f7b26b1a14a87");
+			pw.println("NAME");
+			pw.println(name.getText());
+
+			Thread t = new TableClientListener(sock, Integer.parseInt(id.getText()));
+    		t.start();
+        }
+		catch(Exception e)
+		{
+            connectionErrorFrame(frame, "Error logging in to server");
+            return false;
+        }
+		return true;
+	}
+    
+    public static void main (String[] argv) {
+        TableGUI t = new TableGUI();
+        t.setSize(950, 300);
+        t.setVisible(true);
+    }
 }

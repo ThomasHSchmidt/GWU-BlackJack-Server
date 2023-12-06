@@ -12,6 +12,8 @@ public class ConnectGUI extends JFrame {
     private JTextField ip;
     private JLabel portLabel;
     private JTextField port;
+    private JLabel idLabel;
+    private JTextField id;
     private JTextArea rules;
     private JButton connect;
     private Socket sock = null;
@@ -29,7 +31,9 @@ public class ConnectGUI extends JFrame {
         ip =  new JTextField("", 8);
         portLabel = new JLabel("Port");
         port =  new JTextField("", 6);
-        rules = new JTextArea("Welcome to BlackJack! \n The goal of this game is to draw cards and get as close to 21 without going over it. \n In this game, everyone plays against the dealer and tries to end up closer to 21 than the dealer. \n Minimum bet is $25, and each player will start with a balance of $500 \n Number cards are worth the numbers written on them. Face cards are worth 10. Aces are worth either 1 or 11 depending on your current total. \n Everyone will start with 2 cards, and have 3 options to choose from. \n Hit: Draw another card from the deck \n Stand: End your turn with the cards you have. \n Double Down: Double your bet (Only available at the beginning of your turn). \n Beating the dealer pays 1:1. \n BlackJack(Getting 21 from your first 2 dealt cards) pays 3:2.");
+        idLabel = new JLabel("Player ID");
+        id = new JTextField("", 3);
+        rules = new JTextArea("Welcome to BlackJack! \n The goal of this game is to draw cards and get as close to 21 without going over it. \n In this game, everyone plays against the dealer and tries to end up closer to 21 than the dealer. \n Minimum bet is $25, and each player will start with a balance of $500 \n Number cards are worth the numbers written on them. Face cards are worth 10. Aces are worth either 1 or 11 depending on your current total. \n Everyone will start with 2 cards, and have 3 options to choose from. \n Hit: Draw another card from the deck \n Stand: End your turn with the cards you have. \n Double Down: Double your bet (Only available at the beginning of your turn). \n Beating the dealer pays 1:1. \n BlackJack(Getting 21 from your first 2 dealt cards) pays 3:2. \n Your position on the table is shown by a star.");
         rules.setEditable(false);
         connect = new JButton("Connect");
 
@@ -40,11 +44,12 @@ public class ConnectGUI extends JFrame {
         tPanel.add(ip);
         tPanel.add(portLabel);
         tPanel.add(port);
+        tPanel.add(id);
 
         JPanel bpanel = new JPanel(new BorderLayout());
         bpanel.add(connect, BorderLayout.EAST);
 
-        CoverterActionListener a = new CoverterActionListener();
+        ConnectActionListener a = new ConnectActionListener();
 
         connect.addActionListener(a);
 
@@ -57,7 +62,7 @@ public class ConnectGUI extends JFrame {
 
     }
 
-    public class CoverterActionListener implements ActionListener {
+    public class ConnectActionListener implements ActionListener {
 
         public void actionPerformed(ActionEvent e) {
 
@@ -67,6 +72,7 @@ public class ConnectGUI extends JFrame {
                 public void actionPerformed(ActionEvent f) { 
 				// Change button text
 				connect.setText("Connecting...");
+                //id = BlackjackServer.getID();
 
 				
 
@@ -122,15 +128,14 @@ public class ConnectGUI extends JFrame {
 
         try
 		{
-            pw = new PrintWriter(sock.getOutputStream());
+            pw = new PrintWriter(sock.getOutputStream(), true);
 			// Login to server
             pw.println("SECRET");
 			pw.println("3c3c4ac618656ae32b7f3431e75f7b26b1a14a87");
 			pw.println("NAME");
 			pw.println(name.getText());
-			pw.flush();
 
-			Thread t = new BlackjackServer(Integer.parseInt(port.getText()));
+			Thread t = new TableClientListener(sock, Integer.parseInt(id.getText()));
     		t.start();
         }
 		catch(Exception e)
