@@ -25,18 +25,18 @@ public class TableGUI extends JFrame implements ActionListener {
     //private JButton leave;
 
     private JLabel table;
-    private JLabel total;
-    private JLabel p1Bet;
-    private JLabel p2Bet;
-    private JLabel p3Bet;
-    private JLabel p4Bet;
-    private JLabel p5Bet;
-    private JLabel p1tot;
-    private JLabel p2tot;
-    private JLabel p3tot;
-    private JLabel p4tot;
-    private JLabel p5tot;
-    private JLabel dtot;
+    static JLabel total;
+    static JLabel p1Bet;
+    static JLabel p2Bet;
+    static JLabel p3Bet;
+    static JLabel p4Bet;
+    static JLabel p5Bet;
+    static JLabel p1tot = new JLabel("10");
+    static JLabel p2tot = new JLabel("10");
+    static JLabel p3tot;
+    static JLabel p4tot;
+    static JLabel p5tot;
+    static JLabel dtot;
     private static JLabel star = new JLabel();;
 
     private ImageIcon tablepng;
@@ -129,12 +129,10 @@ public class TableGUI extends JFrame implements ActionListener {
         p5Bet.setFont(new Font("Serif", Font.BOLD, 20));
         p5Bet.setBounds(95, 350, 100, 100);
 
-        p1tot = new JLabel("");
         p1tot.setForeground(Color.BLACK);
         p1tot.setFont(new Font("Serif", Font.BOLD, 25));
         p1tot.setBounds(630, 390, 100, 100);
 
-        p2tot = new JLabel("");
         p2tot.setForeground(Color.BLACK);
         p2tot.setFont(new Font("Serif", Font.BOLD, 25));
         p2tot.setBounds(493, 470, 100, 100);
@@ -229,26 +227,33 @@ public class TableGUI extends JFrame implements ActionListener {
             bet.addActionListener(new ActionListener(){  
                 public void actionPerformed(ActionEvent f1) { 
 				bets = Integer.parseInt(betAmt.getText());
+                pw.print("Bet");
+                pw.println(bets);
                 }  
             });
             hit.addActionListener(new ActionListener(){  
                 public void actionPerformed(ActionEvent f2) { 
-				bets = Integer.parseInt(betAmt.getText());
+				pw.println("Hit");
+                pw.flush();
+
                 }  
             });
             stand.addActionListener(new ActionListener(){  
                 public void actionPerformed(ActionEvent f3) { 
-				bets = Integer.parseInt(betAmt.getText());
+				pw.println("Stand");
+                pw.flush();
                 }  
             });
             doble.addActionListener(new ActionListener(){  
                 public void actionPerformed(ActionEvent f4) { 
-				bets = Integer.parseInt(betAmt.getText());
+				pw.println("Double Down");
+                pw.flush();
                 }  
             });
             start.addActionListener(new ActionListener(){  
                 public void actionPerformed(ActionEvent f5) { 
-				bets = Integer.parseInt(betAmt.getText());
+				pw.println("Start");
+                pw.flush();
                 }  
             });
             connect.addActionListener(new ActionListener(){  

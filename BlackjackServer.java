@@ -117,11 +117,13 @@ public class BlackjackServer extends Thread {
                     }
 
 
+                    if (msg.equals("Start")) {
                     for(int i = 0; i < connections.size(); i++) {
                         if(id == i) {
                             PrintWriter pw = new PrintWriter(connections.get(i).getOutputStream());
                             pw.println("Place your bet.");
                             try {
+                                if (msg.equals("Bet")) {
                                 int bet = Integer.parseInt(in.readLine());
                         
                                 // Validate the bet amount
@@ -131,6 +133,21 @@ public class BlackjackServer extends Thread {
                                     return;
                                 }
                                 player.setCash(player.getCash() - bet);
+                                if(id == 0){
+                                TableGUI.p1Bet.setText(String.valueOf(bet));
+                                TableGUI.total.setText(String.valueOf(player.getCash() - bet));
+                                }
+                                if (id == 1) {
+                                TableGUI.p2Bet.setText(String.valueOf(bet));
+                                TableGUI.total.setText(String.valueOf(player.getCash() - bet));
+                                }
+                                if (id == 2)
+                                TableGUI.p3Bet.setText(String.valueOf(bet));
+                                if (id == 3)
+                                TableGUI.p4Bet.setText(String.valueOf(bet));
+                                if (id == 4)
+                                TableGUI.p5Bet.setText(String.valueOf(bet));
+                            }
                         
                                 pw.println("Betting phase complete. Starting the game.");
                         
@@ -139,6 +156,7 @@ public class BlackjackServer extends Thread {
                             }
                         }
                     }
+                
 
                     System.out.println("4");
 
@@ -155,6 +173,21 @@ public class BlackjackServer extends Thread {
                             player = new Player(curName, i);
                             c1 = player.dealCard(deck.drawCard());
                             c2 = player.dealCard(deck.drawCard());
+                            if(id == 0) {
+                            TableGUI.p1tot.setText(String.valueOf(player.getHandValue()));
+                            System.out.println("fail");
+                            }
+                            
+                            if (id == 1) {
+                            TableGUI.p2tot.setText(String.valueOf(player.getHandValue()));
+                            System.out.println("fail");
+                            }
+                            if (id == 2)
+                            TableGUI.p3tot.setText(String.valueOf(player.getHandValue()));
+                            if (id == 3)
+                            TableGUI.p4tot.setText(String.valueOf(player.getHandValue()));
+                            if (id == 4)
+                            TableGUI.p4tot.setText(String.valueOf(player.getHandValue()));
                             out.println(c1);
                             out.println(c2);
                             out.flush();
@@ -162,6 +195,7 @@ public class BlackjackServer extends Thread {
                         System.out.println("6");
                         dealing = false;
                     }
+                }
                     
 
                     if(msg.equals("Hit")) {
