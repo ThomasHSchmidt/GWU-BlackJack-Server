@@ -6,7 +6,7 @@ public class BlackjackServer extends Thread {
 
     private Deck deck;
     ServerSocket serverSock;
-    static ArrayList<Socket> connections;
+    ArrayList<Socket> connections;
     ArrayList<String> playerList;
     boolean playerIn;
 
@@ -173,24 +173,26 @@ public class BlackjackServer extends Thread {
                             player = new Player(curName, i);
                             c1 = player.dealCard(deck.drawCard());
                             c2 = player.dealCard(deck.drawCard());
-                            if(id == 0) {
-                            TableGUI.p1tot.setText(String.valueOf(player.getHandValue()));
-                            System.out.println("fail");
-                            }
-                            
-                            if (id == 1) {
-                            TableGUI.p2tot.setText(String.valueOf(player.getHandValue()));
-                            System.out.println("fail");
-                            }
-                            if (id == 2)
-                            TableGUI.p3tot.setText(String.valueOf(player.getHandValue()));
-                            if (id == 3)
-                            TableGUI.p4tot.setText(String.valueOf(player.getHandValue()));
-                            if (id == 4)
-                            TableGUI.p4tot.setText(String.valueOf(player.getHandValue()));
                             out.println(c1);
                             out.println(c2);
                             out.flush();
+                            if(id == 0) {
+                                //TableGUI.setp1Tot(String.valueOf());
+                                System.out.println("Player 1 hand value: " + player.getHandValue());
+                            }
+                            if (id == 1) {
+                                //TableGUI.setp2Tot(String.valueOf(player.getHandValue()));
+                                System.out.println("Player 2 hand value: " + player.getHandValue());
+                            }
+                            if (id == 2) {
+                                TableGUI.setp3Tot(String.valueOf(player.getHandValue()));
+                            }
+                            if (id == 3) {
+                                TableGUI.setp4Tot(String.valueOf(player.getHandValue()));
+                            }
+                            if (id == 4) {
+                                TableGUI.setp5Tot(String.valueOf(player.getHandValue()));
+                            }
                         }
                         System.out.println("6");
                         dealing = false;

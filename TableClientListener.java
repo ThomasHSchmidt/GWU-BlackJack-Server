@@ -27,6 +27,7 @@ public class TableClientListener extends Thread {
         for (int i = 0; i < 5; i++) {
             if (id == i) {
                 TableGUI.setStar(starpos[2*i], starpos[(2*i)+1]);
+                
             }
         }
         

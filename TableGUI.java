@@ -25,18 +25,18 @@ public class TableGUI extends JFrame implements ActionListener {
     //private JButton leave;
 
     private JLabel table;
-    static JLabel total;
-    static JLabel p1Bet;
-    static JLabel p2Bet;
-    static JLabel p3Bet;
-    static JLabel p4Bet;
-    static JLabel p5Bet;
-    static JLabel p1tot = new JLabel("10");
-    static JLabel p2tot = new JLabel("10");
-    static JLabel p3tot;
-    static JLabel p4tot;
-    static JLabel p5tot;
-    static JLabel dtot;
+    static JLabel total  = new JLabel("$250");
+    static JLabel p1Bet = new JLabel("");
+    static JLabel p2Bet = new JLabel("");
+    static JLabel p3Bet = new JLabel("");
+    static JLabel p4Bet = new JLabel("");
+    static JLabel p5Bet = new JLabel("");
+    static JLabel p1tot = new JLabel("");
+    static JLabel p2tot = new JLabel("");
+    static JLabel p3tot = new JLabel("");
+    static JLabel p4tot = new JLabel("");
+    static JLabel p5tot = new JLabel("");
+    static JLabel dtot = new JLabel("");
     private static JLabel star = new JLabel();;
 
     private ImageIcon tablepng;
@@ -80,7 +80,6 @@ public class TableGUI extends JFrame implements ActionListener {
         //leave = new JButton("Leave");
         start = new JButton("Start");
         table = new JLabel();
-        total = new JLabel("500");
         tablepng = new ImageIcon(new ImageIcon("casino.png").getImage().getScaledInstance(800, 800, Image.SCALE_DEFAULT));
         table.setIcon(tablepng);
 
@@ -99,32 +98,26 @@ public class TableGUI extends JFrame implements ActionListener {
         star.setIcon(img);
         //star.setBounds(100, 100, 25, 25);
     
-        total = new JLabel("$250");
         total.setForeground(Color.BLACK);
         total.setFont(new Font("Serif", Font.BOLD, 40));
         total.setBounds(700, 625, 100, 100);
 
-        p1Bet = new JLabel("");
         p1Bet.setForeground(Color.BLACK);
         p1Bet.setFont(new Font("Serif", Font.BOLD, 20));
         p1Bet.setBounds(675, 348, 100, 100);
 
-        p2Bet = new JLabel("");
         p2Bet.setForeground(Color.BLACK);
         p2Bet.setFont(new Font("Serif", Font.BOLD, 20));
         p2Bet.setBounds(538, 429, 100, 100);
 
-        p3Bet = new JLabel("");
         p3Bet.setForeground(Color.BLACK);
         p3Bet.setFont(new Font("Serif", Font.BOLD, 20));
         p3Bet.setBounds(385, 508, 100, 100);
 
-        p4Bet = new JLabel("");
         p4Bet.setForeground(Color.BLACK);
         p4Bet.setFont(new Font("Serif", Font.BOLD, 20));
         p4Bet.setBounds(234, 429, 100, 100);
 
-        p5Bet = new JLabel("");
         p5Bet.setForeground(Color.BLACK);
         p5Bet.setFont(new Font("Serif", Font.BOLD, 20));
         p5Bet.setBounds(95, 350, 100, 100);
@@ -137,22 +130,18 @@ public class TableGUI extends JFrame implements ActionListener {
         p2tot.setFont(new Font("Serif", Font.BOLD, 25));
         p2tot.setBounds(493, 470, 100, 100);
 
-        p3tot = new JLabel("");
         p3tot.setForeground(Color.BLACK);
         p3tot.setFont(new Font("Serif", Font.BOLD, 25));
         p3tot.setBounds(340, 553, 100, 100);
 
-        p4tot = new JLabel("");
         p4tot.setForeground(Color.BLACK);
         p4tot.setFont(new Font("Serif", Font.BOLD, 25));
         p4tot.setBounds(190, 470, 100, 100);
 
-        p5tot = new JLabel("");
         p5tot.setForeground(Color.BLACK);
         p5tot.setFont(new Font("Serif", Font.BOLD, 25));
         p5tot.setBounds(50, 390, 100, 100);
 
-        dtot = new JLabel("10");
         dtot.setForeground(Color.BLACK);
         dtot.setFont(new Font("Serif", Font.BOLD, 25));
         dtot.setBounds(400, 100, 100, 100);
@@ -295,6 +284,37 @@ public class TableGUI extends JFrame implements ActionListener {
 
     public static void setStar(int x, int y) {
         star.setBounds(x, y, 25, 25);
+    }
+    public static void setp1Bet(String s) {
+        p1Bet.setText(s);
+
+    }
+    public static void setp2Bet(String s) {
+        p2Bet.setText(s);
+    }
+    public static void setp3Bet(String s) {
+        p3Bet.setText(s);
+    }
+    public static void setp4Bet(String s) {
+        p4Bet.setText(s);
+    }
+    public static void setp5Bet(String s) {
+        p5Bet.setText(s);
+    }
+    public static void setp1Tot(String s) {
+        p1tot.setText(s);
+    }
+    public static void setp2Tot(String s) {
+        p2tot.setText(s);
+    }
+    public static void setp3Tot(String s) {
+        p3tot.setText(s);
+    }
+    public static void setp4Tot(String s) {
+        p4tot.setText(s);
+    }
+    public static void setp5Tot(String s) {
+        p5tot.setText(s);
     }
 
 
