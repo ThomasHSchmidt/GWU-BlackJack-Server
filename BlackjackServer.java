@@ -9,6 +9,7 @@ public class BlackjackServer extends Thread {
     ArrayList<Socket> connections;
     ArrayList<String> playerList;
     List<ClientHandler> clients;
+    ArrayList<Player> players;
     boolean playerIn;
 
     public BlackjackServer(int port){
@@ -20,6 +21,7 @@ public class BlackjackServer extends Thread {
             serverSock = new ServerSocket(port);
             playerList = new ArrayList<String>();
             connections = new ArrayList<Socket>();
+            players = new ArrayList<Player>();
             System.out.println("BlackjackServer started on port " + port);
         }
         catch(Exception e) {
@@ -37,6 +39,7 @@ public class BlackjackServer extends Thread {
                 //accept incoming connection
                 Socket clientSock = serverSock.accept();
                 connections.add(clientSock);
+                players.add(new Player("", players.size()));
 
                 //start the thread
                 (new ClientHandler(clientSock, playerList.size(), this.deck)).start();   
@@ -125,7 +128,6 @@ public class BlackjackServer extends Thread {
                         name = false;
                         continue;
                     }
-
 
                     if (msg.equals("Start")) {
                     for(int i = 0; i < connections.size(); i++) {

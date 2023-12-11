@@ -43,14 +43,18 @@ public class Hand {
         return handValue;
     }
 
-    public void printHand() {
-        System.out.print("[");
+    public String printHand() {
+        String ret = "";
+
+        ret += "[";
 
         for(Card card : hand) {
-            System.out.print(card.getTokenKey() + ", ");
+            ret += card.getTokenKey() + ", ";
         }
 
-        System.out.print("]");
+        ret += "]";
+
+        return ret;
     }
 
     public boolean hasAce() {
