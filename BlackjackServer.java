@@ -172,18 +172,15 @@ public class BlackjackServer extends Thread {
                         for(int i = 0; i < connections.size(); i++) {
                             System.out.println("11");
                             PrintWriter out = new PrintWriter(connections.get(i).getOutputStream());
-                            PrintWriter pw = new PrintWriter(connections.get(i).getOutputStream());
                             System.out.println("12");
                             out.println("Receiving initial cards");
                             player = new Player(curName, i);
                             c1 = player.dealCard(deck.drawCard());
                             c2 = player.dealCard(deck.drawCard());
-                            out.println(c1);
-                            out.println(c2);
                             if(id == 0) {
                                 System.out.println("Player 1 hand value: " + player.getHandValue());
-                                pw.println("p1tot");
-                                pw.println(String.valueOf(String.valueOf(player.getHandValue())));
+                                out.println("p1tot");
+                                out.println(String.valueOf(String.valueOf(player.getHandValue())));
                             }
                             if (id == 1) {
                                 //TableGUI.setp2Tot(String.valueOf(player.getHandValue()));
@@ -198,6 +195,8 @@ public class BlackjackServer extends Thread {
                             if (id == 4) {
                                 TableGUI.setp5Tot(String.valueOf(player.getHandValue()));
                             }
+                            out.println(c1);
+                            out.println(c2);
                             out.flush();
                         }
                         System.out.println("6");
