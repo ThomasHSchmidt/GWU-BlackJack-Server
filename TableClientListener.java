@@ -30,19 +30,21 @@ public class TableClientListener extends Thread {
                 TableGUI.setStar(starpos[2*i], starpos[(2*i)+1]);
             }
         }
+        while(true) {
         try {
             in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             String msg = in.readLine();
             System.out.println("fail1");
             if(msg.equals("p1tot")) {
+                System.out.println("fail2");
                 msg = in.readLine();
                 TableGUI.setp1Tot("14");
-                System.out.println("fail2");
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
         
         
     }
