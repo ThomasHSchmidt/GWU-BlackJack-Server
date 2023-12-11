@@ -223,13 +223,9 @@ public class TableGUI extends JFrame {
         });
         bet.addActionListener((e) -> {
             //total.setText("$" + (Integer.parseInt(total.getText().substring(1)) - Integer.parseInt(betAmt.getText())));
-            if (id.getSelectedIndex() == 0) {
-                pw.println("Bet");
-            }
-            pw.println("Bet " + id.getSelectedIndex());
+            pw.println("Bet");
             pw.println(betAmt.getText());
             pw.flush();
-            System.out.println("Bet " + id.getSelectedIndex()); 
         });
         hit.addActionListener((e) -> {
             pw.println("Hit");

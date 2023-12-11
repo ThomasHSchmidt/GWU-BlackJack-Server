@@ -4,6 +4,7 @@ public class Hand {
     public static final int BLACKJACK = 21;
     private List<Card> hand;
     private boolean hasAce;
+    private boolean pocketAces;
 
     public Hand() {
         this.hand = new LinkedList<>();
@@ -34,10 +35,24 @@ public class Hand {
         for(Card card : hand) {
             int add = card.getRank();
 
-            if(add < Card.FACE_CARD_VALUE)
+            if(add < Card.FACE_CARD_VALUE) {
+                if (add == 1 && handValue < 11){
+                    add = 11;
+                    //hasAce = true;
+                }
                 handValue += add;
+            }
             else
                 handValue += Card.FACE_CARD_VALUE;
+        }
+        if (handValue > 21 && this.hasAce) {
+            handValue -= 10;
+            if (!this.pocketAces){
+                this.hasAce = false;
+            }
+        }
+        if (handValue == 2) {
+            this.pocketAces = true;
         }
         
         return handValue;
@@ -57,6 +72,9 @@ public class Hand {
 
     public boolean hasAce() {
         return this.hasAce;
+    }
+    public boolean pocketAces(){
+        return this.pocketAces;
     }
 
     public boolean isBust() {
