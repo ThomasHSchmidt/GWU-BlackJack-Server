@@ -35,28 +35,28 @@ public class TableClientListener extends Thread {
         try {
             in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             while(true) {
-            String msg = in.readLine();
-            if(msg.equals("p1tot")) {
-                msg = in.readLine();
-                gui.setp1Tot(msg);
+                String msg = in.readLine();
+                if(msg.equals("p1tot")) {
+                    msg = in.readLine();
+                    gui.setp1Tot(msg);
+                }
+                if(msg.equals("p2tot")) {
+                    msg = in.readLine();
+                    gui.setp2Tot(msg);
+                }
+                if(msg.equals("p3tot")) {
+                    msg = in.readLine();
+                    gui.setp3Tot(msg);
+                }
+                if(msg.equals("p4tot")) {
+                    msg = in.readLine();
+                    gui.setp4Tot(msg);
+                }
+                if(msg.equals("p5tot")) {
+                    msg = in.readLine();
+                    gui.setp5Tot(msg);
+                }
             }
-            if(msg.equals("p2tot")) {
-                msg = in.readLine();
-                gui.setp2Tot(msg);
-            }
-            if(msg.equals("p3tot")) {
-                msg = in.readLine();
-                gui.setp3Tot(msg);
-            }
-            if(msg.equals("p4tot")) {
-                msg = in.readLine();
-                gui.setp4Tot(msg);
-            }
-            if(msg.equals("p5tot")) {
-                msg = in.readLine();
-                gui.setp5Tot(msg);
-            }
-        }
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

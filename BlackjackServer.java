@@ -7,7 +7,6 @@ public class BlackjackServer extends Thread {
     private Deck deck;
     ServerSocket serverSock;
     ArrayList<Socket> connections;
-    ArrayList<String> playerList;
     List<ClientHandler> clients;
     ArrayList<Player> players;
     boolean playerIn;
@@ -19,7 +18,6 @@ public class BlackjackServer extends Thread {
             deck = new Deck();
             clients = new LinkedList<>();
             serverSock = new ServerSocket(port);
-            playerList = new ArrayList<String>();
             connections = new ArrayList<Socket>();
             players = new ArrayList<Player>();
             System.out.println("BlackjackServer started on port " + port);
@@ -42,33 +40,10 @@ public class BlackjackServer extends Thread {
                 players.add(new Player("", players.size()));
 
                 //start the thread
-                (new ClientHandler(clientSock, playerList.size(), this.deck)).start();   
+                (new ClientHandler(clientSock, players.size(), this.deck)).start();   
                 
             //exit serve if exception
             } catch(Exception e) { }
-        }
-    }
-
-    public void sendUserList()
-    {
-        // Send user list to all clients
-        for (Socket s : connections)
-        {
-            try
-            {
-                PrintWriter pw = new PrintWriter(s.getOutputStream());
-                pw.println("START_CLIENT_LIST");
-                for (String user : playerList)
-                {
-                    pw.println(user);
-                }
-                pw.println("END_CLIENT_LIST");
-                pw.flush();
-            }
-            catch (Exception e)
-            {
-                System.err.println("Error sending user list");
-            }
         }
     }
 
@@ -121,78 +96,71 @@ public class BlackjackServer extends Thread {
                     {
                         System.out.println("3");
 
-                        // Add name to user list
-                        playerList.add(msg);
-                        sendUserList();
                         curName = msg;
                         name = false;
                         continue;
                     }
 
                     if (msg.equals("Start")) {
-                    for(int i = 0; i < connections.size(); i++) {
-                        if(id == i) {
-                            try {
-                                if (msg.equals("Bet")) {
-                                int bet = Integer.parseInt(in.readLine());
-                        
-                                // Validate the bet amount
-                                if (bet < Player.MIN_BET || bet > player.getCash()) {
-                                    pw.println("Invalid bet amount. Please place a bet within your available chips next round.");
-                                    playerIn = false;
-                                    return;
-                                }
-                                player.setCash(player.getCash() - bet);
-                                if(id == 0){
-
-                                }
-                                if (id == 1) {
-
-                                }
-                                if (id == 2) {}
-                                if (id == 3) {}
-                                if (id == 4) {}
-                            }
-                        
-                                pw.println("Betting phase complete. Starting the game.");
-                        
-                            } catch (NumberFormatException e) {
-                                pw.println("Invalid input. Please enter a valid numeric value for your bet next round.");
-                            }
-                       }
-                    }
-                
-
-                    System.out.println("4");
-
-                    dealing = true;
-                    if(dealing) {
-                        Hand hand;
-                        System.out.println("5");
-                        if(deck.getCardCount() <= 52)
-                            deck.shuffle();
                         for(int i = 0; i < connections.size(); i++) {
-                            System.out.println("11");
-                            System.out.println("12");
-
-                            c1 = players.get(i).dealCard(deck.drawCard());
-                            pw.println(c1);
-                            c2 = players.get(i).dealCard(deck.drawCard());
-                            pw.println(c2);
-
-                            System.out.println("Player " + (i + 1) + " hand value: " + players.get(i).getHandValue());
-                            pw.println("p" + (i + 1) + "tot");
-                            pw.println(String.valueOf(players.get(i).getHandValue()));
-                            hand = players.get(i).getHand();
-                            hand.printHand();
-
-                            pw.flush();
+                            if(id == i) {
+                                try {
+                                    if (msg.equals("Bet")) {
+                                    int bet = Integer.parseInt(in.readLine());
+                            
+                                    // Validate the bet amount
+                                    if (bet < Player.MIN_BET || bet > player.getCash()) {
+                                        pw.println("Invalid bet amount. Please place a bet within your available chips next round.");
+                                        playerIn = false;
+                                        return;
+                                    }
+                                    player.setCash(player.getCash() - bet);
+                                    if(id == 0) {}
+                                    if (id == 1) {}
+                                    if (id == 2) {}
+                                    if (id == 3) {}
+                                    if (id == 4) {}
+                                }
+                            
+                                    pw.println("Betting phase complete. Starting the game.");
+                                } 
+                                catch (NumberFormatException e) {
+                                    pw.println("Invalid input. Please enter a valid numeric value for your bet next round.");
+                                }
                         }
-                        System.out.println("** Dealing Complete **");
-                        dealing = false;
-                        msg = in.readLine();
+                        }
+                    
+
+                        System.out.println("4");
+
+                        dealing = true;
+                        if(dealing) {
+                            Hand hand;
+                            System.out.println("5");
+                            if(deck.getCardCount() <= 52)
+                                deck.shuffle();
+                            for(int i = 0; i < connections.size(); i++) {
+                                System.out.println("11");
+                                System.out.println("12");
+
+                                c1 = players.get(i).dealCard(deck.drawCard());
+                                pw.println(c1);
+                                c2 = players.get(i).dealCard(deck.drawCard());
+                                pw.println(c2);
+
+                                System.out.println("Player " + (i + 1) + " hand value: " + players.get(i).getHandValue());
+                                pw.println("p" + (i + 1) + "tot");
+                                pw.println(String.valueOf(players.get(i).getHandValue()));
+                                hand = players.get(i).getHand();
+                                hand.printHand();
+
+                                pw.flush();
+                            }
+                            System.out.println("** Dealing Complete **");
+                            dealing = false;
+                            msg = in.readLine();
+                        }
                     }
-                }
                     
 
                     if(msg.equals("Hit")) {
@@ -264,6 +232,12 @@ public class BlackjackServer extends Thread {
                 System.out.println(e.getMessage());
 
             }
+        }
+    }
+
+    public void sendHandValues() {
+        for(Player p : players) {
+
         }
     }
 
