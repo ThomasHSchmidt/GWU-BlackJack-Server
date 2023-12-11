@@ -174,8 +174,12 @@ public class BlackjackServer extends Thread {
                         for(int i = 0; i < connections.size(); i++) {
                             System.out.println("11");
                             System.out.println("12");
+
                             c1 = players.get(i).dealCard(deck.drawCard());
+                            pw.println(c1);
                             c2 = players.get(i).dealCard(deck.drawCard());
+                            pw.println(c2);
+
                             if(connections.size() >= 1) {
                                 System.out.println("Player 1 hand value: " + players.get(0).getHandValue());
                                 pw.println("p1tot");
@@ -224,7 +228,7 @@ public class BlackjackServer extends Thread {
                     
 
                     if(msg.equals("Hit")) {
-                        System.out.println("7");
+                        System.out.println("** Player Hit **");
 
                         for(int i = 0; i < connections.size(); i++) {
                             if(id == i) {
@@ -244,7 +248,7 @@ public class BlackjackServer extends Thread {
 
                     // If player Stands
                     if(msg.equals("Stand")) {
-                        System.out.println("8");
+                        System.out.println("** Player Stand **");
 
                         for(int i = 0; i < connections.size(); i++) {
                             if(id == i) {
@@ -258,7 +262,7 @@ public class BlackjackServer extends Thread {
 
                     // If player Double Downs
                     if(msg.equals("Double Down")){
-                        System.out.println("9");
+                        System.out.println("** Player Double Down **");
 
                         for(int i = 0; i < connections.size(); i++) {
                             if(id == i) {
