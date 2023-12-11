@@ -207,9 +207,18 @@ public class BlackjackServer extends Thread {
                                     sendHandValues();
                                 }
                                 else if (msg.equals("Double Down")) {
-                                    players.get(i).setBet(players.get(i).getBet() * 2);
-                                    c1 = players.get(i).dealCard(deck.drawCard());
-                                    break;
+                                    if(players.get(i).getCash() < players.get(i).getBet()) {
+                                        pw.println("PDouble");
+                                        System.out.println("sfsw");
+                                        msg = in1.readLine();
+                                        continue;
+                                    }
+                                    else {
+                                        players.get(i).setCash(players.get(i).getCash() - players.get(i).getBet());
+                                        players.get(i).setBet(players.get(i).getBet() * 2);
+                                        c1 = players.get(i).dealCard(deck.drawCard());
+                                        break;
+                                    }
                                 }
                                 if(players.get(i).getHandValue() < 21)
                                     msg = in1.readLine();
@@ -227,7 +236,7 @@ public class BlackjackServer extends Thread {
                                 pw.println("PBust");
                             }
 
-                            if (p.getHandValue() > dealer.getHandValue() && !p.getHand().isBust()) {
+                            if (p.getHandValue() > dealer.getHandValue() && !p.getHand().isBust() && !dealer.getHand().isBust()) {
                                 pw.println("PWin");
                             }
                             if (p.getHandValue() == dealer.getHandValue() && !dealer.getHand().isBust()) {
@@ -235,6 +244,9 @@ public class BlackjackServer extends Thread {
                             }
                             if (p.getHandValue() < dealer.getHandValue() && !dealer.getHand().isBust()) {
                                 pw.println("PLose");
+                            }
+                            if(p.getCash() < 25) {
+                                pw.println("PBroke");
                             }
                         }
 

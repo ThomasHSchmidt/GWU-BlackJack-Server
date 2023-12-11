@@ -108,6 +108,12 @@ public class TableClientListener extends Thread {
                 if(msg.equals("PLose")){
                     JOptionPane.showMessageDialog(null, "Dealer's hand is better, you lose!");
                 }
+                if(msg.equals("PBroke")){
+                    JOptionPane.showMessageDialog(null, "Congratulations! You're broke.");
+                }
+                if(msg.equals("PDouble")){
+                    JOptionPane.showMessageDialog(null, "You don't have the funds to double down. Try another input.");
+                }
             }
         } 
         catch (IOException e) {
