@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.TabExpander;
 
-public class TableGUI extends JFrame implements ActionListener {
+public class TableGUI extends JFrame {
 
     private JPanel cards;
     private JPanel connectCard;
@@ -190,7 +190,63 @@ public class TableGUI extends JFrame implements ActionListener {
         connectPanel.add(connect, BorderLayout.EAST);
 
 
-        connect.addActionListener(this);
+        connect.addActionListener((e) -> { 
+            // Change button text
+            connect.setText("Connecting...");
+            //id = BlackjackServer.getID();
+
+            
+
+            // Disable inputs
+            name.setEnabled(false);
+            ip.setEnabled(false);
+            port.setEnabled(false);
+
+            // Connect to server
+            if(!connectToServer(TableGUI.this))
+            {
+                // Re-enable inputs
+                name.setEnabled(true);
+                ip.setEnabled(true);
+                port.setEnabled(true);
+
+
+                // Change button text
+                connect.setText("Connect");
+            } else {
+                
+                TableGUI.this.setTitle("BlackJack (Connected)");
+                crd.next(cards);
+                connectCard.setVisible(false);
+                setSize(800,900);
+            }  
+        });
+        bet.addActionListener((e) -> {
+            //total.setText("$" + (Integer.parseInt(total.getText().substring(1)) - Integer.parseInt(betAmt.getText())));
+            if (id.getSelectedIndex() == 0) {
+                pw.println("Bet");
+            }
+            pw.println("Bet " + id.getSelectedIndex());
+            pw.println(betAmt.getText());
+            pw.flush();
+            System.out.println("Bet " + id.getSelectedIndex()); 
+        });
+        hit.addActionListener((e) -> {
+            pw.println("Hit");
+            pw.flush();
+        });
+        stand.addActionListener((e) -> {
+            pw.println("Stand");
+            pw.flush();
+        });
+        doble.addActionListener((e) -> {
+            pw.println("Double Down");
+            pw.flush();
+        });
+        start.addActionListener((e) -> {
+            pw.println("Start " + id.getSelectedIndex());
+            pw.flush();
+        });
 
         connectCard.add(tPanel, BorderLayout.NORTH);
         connectCard.add(rules, BorderLayout.CENTER);
@@ -205,85 +261,6 @@ public class TableGUI extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.pack();
     }
-
-
-
-        public void actionPerformed(ActionEvent e) {
-
-            
-
-            bet.addActionListener(new ActionListener(){  
-                public synchronized void actionPerformed(ActionEvent f1) {
-                    //total.setText("$" + (Integer.parseInt(total.getText().substring(1)) - Integer.parseInt(betAmt.getText())));
-                    if (id.getSelectedIndex() == 0) {
-                        pw.println("Bet");
-                    }
-                    pw.println("Bet " + id.getSelectedIndex());
-                    pw.println(betAmt.getText());
-                    pw.flush();
-                }  
-            });
-            hit.addActionListener(new ActionListener(){  
-                public synchronized void actionPerformed(ActionEvent f2) { 
-                    pw.println("Hit");
-                    pw.flush();
-
-                }  
-            });
-            stand.addActionListener(new ActionListener(){  
-                public synchronized void actionPerformed(ActionEvent f3) { 
-                    pw.println("Stand");
-                    pw.flush();
-                }  
-            });
-            doble.addActionListener(new ActionListener(){  
-                public synchronized void actionPerformed(ActionEvent f4) { 
-                    pw.println("Double Down");
-                    pw.flush();
-                }  
-            });
-            start.addActionListener(new ActionListener(){  
-                public synchronized void actionPerformed(ActionEvent f5) { 
-                    pw.println("Start " + id.getSelectedIndex());
-                    pw.flush();
-                }  
-            });
-            connect.addActionListener(new ActionListener(){  
-                public synchronized void actionPerformed(ActionEvent f) { 
-                    // Change button text
-                    connect.setText("Connecting...");
-                    //id = BlackjackServer.getID();
-
-                    
-
-                    // Disable inputs
-                    name.setEnabled(false);
-                    ip.setEnabled(false);
-                    port.setEnabled(false);
-
-                    // Connect to server
-                    if(!connectToServer(TableGUI.this))
-                    {
-                        // Re-enable inputs
-                        name.setEnabled(true);
-                        ip.setEnabled(true);
-                        port.setEnabled(true);
-
-
-                        // Change button text
-                        connect.setText("Connect");
-                    } else {
-                        
-                        TableGUI.this.setTitle("BlackJack (Connected)");
-                        crd.next(cards);
-                        connectCard.setVisible(false);
-                        setSize(800,900);
-                    }
-                }  
-            });
-
-        }
-
 
     public void setStar(int x, int y) {
         star.setBounds(x, y, 25, 25);

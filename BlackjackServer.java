@@ -113,16 +113,20 @@ public class BlackjackServer extends Thread {
                         while (!msg.equals("Bet")) {
                             msg = in.readLine();
                         }
-                        //msg = in.readLine();
+                        // msg = in.readLine();
                         for(int i = 0; i < connections.size(); i++) {
                             PrintWriter pw1 = new PrintWriter(connections.get(i).getOutputStream());
                             BufferedReader in1 = new BufferedReader(new InputStreamReader(connections.get(i).getInputStream()));
                             System.out.println("Waiting for player " + (i+1) + " to bet");
+                            // msg = in1.readLine();
+                            System.out.println(msg);
                             while (!msg.equals("Bet " + i)) {
                                 msg = in1.readLine();
+                                //System.out.println(msg);
                             }
                                 try {
-                                    int bet = Integer.parseInt(in1.readLine());
+                                    msg = in1.readLine();
+                                    int bet = Integer.parseInt(msg);
                                 
                                     // Validate the bet amount
                                     if (bet < Player.MIN_BET || bet > players.get(i).getCash()) {
@@ -135,6 +139,7 @@ public class BlackjackServer extends Thread {
                                     pw1.println("tot");
                                     pw1.println("$" + players.get(i).getCash());
                                     System.out.println("Player " + (i+1) + " bet successful");
+                                    // msg = in1.readLine();
                                     } 
                                     catch (NumberFormatException e) {
                                         pw1.println("Invalid input. Please enter a valid numeric value for your bet next round.");
@@ -178,8 +183,12 @@ public class BlackjackServer extends Thread {
 
                         for(int i = 0; i < players.size(); i++) {
                             while (!msg.equals("Stand") && !players.get(i).getHand().isBust() && players.get(i).getHandValue() < 21) {
+                                PrintWriter pw1 = new PrintWriter(connections.get(i).getOutputStream());
+                                BufferedReader in1 = new BufferedReader(new InputStreamReader(connections.get(i).getInputStream()));
                                 if (msg.equals("Hit")) {
+                                    in1.readLine();
                                     c1 = players.get(i).dealCard(deck.drawCard());
+                                    System.out.println("Player " + (i + 1) + " hand value: " + players.get(i).getHandValue());
                                     sendHandValues();
                                 }
                                 else if (msg.equals("Double Down")) {
