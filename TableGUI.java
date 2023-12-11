@@ -227,10 +227,14 @@ public class TableGUI extends JFrame {
             }  
         });
         bet.addActionListener((e) -> {
-            //total.setText("$" + (Integer.parseInt(total.getText().substring(1)) - Integer.parseInt(betAmt.getText())));
-            pw.println("Bet");
-            pw.println(betAmt.getText());
-            pw.flush();
+            if (Integer.parseInt(betAmt.getText()) < 25 || Integer.parseInt(betAmt.getText()) > Integer.parseInt(total.getText().substring(1))){
+                JOptionPane.showMessageDialog(null, "Invalid bet amount. Please bet within rules.");
+            }
+            else {
+                pw.println("Bet");
+                pw.println(betAmt.getText());
+                pw.flush();
+            }
         });
         hit.addActionListener((e) -> {
             pw.println("Hit");

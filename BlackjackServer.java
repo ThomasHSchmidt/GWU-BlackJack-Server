@@ -221,6 +221,22 @@ public class BlackjackServer extends Thread {
                             dealerTurn();
                             sendHandValues();
                         }
+                        
+                        for(Player p : players) {
+                            if (p.getHand().isBust()){
+                                pw.println("PBust");
+                            }
+
+                            if (p.getHandValue() > dealer.getHandValue() && !dealer.getHand().isBust()) {
+                                pw.println("PWin");
+                            }
+                            if (p.getHandValue() == dealer.getHandValue() && !dealer.getHand().isBust()) {
+                                pw.println("Push");
+                            }
+                            if (p.getHandValue() < dealer.getHandValue() && !dealer.getHand().isBust()) {
+                                pw.println("PLose");
+                            }
+                        }
 
                         this.sleep(3000);
 
@@ -310,6 +326,7 @@ public class BlackjackServer extends Thread {
                 p.setCash(p.getCash() + p.getBet());
         }
         sendNewTotals();
+
     }
 
     public static void main(String args[]){

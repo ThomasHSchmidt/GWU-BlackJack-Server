@@ -96,6 +96,18 @@ public class TableClientListener extends Thread {
                     Token token = new Token(Integer.parseInt(msg), Integer.parseInt(msg2));
                     gui.createCardLabel(token);
                 }
+                if(msg.equals("PBust")){
+                    JOptionPane.showMessageDialog(null, "Bust! You Lose.");
+                }
+                if(msg.equals("PWin")){
+                    JOptionPane.showMessageDialog(null, "You Win! Congratulations!");
+                }
+                if(msg.equals("Push")){
+                    JOptionPane.showMessageDialog(null, "You pushed with the dealer!");
+                }
+                if(msg.equals("PLose")){
+                    JOptionPane.showMessageDialog(null, "Dealer's hand is better, you lose!");
+                }
             }
         } 
         catch (IOException e) {
