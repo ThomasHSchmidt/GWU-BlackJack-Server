@@ -39,6 +39,7 @@ class Gambler {
     }
 
     public void resetHand() {
+        hand.setAce(false);
         hand.setCards(new LinkedList<Card>());
     }
 

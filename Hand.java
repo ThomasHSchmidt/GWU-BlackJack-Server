@@ -64,6 +64,10 @@ public class Hand {
     public boolean isBlackjack(boolean hasAce) {
         return hand.size() == 2 && this.getHandValue() == Hand.BLACKJACK;
     }
+
+    public void setAce(Boolean bool) {
+        this.hasAce = bool;
+    }
 }
 
 
