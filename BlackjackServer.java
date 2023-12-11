@@ -174,7 +174,7 @@ public class BlackjackServer extends Thread {
                             player = new Player(curName, i);
                             c1 = player.dealCard(deck.drawCard());
                             c2 = player.dealCard(deck.drawCard());
-                            if(connections.size() == 1) {
+                            if(i == 0) {
                                 System.out.println("Player 1 hand value: " + player.getHandValue());
                                 pw.println("p1tot");
                                 pw.println(String.valueOf(player.getHandValue()));
