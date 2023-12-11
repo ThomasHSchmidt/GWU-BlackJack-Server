@@ -37,10 +37,12 @@ public class TableClientListener extends Thread {
             while(true) {
                 String msg = in.readLine();
                 if(msg.equals("p1tot")) {
+                    System.out.println("in 1");
                     msg = in.readLine();
                     gui.setp1Tot(msg);
                 }
                 if(msg.equals("p2tot")) {
+                    System.out.println("in 1");
                     msg = in.readLine();
                     gui.setp2Tot(msg);
                 }
