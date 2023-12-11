@@ -36,13 +36,15 @@ public class TableClientListener extends Thread {
             in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             while(true) {
                 String msg = in.readLine();
+                if (msg.equals("tot")) {
+                    msg = in.readLine();
+                    gui.setTotal(msg);
+                }
                 if(msg.equals("p1tot")) {
-                    System.out.println("in 1");
                     msg = in.readLine();
                     gui.setp1Tot(msg);
                 }
                 if(msg.equals("p2tot")) {
-                    System.out.println("in 1");
                     msg = in.readLine();
                     gui.setp2Tot(msg);
                 }
@@ -57,6 +59,26 @@ public class TableClientListener extends Thread {
                 if(msg.equals("p5tot")) {
                     msg = in.readLine();
                     gui.setp5Tot(msg);
+                }
+                if(msg.equals("p1Bet")) {
+                    msg = in.readLine();
+                    gui.setp1Bet(msg);
+                }
+                if(msg.equals("p2Bet")) {
+                    msg = in.readLine();
+                    gui.setp2Bet(msg);
+                }
+                if(msg.equals("p3Bet")) {
+                    msg = in.readLine();
+                    gui.setp3Bet(msg);
+                }
+                if(msg.equals("p4Bet")) {
+                    msg = in.readLine();
+                    gui.setp4Bet(msg);
+                }
+                if(msg.equals("p5Bet")) {
+                    msg = in.readLine();
+                    gui.setp5Bet(msg);
                 }
             }
         } catch (IOException e) {

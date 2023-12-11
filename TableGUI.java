@@ -41,7 +41,6 @@ public class TableGUI extends JFrame implements ActionListener {
 
     private ImageIcon tablepng;
 
-    private int bets;
 
     private JLabel nameLabel;
     private JTextField name;
@@ -214,68 +213,71 @@ public class TableGUI extends JFrame implements ActionListener {
             
 
             bet.addActionListener(new ActionListener(){  
-                public void actionPerformed(ActionEvent f1) { 
-				bets = Integer.parseInt(betAmt.getText());
-                pw.print("Bet");
-                pw.println(bets);
+                public void actionPerformed(ActionEvent f1) {
+                    if (id.getSelectedIndex() == 0) {
+                        pw.println("Bet");
+                    }
+                    pw.println("Bet " + id.getSelectedIndex());
+                    pw.println(betAmt.getText());
+                    pw.flush();
                 }  
             });
             hit.addActionListener(new ActionListener(){  
                 public void actionPerformed(ActionEvent f2) { 
-				pw.println("Hit");
-                pw.flush();
+                    pw.println("Hit");
+                    pw.flush();
 
                 }  
             });
             stand.addActionListener(new ActionListener(){  
                 public void actionPerformed(ActionEvent f3) { 
-				pw.println("Stand");
-                pw.flush();
+                    pw.println("Stand");
+                    pw.flush();
                 }  
             });
             doble.addActionListener(new ActionListener(){  
                 public void actionPerformed(ActionEvent f4) { 
-				pw.println("Double Down");
-                pw.flush();
+                    pw.println("Double Down");
+                    pw.flush();
                 }  
             });
             start.addActionListener(new ActionListener(){  
                 public void actionPerformed(ActionEvent f5) { 
-				pw.println("Start " + id.getSelectedIndex());
-                pw.flush();
+                    pw.println("Start " + id.getSelectedIndex());
+                    pw.flush();
                 }  
             });
             connect.addActionListener(new ActionListener(){  
                 public void actionPerformed(ActionEvent f) { 
-				// Change button text
-				connect.setText("Connecting...");
-                //id = BlackjackServer.getID();
+                    // Change button text
+                    connect.setText("Connecting...");
+                    //id = BlackjackServer.getID();
 
-				
-
-				// Disable inputs
-				name.setEnabled(false);
-				ip.setEnabled(false);
-				port.setEnabled(false);
-
-				// Connect to server
-				if(!connectToServer(TableGUI.this))
-				{
-					// Re-enable inputs
-					name.setEnabled(true);
-					ip.setEnabled(true);
-					port.setEnabled(true);
-
-
-					// Change button text
-					connect.setText("Connect");
-				} else {
                     
-                    TableGUI.this.setTitle("BlackJack (Connected)");
-                    crd.next(cards);
-                    connectCard.setVisible(false);
-                    setSize(800,900);
-                }
+
+                    // Disable inputs
+                    name.setEnabled(false);
+                    ip.setEnabled(false);
+                    port.setEnabled(false);
+
+                    // Connect to server
+                    if(!connectToServer(TableGUI.this))
+                    {
+                        // Re-enable inputs
+                        name.setEnabled(true);
+                        ip.setEnabled(true);
+                        port.setEnabled(true);
+
+
+                        // Change button text
+                        connect.setText("Connect");
+                    } else {
+                        
+                        TableGUI.this.setTitle("BlackJack (Connected)");
+                        crd.next(cards);
+                        connectCard.setVisible(false);
+                        setSize(800,900);
+                    }
                 }  
             });
 
@@ -284,6 +286,9 @@ public class TableGUI extends JFrame implements ActionListener {
 
     public void setStar(int x, int y) {
         star.setBounds(x, y, 25, 25);
+    }
+    public void setTotal (String s) {
+        total.setText(s);
     }
     public void setp1Bet(String s) {
         p1Bet.setText(s);
