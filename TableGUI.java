@@ -103,23 +103,23 @@ public class TableGUI extends JFrame implements ActionListener {
 
         p1Bet.setForeground(Color.BLACK);
         p1Bet.setFont(new Font("Serif", Font.BOLD, 20));
-        p1Bet.setBounds(675, 348, 100, 100);
+        p1Bet.setBounds(680, 348, 100, 100);
 
         p2Bet.setForeground(Color.BLACK);
         p2Bet.setFont(new Font("Serif", Font.BOLD, 20));
-        p2Bet.setBounds(538, 429, 100, 100);
+        p2Bet.setBounds(543, 429, 100, 100);
 
         p3Bet.setForeground(Color.BLACK);
         p3Bet.setFont(new Font("Serif", Font.BOLD, 20));
-        p3Bet.setBounds(385, 508, 100, 100);
+        p3Bet.setBounds(390, 508, 100, 100);
 
         p4Bet.setForeground(Color.BLACK);
         p4Bet.setFont(new Font("Serif", Font.BOLD, 20));
-        p4Bet.setBounds(234, 429, 100, 100);
+        p4Bet.setBounds(239, 429, 100, 100);
 
         p5Bet.setForeground(Color.BLACK);
         p5Bet.setFont(new Font("Serif", Font.BOLD, 20));
-        p5Bet.setBounds(95, 350, 100, 100);
+        p5Bet.setBounds(100, 350, 100, 100);
 
         p1tot.setForeground(Color.BLACK);
         p1tot.setFont(new Font("Serif", Font.BOLD, 25));
@@ -214,6 +214,7 @@ public class TableGUI extends JFrame implements ActionListener {
 
             bet.addActionListener(new ActionListener(){  
                 public void actionPerformed(ActionEvent f1) {
+                    //total.setText("$" + (Integer.parseInt(total.getText().substring(1)) - Integer.parseInt(betAmt.getText())));
                     if (id.getSelectedIndex() == 0) {
                         pw.println("Bet");
                     }
@@ -287,7 +288,7 @@ public class TableGUI extends JFrame implements ActionListener {
     public void setStar(int x, int y) {
         star.setBounds(x, y, 25, 25);
     }
-    public void setTotal (String s) {
+    public void setTotal(String s) {
         total.setText(s);
     }
     public void setp1Bet(String s) {
