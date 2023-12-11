@@ -8,6 +8,7 @@ public class BlackjackServer extends Thread {
     ServerSocket serverSock;
     ArrayList<Socket> connections;
     ArrayList<String> playerList;
+    List<ClientHandler> clients;
     boolean playerIn;
 
     public BlackjackServer(int port){
@@ -15,6 +16,7 @@ public class BlackjackServer extends Thread {
         //Instantiates all of the components, including the server socket, member names, and all active connections
         try {
             deck = new Deck();
+            clients = new LinkedList<>();
             serverSock = new ServerSocket(port);
             playerList = new ArrayList<String>();
             connections = new ArrayList<Socket>();
@@ -280,8 +282,6 @@ public class BlackjackServer extends Thread {
             }
         }
     }
-
-
 
     public static void main(String args[]){
         int port = Integer.parseInt(args[0]);
