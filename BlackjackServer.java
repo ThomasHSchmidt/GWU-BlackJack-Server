@@ -161,7 +161,6 @@ public class BlackjackServer extends Thread {
                             msg = in.readLine();
                         }
                     }
-                    
 
                     if(msg.equals("Hit")) {
                         System.out.println("** Player Hit **");
