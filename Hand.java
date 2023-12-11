@@ -1,15 +1,20 @@
 import java.util.*;
 
 public class Hand {
+    public static final int BLACKJACK = 21;
     private List<Card> hand;
+    private boolean hasAce;
 
     public Hand() {
         this.hand = new LinkedList<>();
+        hasAce = false;
     }
     
     // Creates and adds a new card to a hand of suit and rank specified 
     // by token
     public void addCard(Token token)  {
+        if(token.getTokenRank() == 1)
+            this.hasAce = true;
         Card newCard = new Card(token);
         this.hand.add(newCard);
     }
@@ -49,54 +54,15 @@ public class Hand {
     }
 
     public boolean hasAce() {
-        for (Card card : hand) {
-            if (card.getRank() == 1) {
-                return true;
-            }
-        }
-        return false;
+        return this.hasAce;
     }
 
     public boolean isBust() {
-        int total = 0;
-        for (Card card : hand) {
-            total = card.getRank();
-            if(((Hand) hand).hasAce() == true) {
-                total -= 10;
-            }
-            if (total > 21)
-            {
-                return true;
-            }
-        }
-        return false;
+        return this.getHandValue() > BLACKJACK;
     }
 
     public boolean isBlackjack(boolean hasAce) {
-        int total = 0;
-        if (hasAce == false) {
-            for (Card card : hand) {
-                total = card.getRank();
-            }
-            if (total == 21) {
-                return true;
-            }
-        }
-        
-        if(hasAce == true) {
-            for (Card card : hand) {
-                total = card.getRank();
-                if (total > 21)
-                {
-                    total -= 10;
-                }
-                total = card.getRank();
-            }
-            if (total == 21) {
-                return true;
-            }
-        }
-        return false;
+        return hand.size() == 2 && this.getHandValue() == Hand.BLACKJACK;
     }
 }
 
