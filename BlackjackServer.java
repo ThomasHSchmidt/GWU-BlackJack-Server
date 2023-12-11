@@ -40,14 +40,18 @@ public class BlackjackServer extends Thread {
         while(true) {
             try {
                 //accept incoming connection
-                Socket clientSock = serverSock.accept();
-                connections.add(clientSock);
-                players.add(new Player("", players.size()));
+                if (connections.size() < 5) {
+                    Socket clientSock = serverSock.accept();
+                    connections.add(clientSock);
+                    players.add(new Player("", players.size()));
 
-                //start the thread
-                ClientHandler client = new ClientHandler(clientSock, players.size(), this.deck);
-                clients.add(client);
-                client.start();   
+                    //start the thread
+                    ClientHandler client = new ClientHandler(clientSock, players.size(), this.deck);
+                    clients.add(client);
+                    client.start();   
+                } else {
+                    TableGUI.isFull();
+                }
                 
             //exit serve if exception
             } catch(Exception e) { }
@@ -209,7 +213,6 @@ public class BlackjackServer extends Thread {
                                 else if (msg.equals("Double Down")) {
                                     if(players.get(i).getCash() < players.get(i).getBet()) {
                                         pw.println("PDouble");
-                                        System.out.println("sfsw");
                                         msg = in1.readLine();
                                         continue;
                                     }

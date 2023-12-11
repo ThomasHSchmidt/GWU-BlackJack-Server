@@ -113,6 +113,7 @@ public class TableClientListener extends Thread {
                 }
                 if(msg.equals("PDouble")){
                     JOptionPane.showMessageDialog(null, "You don't have the funds to double down. Try another input.");
+                    msg = null;
                 }
             }
         } 

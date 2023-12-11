@@ -130,8 +130,8 @@ public class TableGUI extends JFrame {
         p1tot.setBounds(665, 410, 100, 100);
 
         p2tot.setForeground(Color.BLACK);
-        p2tot.setFont(new Font("Serif", Font.BOLD, 25));
-        p2tot.setBounds(493, 470, 100, 100);
+        p2tot.setFont(new Font("Serif", Font.BOLD, 50));
+        p2tot.setBounds(525, 500, 100, 100);
 
         p3tot.setForeground(Color.BLACK);
         p3tot.setFont(new Font("Serif", Font.BOLD, 25));
@@ -333,7 +333,7 @@ public class TableGUI extends JFrame {
 		// Ensure name, host, and port are given
 		if (ip.getText().equals("") || port.getText().equals("") || id.getSelectedItem() == null)
 		{
-			connectionErrorFrame(frame, "Please enter a username, host, port, and Player ID.");
+			connectionErrorFrame(frame, "Please enter a host, port, and Player ID.");
 			return false;
 		}
       
@@ -366,6 +366,9 @@ public class TableGUI extends JFrame {
         }
 		return true;
 	}
+    public static void isFull() {
+        JOptionPane.showMessageDialog(null, "Server is full");
+    }
     
     public static void main (String[] argv) {
         TableGUI t = new TableGUI();
