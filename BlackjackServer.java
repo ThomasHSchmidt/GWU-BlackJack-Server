@@ -109,17 +109,16 @@ public class BlackjackServer extends Thread {
                     }
 
                     if (msg.equals("Start 0")) {
-                        System.out.println("Waiting for player 1 to bet");
+                        // System.out.println("Waiting for player 1 to bet");
                         while (!msg.equals("Bet")) {
                             msg = in.readLine();
                         }
                         //msg = in.readLine();
                         for(int i = 0; i < connections.size(); i++) {
-                            in = new BufferedReader(new InputStreamReader(connections.get(i).getInputStream()));
+                            // in = new BufferedReader(new InputStreamReader(connections.get(i).getInputStream()));
                             System.out.println("Waiting for player " + (i+1) + " to bet");
                             while (!msg.equals("Bet " + i)) {
                                 msg = in.readLine();
-
                             }
                                 try {
                                     int bet = Integer.parseInt(in.readLine());
@@ -261,11 +260,12 @@ public class BlackjackServer extends Thread {
             client.sendMessage(message);
         }
     }
+
     public synchronized void sendBetValues() {
         String message = "";
 
         for(int i = 0; i < players.size(); i++) {
-            message += "p" + (i + 1) + "tot\n";
+            message += "p" + (i + 1) + "Bet\n";
             if(i < players.size() - 1)
                 message += String.valueOf(players.get(i).getBet()) + "\n";
             else
