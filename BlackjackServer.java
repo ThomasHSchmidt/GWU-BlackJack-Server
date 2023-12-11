@@ -25,7 +25,7 @@ public class BlackjackServer extends Thread {
             System.out.println("BlackjackServer started on port " + port);
         }
         catch(Exception e) {
-            System.err.println("Cannot establish server socket");
+            System.err.println(e.getMessage());
             System.exit(1);
         }
     }
@@ -176,42 +176,13 @@ public class BlackjackServer extends Thread {
                             System.out.println("12");
                             c1 = players.get(i).dealCard(deck.drawCard());
                             c2 = players.get(i).dealCard(deck.drawCard());
-                            if(connections.size() >= 1) {
-                                System.out.println("Player 1 hand value: " + players.get(0).getHandValue());
-                                pw.println("p1tot");
-                                pw.println(String.valueOf(players.get(0).getHandValue()));
-                                hand = players.get(0).getHand();
-                                hand.printHand();
-                            }
-                            if (connections.size() >= 2) {
-                                //TableGUI.setp2Tot(String.valueOf(player.getHandValue()));
-                                System.out.println("Player 2 hand value: " + players.get(1).getHandValue());
-                                pw.println("p2tot");
-                                pw.println(String.valueOf(players.get(1).getHandValue()));
-                                hand = players.get(1).getHand();
-                                hand.printHand();
-                            }
-                            if (connections.size() >= 3) {
-                                System.out.println("Player 3 hand value: " + players.get(2).getHandValue());
-                                pw.println("p3tot");
-                                pw.println(String.valueOf(players.get(2).getHandValue()));
-                                hand = players.get(2).getHand();
-                                hand.printHand();
-                            }
-                            if (connections.size() >= 4) {
-                                System.out.println("Player 4 hand value: " + players.get(3).getHandValue());
-                                pw.println("p4tot");
-                                pw.println(String.valueOf(players.get(3).getHandValue()));
-                                hand = players.get(3).getHand();
-                                hand.printHand();
-                            }
-                            if (connections.size() >= 5) {
-                                System.out.println("Player 5 hand value: " + players.get(4).getHandValue());
-                                pw.println("p5tot");
-                                pw.println(String.valueOf(players.get(4).getHandValue()));
-                                hand = players.get(4).getHand();
-                                hand.printHand();
-                            }
+
+                            System.out.println("Player " + (i + 1) + " hand value: " + players.get(i).getHandValue());
+                            pw.println("p" + (i + 1) + "tot");
+                            pw.println(String.valueOf(players.get(i).getHandValue()));
+                            hand = players.get(i).getHand();
+                            hand.printHand();
+
                             pw.println(c1);
                             pw.println(c2);
                             pw.flush();
