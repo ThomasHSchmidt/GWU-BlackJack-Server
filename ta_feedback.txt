@@ -1,0 +1,4 @@
+- id implementation
+    --> server assigns ids
+    --> server ensures duplicate ids aren't possbile
+    --> ids are sent back from server to client so that client knows its own id
