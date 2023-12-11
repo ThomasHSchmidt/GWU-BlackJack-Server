@@ -102,6 +102,7 @@ public class BlackjackServer extends Thread {
             //      busts
             try {
                 // Data being taken from the socket
+                String curName = "";
                 System.out.println("1");
                 boolean name = false;
                 playerIn = true;
