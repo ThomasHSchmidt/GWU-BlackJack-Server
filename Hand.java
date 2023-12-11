@@ -46,13 +46,9 @@ public class Hand {
     public String printHand() {
         String ret = "";
 
-        ret += "[";
-
         for(Card card : hand) {
-            ret += card.getTokenKey() + ", ";
+            ret += card.getTokenKey() + "\n";
         }
-
-        ret += "]";
 
         return ret;
     }
