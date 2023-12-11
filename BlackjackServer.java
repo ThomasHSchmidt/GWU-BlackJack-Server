@@ -144,16 +144,16 @@ public class BlackjackServer extends Thread {
 
                             for(int i = 0; i < connections.size(); i++) {
                                 System.out.println("11");
-
+                                pw = new PrintWriter(connections.get(i).getOutputStream());
                                 c1 = players.get(i).dealCard(deck.drawCard());
                                 pw.println(c1);
                                 c2 = players.get(i).dealCard(deck.drawCard());
                                 pw.println(c2);
 
                                 System.out.println("Player " + (i + 1) + " hand value: " + players.get(i).getHandValue());
-                                sendHandValues(i);
-                                // pw.println("p" + (i + 1) + "tot");
-                                // pw.println(String.valueOf(players.get(i).getHandValue()));
+                                for (int j = 0; j < connections.size(); j++) {
+                                    sendHandValues(j);
+                                }
                                 players.get(i).getHand().printHand();
                                     
                                 pw.flush();
