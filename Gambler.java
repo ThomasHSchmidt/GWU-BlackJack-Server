@@ -41,13 +41,4 @@ class Gambler {
     public void resetHand() {
         hand.newHand();
     }
-
-    // To be used when a player presses hit button on GUI or 
-    // when dealer is playing its turn
-    // 
-    // Updates player hand and returns player's new hand value
-    // public int hit() {
-    //     this.dealCard(deck.drawCard());
-    //     return this.getHandValue();
-    // }
 }

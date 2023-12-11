@@ -72,19 +72,3 @@ public class Hand {
         this.setCards(new LinkedList<Card>());
     }
 }
-
-
-/*
-If we want to try and implement the ability to split
-
-    public boolean isPair() {
-        if (hand.size() == 2) {
-            Card c1 = hand.get(0);
-            Card c2 = hand.get(1);
-
-            return c1.getRank() == c2.getRank();
-        }
-
-        return false;
-    }
-*/

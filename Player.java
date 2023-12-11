@@ -115,9 +115,4 @@ class Player extends Gambler {
     public void setCash(int cash) {
         this.cash = cash;
     }
-
-    // public int doubleDown() {
-    //     this.setBet(this.getBet()*2);;
-    //     return this.hit();
-    // }
 }

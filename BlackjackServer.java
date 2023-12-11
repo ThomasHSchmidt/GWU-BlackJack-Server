@@ -178,6 +178,7 @@ public class BlackjackServer extends Thread {
                             c1 = players.get(i).dealCard(deck.drawCard());
                             pw.println(c1);
                             c2 = players.get(i).dealCard(deck.drawCard());
+                            pw.println(c2);
 
                             System.out.println("Player " + (i + 1) + " hand value: " + players.get(i).getHandValue());
                             pw.println("p" + (i + 1) + "tot");
@@ -185,11 +186,9 @@ public class BlackjackServer extends Thread {
                             hand = players.get(i).getHand();
                             hand.printHand();
 
-                            pw.println(c1);
-                            pw.println(c2);
                             pw.flush();
                         }
-                        System.out.println("6");
+                        System.out.println("** Dealing Complete **");
                         dealing = false;
                         msg = in.readLine();
                     }
@@ -274,22 +273,3 @@ public class BlackjackServer extends Thread {
         server.serve();
     }
 }
-
-/*
-                    // If player splits
-                    if(msg.equals("Split")){
-                            Hand newHand = new Hand();
-
-                            // Draw a new card for the original and new hand
-                            newHand.addCard(drawCard());
-                            newHand.addCard(drawCard());
-                    
-                            // Duplicate the bet for the new hand
-                            int bet1 = getBet();
-                            int bet2 = getBet();
-                    
-                            // MISSING CODE
-                    
-                            pw.flush();
-                    } 
-*/  
