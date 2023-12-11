@@ -28,4 +28,7 @@ public class Card {
     public String getTokenKey() {
         return this.token.key;
     }
+    public Token getToken() {
+        return this.token;
+    }
 }

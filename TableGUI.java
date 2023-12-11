@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -37,7 +38,8 @@ public class TableGUI extends JFrame {
     static JLabel p4tot = new JLabel("");
     static JLabel p5tot = new JLabel("");
     static JLabel dtot = new JLabel("");
-    private static JLabel star = new JLabel();;
+    private static JLabel star = new JLabel();
+    private static JLabel cardpng = new JLabel();
 
     private ImageIcon tablepng;
 
@@ -61,6 +63,8 @@ public class TableGUI extends JFrame {
 	private JList<String> playerList;
 
     CardLayout crd;
+
+
 
     public TableGUI() {
         super();
@@ -158,6 +162,7 @@ public class TableGUI extends JFrame {
         table.add(p5tot);
         table.add(dtot);
         table.add(star);
+        table.add(cardpng);
 
 
         tableCard.add(table, BorderLayout.CENTER);
@@ -256,6 +261,21 @@ public class TableGUI extends JFrame {
         this.add(cards);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.pack();
+    }
+    public  void createCardLabel(Token token) {
+        Card card = new Card(token);
+        String imagePath = card.getImagePath();
+        URL imageURL = getClass().getResource(imagePath);
+        if (imageURL == null) {
+          System.err.println("Error: Image not found for path " + imagePath);
+        } else {
+            ImageIcon icon = new ImageIcon(imageURL);
+            Image img = icon.getImage().getScaledInstance(75, 100, Image.SCALE_DEFAULT);
+            ImageIcon resizedIcon = new ImageIcon(img);
+            cardpng.setIcon(resizedIcon);;
+            cardpng.setBounds(695, 475, 75, 100);
+
+        }
     }
 
     public void setStar(int x, int y) {

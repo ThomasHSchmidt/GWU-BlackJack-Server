@@ -1,4 +1,7 @@
 import java.util.*;
+
+import javax.swing.text.TabExpander;
+
 import java.net.*;
 import java.io.*;
 
@@ -162,11 +165,20 @@ public class BlackjackServer extends Thread {
                                 System.out.println("Dealing to player " + (i+1));
                                 // pw = new PrintWriter(connections.get(i).getOutputStream());
                                 c1 = players.get(i).dealCard(deck.drawCard());
+                                Token token = players.get(i).getHand().getLast();
+                                pw.print("addCard");
+                                pw.println(token.getTokenRank());
+                                pw.println(token.getTokenSuit());
                                 //pw.println(c1);
                                 c2 = players.get(i).dealCard(deck.drawCard());
+                                token = players.get(i).getHand().getLast(); 
+                                pw.print("addCard");
+                                pw.println(token.getTokenRank());
+                                pw.println(token.getTokenSuit());
                                 //pw.println(c2);
 
                                 System.out.println("Player " + (i + 1) + " hand value: " + players.get(i).getHandValue());
+
                                 
 
                                 players.get(i).getHand().printHand();

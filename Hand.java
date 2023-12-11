@@ -1,5 +1,7 @@
 import java.util.*;
 
+import javax.lang.model.type.TypeKind;
+
 public class Hand {
     public static final int BLACKJACK = 21;
     private List<Card> hand;
@@ -27,6 +29,13 @@ public class Hand {
     public List<Card> getHand() {
         return this.hand;
     }
+    public Token getLast() {
+        Token token = new Token(0, 0);
+        for (Card card : hand) {
+            token = card.getToken();
+        }
+        return token;
+    }
 
     // Sum the value of cards in a hand and return that sum
     public int getHandValue() {
@@ -38,7 +47,6 @@ public class Hand {
             if(add < Card.FACE_CARD_VALUE) {
                 if (add == 1 && handValue < 11){
                     add = 11;
-                    //hasAce = true;
                 }
                 handValue += add;
             }
