@@ -11,7 +11,7 @@ public class BlackjackServer extends Thread {
     ArrayList<Player> players;
     boolean playerIn;
 
-    public BlackjackServer(int port){
+    public BlackjackServer(int port) {
 
         //Instantiates all of the components, including the server socket, member names, and all active connections
         try {
@@ -69,7 +69,7 @@ public class BlackjackServer extends Thread {
                 pw = new PrintWriter(sock.getOutputStream());
                 in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             }
-            catch(Exception e) {}
+            catch(Exception e) { }
         }
 
         public void run() {
@@ -108,39 +108,41 @@ public class BlackjackServer extends Thread {
                             if(id == i) {
                                 try {
                                     if (msg.equals("Bet")) {
-                                    int bet = Integer.parseInt(in.readLine());
+                                        int bet = Integer.parseInt(in.readLine());
                             
-                                    // Validate the bet amount
-                                    if (bet < Player.MIN_BET || bet > player.getCash()) {
-                                        pw.println("Invalid bet amount. Please place a bet within your available chips next round.");
-                                        playerIn = false;
-                                        return;
+                                        // Validate the bet amount
+                                        if (bet < Player.MIN_BET || bet > player.getCash()) {
+                                            pw.println("Invalid bet amount. Please place a bet within your available chips next round.");
+                                            playerIn = false;
+                                            return;
+                                        }
+                                        player.setCash(player.getCash() - bet);
+                                        
+                                    // if(id == 0) {}
+                                    // if (id == 1) {}
+                                    // if (id == 2) {}
+                                    // if (id == 3) {}
+                                    // if (id == 4) {}
                                     }
-                                    player.setCash(player.getCash() - bet);
-                                    if(id == 0) {}
-                                    if (id == 1) {}
-                                    if (id == 2) {}
-                                    if (id == 3) {}
-                                    if (id == 4) {}
-                                }
-                            
                                     pw.println("Betting phase complete. Starting the game.");
                                 } 
                                 catch (NumberFormatException e) {
                                     pw.println("Invalid input. Please enter a valid numeric value for your bet next round.");
                                 }
+                            }
                         }
-                        }
-                    
 
-                        System.out.println("4");
+                        System.out.println("** Betting Complete **");
 
                         dealing = true;
                         if(dealing) {
                             Hand hand;
                             System.out.println("5");
-                            if(deck.getCardCount() <= 52)
+
+                            if(deck.getCardCount() <= 52) {
                                 deck.shuffle();
+                            }
+
                             for(int i = 0; i < connections.size(); i++) {
                                 System.out.println("11");
 
@@ -155,7 +157,7 @@ public class BlackjackServer extends Thread {
                                 hand = players.get(i).getHand();
                                 hand.printHand();
 
-                                    pw.flush();
+                                pw.flush();
                             }
                             System.out.println("** Dealing Complete **");
                             dealing = false;
