@@ -44,11 +44,13 @@ public class Hand {
     }
 
     public String printHand() {
-        String ret = "";
+        String ret = "START_HAND\n";
 
         for(Card card : hand) {
             ret += card.getTokenKey() + "\n";
         }
+
+        ret += "END_HAND";
 
         return ret;
     }
@@ -65,8 +67,9 @@ public class Hand {
         return hand.size() == 2 && this.getHandValue() == Hand.BLACKJACK;
     }
 
-    public void setAce(boolean bool) {
-        this.hasAce = bool;
+    public void newHand() {
+        this.hasAce = false;
+        this.setCards(new LinkedList<Card>());
     }
 }
 

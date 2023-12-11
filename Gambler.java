@@ -39,8 +39,7 @@ class Gambler {
     }
 
     public void resetHand() {
-        hand.setAce(false);
-        hand.setCards(new LinkedList<Card>());
+        hand.newHand();
     }
 
     // To be used when a player presses hit button on GUI or 
