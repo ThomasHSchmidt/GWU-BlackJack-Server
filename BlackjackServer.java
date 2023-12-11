@@ -137,7 +137,6 @@ public class BlackjackServer extends Thread {
 
                         dealing = true;
                         if(dealing) {
-                            Hand hand;
                             System.out.println("5");
                             if(deck.getCardCount() <= 52)
                                 deck.shuffle();
@@ -150,12 +149,12 @@ public class BlackjackServer extends Thread {
                                 pw.println(c2);
 
                                 System.out.println("Player " + (i + 1) + " hand value: " + players.get(i).getHandValue());
-                                pw.println("p" + (i + 1) + "tot");
-                                pw.println(String.valueOf(players.get(i).getHandValue()));
-                                hand = players.get(i).getHand();
-                                hand.printHand();
-
-                                    pw.flush();
+                                sendHandValues(i);
+                                // pw.println("p" + (i + 1) + "tot");
+                                // pw.println(String.valueOf(players.get(i).getHandValue()));
+                                players.get(i).getHand().printHand();
+                                    
+                                pw.flush();
                             }
                             System.out.println("** Dealing Complete **");
                             dealing = false;
@@ -235,9 +234,10 @@ public class BlackjackServer extends Thread {
         }
     }
 
-    public void sendHandValues() {
-        for(Player p : players) {
-
+    public void sendHandValues(int i) {
+        for(ClientHandler client : clients) {
+            client.pw.println("p" + (i + 1) + "tot");
+            client.pw.println(String.valueOf(players.get(i).getHandValue()));
         }
     }
 
