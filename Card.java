@@ -24,4 +24,8 @@ public class Card {
     public String getImagePath() {
         return "CardFolder/" + this.getRank() + "_" + this.getSuit() + ".png";
     }
+
+    public String getTokenKey() {
+        return this.token.key;
+    }
 }

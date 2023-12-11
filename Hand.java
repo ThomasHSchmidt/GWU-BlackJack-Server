@@ -11,7 +11,7 @@ public class Hand {
     // by token
     public void addCard(Token token)  {
         Card newCard = new Card(token);
-        hand.add(newCard);
+        this.hand.add(newCard);
     }
 
     public void setCards(List<Card> hand) {
@@ -28,13 +28,25 @@ public class Hand {
 
         for(Card card : hand) {
             int add = card.getRank();
+            
             if(add < Card.FACE_CARD_VALUE)
                 handValue += add;
             else
                 handValue += Card.FACE_CARD_VALUE;
+            System.out.println("------" + add + "------");
+        }
+        
+        return handValue;
+    }
+
+    public void printHand() {
+        System.out.print("[");
+
+        for(Card card : hand) {
+            System.out.print(card.getTokenKey() + ", ");
         }
 
-        return handValue;
+        System.out.print("]");
     }
 
     public boolean hasAce() {
