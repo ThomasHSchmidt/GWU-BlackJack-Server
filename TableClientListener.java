@@ -15,13 +15,18 @@ public class TableClientListener extends Thread {
     String c1;
     String c2;
     TableGUI gui;
+    PrintWriter pw;
     
  
     public TableClientListener(Socket sock, int id, TableGUI gui)
     {
-        this.sock = sock;
-        this.id = id;
-        this.gui = gui;
+        try {
+            pw = new PrintWriter(sock.getOutputStream());
+            this.sock = sock;
+            this.id = id;
+            this.gui = gui;
+        }
+        catch(Exception e) {}
     }
 
     public void run()
@@ -81,11 +86,10 @@ public class TableClientListener extends Thread {
                     gui.setp5Bet(msg);
                 }
             }
-        } catch (IOException e) {
+        } 
+        catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-    }
-        
-        
+        }
     }
 }

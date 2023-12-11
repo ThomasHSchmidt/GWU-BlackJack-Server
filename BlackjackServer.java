@@ -172,65 +172,24 @@ public class BlackjackServer extends Thread {
                             dealing = false;
                             msg = in.readLine();
                         }
-                    }
+                    
 
-                    if(msg.equals("Hit")) {
                         System.out.println("** Player Hit **");
 
-                        for(int i = 0; i < connections.size(); i++) {
-                            if(id == i) {
-                                player.dealCard(deck.drawCard());
-
-                                // Check if the player busts
-                                if (player.getHand().isBust()) {
-                                    pw.println("Bust! You lose.");
-                                    playerIn = false;
+                        for(int i = 0; i < players.size(); i++) {
+                            while (!msg.equals("Stand") && !players.get(i).getHand().isBust() && players.get(i).getHandValue() < 21) {
+                                if (msg.equals("Hit")) {
+                                    c1 = players.get(i).dealCard(deck.drawCard());
+                                    sendHandValues();
                                 }
-                                pw.flush();
-                            }
-                        }
-                    }
-
-
-                    // If player Stands
-                    if(msg.equals("Stand")) {
-                        System.out.println("** Player Stand **");
-
-                        for(int i = 0; i < connections.size(); i++) {
-                            if(id == i) {
-                                PrintWriter pw = new PrintWriter(sock.getOutputStream());           
-                                pw.println("You chose to stand. Your turn is over.");
-                                pw.flush();
-                            }
-                        }
-                    }
-
-
-                    // If player Double Downs
-                    if(msg.equals("Double Down")){
-                        System.out.println("** Player Double Down **");
-
-                        for(int i = 0; i < connections.size(); i++) {
-                            if(id == i) {
-                                PrintWriter pw = new PrintWriter(sock.getOutputStream());
-
-                                // NEED getBet FUNCTION
-                                // Double the bet
-                                int newBet = player.getBet() * 2;
-                                player.setBet(newBet);
-
-                                pw.println("Your bet is now: " + newBet);
-
-                                // Draw one more card
-                                player.dealCard(deck.drawCard());
-
-                                // Check if the player busts
-                                if (player.getHand().isBust()) {
-                                    pw.println("Bust! You lose.");
-                                    playerIn = false;
+                                else if (msg.equals("Double Down")) {
+                                    players.get(i).setBet(players.get(i).getBet() * 2);
+                                    c1 = players.get(i).dealCard(deck.drawCard());
+                                    break;
                                 }
-                                pw.flush();
+                                msg = in.readLine();
                             }
+                            msg = "";
                         }
                     }
                 }

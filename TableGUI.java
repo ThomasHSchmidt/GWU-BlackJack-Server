@@ -213,7 +213,7 @@ public class TableGUI extends JFrame implements ActionListener {
             
 
             bet.addActionListener(new ActionListener(){  
-                public void actionPerformed(ActionEvent f1) {
+                public synchronized void actionPerformed(ActionEvent f1) {
                     //total.setText("$" + (Integer.parseInt(total.getText().substring(1)) - Integer.parseInt(betAmt.getText())));
                     if (id.getSelectedIndex() == 0) {
                         pw.println("Bet");
@@ -224,32 +224,32 @@ public class TableGUI extends JFrame implements ActionListener {
                 }  
             });
             hit.addActionListener(new ActionListener(){  
-                public void actionPerformed(ActionEvent f2) { 
+                public synchronized void actionPerformed(ActionEvent f2) { 
                     pw.println("Hit");
                     pw.flush();
 
                 }  
             });
             stand.addActionListener(new ActionListener(){  
-                public void actionPerformed(ActionEvent f3) { 
+                public synchronized void actionPerformed(ActionEvent f3) { 
                     pw.println("Stand");
                     pw.flush();
                 }  
             });
             doble.addActionListener(new ActionListener(){  
-                public void actionPerformed(ActionEvent f4) { 
+                public synchronized void actionPerformed(ActionEvent f4) { 
                     pw.println("Double Down");
                     pw.flush();
                 }  
             });
             start.addActionListener(new ActionListener(){  
-                public void actionPerformed(ActionEvent f5) { 
+                public synchronized void actionPerformed(ActionEvent f5) { 
                     pw.println("Start " + id.getSelectedIndex());
                     pw.flush();
                 }  
             });
             connect.addActionListener(new ActionListener(){  
-                public void actionPerformed(ActionEvent f) { 
+                public synchronized void actionPerformed(ActionEvent f) { 
                     // Change button text
                     connect.setText("Connecting...");
                     //id = BlackjackServer.getID();
