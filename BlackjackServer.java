@@ -76,11 +76,18 @@ public class BlackjackServer extends Thread {
         boolean dealing;
         String c1;
         String c2;
+        BufferedReader in;
+        PrintWriter pw;
 
         public ClientHandler(Socket sock, int id, Deck deck) {
-            this.deck = deck;
-            this.sock = sock;
-            this.id = id;
+            try {
+                this.deck = deck;
+                this.sock = sock;
+                this.id = id;
+                pw = new PrintWriter(sock.getOutputStream());
+                in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+            }
+            catch(Exception e) {}
         }
 
         public void run() {
@@ -88,10 +95,7 @@ public class BlackjackServer extends Thread {
             //      stands
             //      double down
             //      busts
-            BufferedReader in = null;
             try {
-                in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-
                 // Data being taken from the socket
                 String curName = "";
                 System.out.println("1");
@@ -124,8 +128,6 @@ public class BlackjackServer extends Thread {
                     if (msg.equals("Start")) {
                     for(int i = 0; i < connections.size(); i++) {
                         if(id == i) {
-                            PrintWriter pw = new PrintWriter(connections.get(i).getOutputStream());
-                            pw.println("Place your bet.");
                             try {
                                 if (msg.equals("Bet")) {
                                 int bet = Integer.parseInt(in.readLine());
@@ -138,19 +140,14 @@ public class BlackjackServer extends Thread {
                                 }
                                 player.setCash(player.getCash() - bet);
                                 if(id == 0){
-                                TableGUI.p1Bet.setText(String.valueOf(bet));
-                                TableGUI.total.setText(String.valueOf(player.getCash() - bet));
+
                                 }
                                 if (id == 1) {
-                                TableGUI.p2Bet.setText(String.valueOf(bet));
-                                TableGUI.total.setText(String.valueOf(player.getCash() - bet));
+
                                 }
-                                if (id == 2)
-                                TableGUI.p3Bet.setText(String.valueOf(bet));
-                                if (id == 3)
-                                TableGUI.p4Bet.setText(String.valueOf(bet));
-                                if (id == 4)
-                                TableGUI.p5Bet.setText(String.valueOf(bet));
+                                if (id == 2) {}
+                                if (id == 3) {}
+                                if (id == 4) {}
                             }
                         
                                 pw.println("Betting phase complete. Starting the game.");
@@ -167,45 +164,43 @@ public class BlackjackServer extends Thread {
                     dealing = true;
                     if(dealing) {
                         System.out.println("5");
-
-                        deck.shuffle();
+                        if(deck.getCardCount() <= 52)
+                            deck.shuffle();
                         for(int i = 0; i < connections.size(); i++) {
                             System.out.println("11");
-                            PrintWriter out = new PrintWriter(connections.get(i).getOutputStream());
                             System.out.println("12");
-                            out.println("Receiving initial cards");
                             player = new Player(curName, i);
                             c1 = player.dealCard(deck.drawCard());
                             c2 = player.dealCard(deck.drawCard());
                             if(connections.size() == 1) {
                                 System.out.println("Player 1 hand value: " + player.getHandValue());
-                                out.println("p1tot");
-                                out.println(String.valueOf(player.getHandValue()));
+                                pw.println("p1tot");
+                                pw.println(String.valueOf(player.getHandValue()));
                             }
                             if (i == 1) {
                                 //TableGUI.setp2Tot(String.valueOf(player.getHandValue()));
                                 System.out.println("Player 2 hand value: " + player.getHandValue());
-                                out.println("p2tot");
-                                out.println(String.valueOf(player.getHandValue()));
+                                pw.println("p2tot");
+                                pw.println(String.valueOf(player.getHandValue()));
                             }
                             if (i == 2) {
                                 System.out.println("Player 3 hand value: " + player.getHandValue());
-                                out.println("p3tot");
-                                out.println(String.valueOf(player.getHandValue()));
+                                pw.println("p3tot");
+                                pw.println(String.valueOf(player.getHandValue()));
                             }
                             if (i == 3) {
                                 System.out.println("Player 4 hand value: " + player.getHandValue());
-                                out.println("p4tot");
-                                out.println(String.valueOf(player.getHandValue()));
+                                pw.println("p4tot");
+                                pw.println(String.valueOf(player.getHandValue()));
                             }
                             if (i == 4) {
                                 System.out.println("Player 5 hand value: " + player.getHandValue());
-                                out.println("p5tot");
-                                out.println(String.valueOf(player.getHandValue()));
+                                pw.println("p5tot");
+                                pw.println(String.valueOf(player.getHandValue()));
                             }
-                            out.println(c1);
-                            out.println(c2);
-                            out.flush();
+                            pw.println(c1);
+                            pw.println(c2);
+                            pw.flush();
                         }
                         System.out.println("6");
                         dealing = false;

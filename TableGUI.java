@@ -72,7 +72,7 @@ public class TableGUI extends JFrame implements ActionListener {
         connectCard = new JPanel();
         tableCard = new JPanel();
 
-        betAmt =  new JTextField("Bet Amount", 6);
+        betAmt =  new JTextField("25", 6);
         bet = new JButton("Bet");
         stand = new JButton("Stand");
         hit = new JButton("Hit");
@@ -282,38 +282,37 @@ public class TableGUI extends JFrame implements ActionListener {
         }
 
 
-    public static void setStar(int x, int y) {
+    public void setStar(int x, int y) {
         star.setBounds(x, y, 25, 25);
     }
-    public static void setp1Bet(String s) {
+    public void setp1Bet(String s) {
         p1Bet.setText(s);
-
     }
-    public static void setp2Bet(String s) {
+    public void setp2Bet(String s) {
         p2Bet.setText(s);
     }
-    public static void setp3Bet(String s) {
+    public void setp3Bet(String s) {
         p3Bet.setText(s);
     }
-    public static void setp4Bet(String s) {
+    public void setp4Bet(String s) {
         p4Bet.setText(s);
     }
-    public static void setp5Bet(String s) {
+    public void setp5Bet(String s) {
         p5Bet.setText(s);
     }
-    public static void setp1Tot(String s) {
+    public void setp1Tot(String s) {
         p1tot.setText(s);
     }
-    public static void setp2Tot(String s) {
+    public void setp2Tot(String s) {
         p2tot.setText(s);
     }
-    public static void setp3Tot(String s) {
+    public void setp3Tot(String s) {
         p3tot.setText(s);
     }
-    public static void setp4Tot(String s) {
+    public void setp4Tot(String s) {
         p4tot.setText(s);
     }
-    public static void setp5Tot(String s) {
+    public void setp5Tot(String s) {
         p5tot.setText(s);
     }
 
@@ -351,7 +350,7 @@ public class TableGUI extends JFrame implements ActionListener {
 			pw.println("NAME");
 			pw.println(name.getText());
 
-			Thread t = new TableClientListener(sock, id.getSelectedIndex());
+			Thread t = new TableClientListener(sock, id.getSelectedIndex(), this);
     		t.start();
         }
 		catch(Exception e)

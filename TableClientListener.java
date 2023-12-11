@@ -14,20 +14,21 @@ public class TableClientListener extends Thread {
     boolean dealing;
     String c1;
     String c2;
+    TableGUI gui;
     
  
-    public TableClientListener(Socket sock, int id)
+    public TableClientListener(Socket sock, int id, TableGUI gui)
     {
         this.sock = sock;
         this.id = id;
-
+        this.gui = gui;
     }
 
     public void run()
     {
         for (int i = 0; i < 5; i++) {
             if (id == i) {
-                TableGUI.setStar(starpos[2*i], starpos[(2*i)+1]);
+                gui.setStar(starpos[2*i], starpos[(2*i)+1]);
             }
         }
         BufferedReader in = null;
@@ -37,23 +38,23 @@ public class TableClientListener extends Thread {
             String msg = in.readLine();
             if(msg.equals("p1tot")) {
                 msg = in.readLine();
-                TableGUI.setp1Tot(msg);
+                gui.setp1Tot(msg);
             }
             if(msg.equals("p2tot")) {
                 msg = in.readLine();
-                TableGUI.setp2Tot(msg);
+                gui.setp2Tot(msg);
             }
             if(msg.equals("p3tot")) {
                 msg = in.readLine();
-                TableGUI.setp3Tot(msg);
+                gui.setp3Tot(msg);
             }
             if(msg.equals("p4tot")) {
                 msg = in.readLine();
-                TableGUI.setp4Tot(msg);
+                gui.setp4Tot(msg);
             }
             if(msg.equals("p5tot")) {
                 msg = in.readLine();
-                TableGUI.setp5Tot(msg);
+                gui.setp5Tot(msg);
             }
         }
         } catch (IOException e) {

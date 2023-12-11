@@ -65,7 +65,7 @@ public class Hand {
         return hand.size() == 2 && this.getHandValue() == Hand.BLACKJACK;
     }
 
-    public void setAce(Boolean bool) {
+    public void setAce(boolean bool) {
         this.hasAce = bool;
     }
 }
