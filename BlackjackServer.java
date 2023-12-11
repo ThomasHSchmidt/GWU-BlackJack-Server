@@ -10,6 +10,7 @@ public class BlackjackServer extends Thread {
     List<ClientHandler> clients;
     ArrayList<Player> players;
     boolean playerIn;
+    Dealer dealer;
 
     public BlackjackServer(int port) {
 
@@ -20,6 +21,7 @@ public class BlackjackServer extends Thread {
             serverSock = new ServerSocket(port);
             connections = new ArrayList<Socket>();
             players = new ArrayList<Player>();
+            dealer = new Dealer("The Dealer");
             System.out.println("BlackjackServer started on port " + port);
         }
         catch(Exception e) {
@@ -90,6 +92,9 @@ public class BlackjackServer extends Thread {
                 playerIn = true;
 
                 while(true) {
+                    sendHandValues();
+                    sendBetValues();
+
                     String msg = in.readLine();
 
                     if (msg.equals("NAME"))
@@ -112,37 +117,42 @@ public class BlackjackServer extends Thread {
                         System.out.println("Waiting for player 1 to bet");
                         while (!msg.equals("Bet")) {
                             msg = in.readLine();
+                            System.out.println("out: " + msg);
                         }
                         // msg = in.readLine();
                         for(int i = 0; i < connections.size(); i++) {
-                            PrintWriter pw1 = new PrintWriter(connections.get(i).getOutputStream());
-                            BufferedReader in1 = new BufferedReader(new InputStreamReader(connections.get(i).getInputStream()));
+                            // PrintWriter pw1 = new PrintWriter(connections.get(i).getOutputStream());
+                            // BufferedReader in1 = new BufferedReader(new InputStreamReader(connections.get(i).getInputStream()));
                             System.out.println("Waiting for player " + (i+1) + " to bet");
                             // msg = in1.readLine();
-                            System.out.println(msg);
+                            
                             while (!msg.equals("Bet " + i)) {
-                                msg = in1.readLine();
+                                msg = in.readLine();
+                                System.out.println("mid: " + msg);
                                 //System.out.println(msg);
                             }
                                 try {
-                                    msg = in1.readLine();
+                                    msg = in.readLine();
+                                    System.out.println("in: " + msg);
                                     int bet = Integer.parseInt(msg);
                                 
                                     // Validate the bet amount
                                     if (bet < Player.MIN_BET || bet > players.get(i).getCash()) {
-                                        pw1.println("Invalid bet amount. Please place a bet within your available chips next round.");
+                                        pw.println("Invalid bet amount. Please place a bet within your available chips next round.");
                                         playerIn = false;
                                         return;
-                                        }
+                                    }
+
                                     players.get(i).setBet(bet);
                                     players.get(i).setCash(players.get(i).getCash() - bet);
-                                    pw1.println("tot");
-                                    pw1.println("$" + players.get(i).getCash());
+
+                                    pw.println("tot");
+                                    pw.println(players.get(i).getCash());
                                     System.out.println("Player " + (i+1) + " bet successful");
                                     // msg = in1.readLine();
                                     } 
                                     catch (NumberFormatException e) {
-                                        pw1.println("Invalid input. Please enter a valid numeric value for your bet next round.");
+                                        pw.println("Invalid input. Please enter a valid numeric value for your bet next round.");
                                     }
                             }
                         sendBetValues();
@@ -172,6 +182,8 @@ public class BlackjackServer extends Thread {
                                 pw.flush();
                             }
 
+                            dealer.dealCard(deck.drawCard());
+
                             sendHandValues();
                             System.out.println("** Dealing Complete **");
                             dealing = false;
@@ -182,11 +194,10 @@ public class BlackjackServer extends Thread {
                         System.out.println("** Player Hit **");
 
                         for(int i = 0; i < players.size(); i++) {
-                            while (!msg.equals("Stand") && !players.get(i).getHand().isBust() && players.get(i).getHandValue() < 21) {
-                                PrintWriter pw1 = new PrintWriter(connections.get(i).getOutputStream());
-                                BufferedReader in1 = new BufferedReader(new InputStreamReader(connections.get(i).getInputStream()));
+                            while (!msg.equals("Stand") && !players.get(i).getHand().isBust() && players.get(i).getHandValue() != 21) {
+                                // PrintWriter pw1 = new PrintWriter(connections.get(i).getOutputStream());
+                                // BufferedReader in1 = new BufferedReader(new InputStreamReader(connections.get(i).getInputStream()));
                                 if (msg.equals("Hit")) {
-                                    in1.readLine();
                                     c1 = players.get(i).dealCard(deck.drawCard());
                                     System.out.println("Player " + (i + 1) + " hand value: " + players.get(i).getHandValue());
                                     sendHandValues();
@@ -196,10 +207,20 @@ public class BlackjackServer extends Thread {
                                     c1 = players.get(i).dealCard(deck.drawCard());
                                     break;
                                 }
-                                msg = in.readLine();
+                                if(players.get(i).getHandValue() < 21)
+                                    msg = in.readLine();
                             }
                             msg = "";
                         }
+
+                        if(!allBust()) {
+                            dealerTurn();
+                            sendHandValues();
+                        }
+
+                        this.sleep(3000);
+
+                        resetGame();
                     }
                 }
             } catch(Exception e) {
@@ -218,11 +239,10 @@ public class BlackjackServer extends Thread {
 
         for(int i = 0; i < players.size(); i++) {
             message += "p" + (i + 1) + "tot\n";
-            if(i < players.size() - 1)
-                message += String.valueOf(players.get(i).getHandValue()) + "\n";
-            else
-                message += String.valueOf(players.get(i).getHandValue());
+            message += String.valueOf(players.get(i).getHandValue()) + "\n";
         }
+
+        message += "dtot\n" + dealer.getHandValue();
 
         for(ClientHandler client : clients) {
             client.sendMessage(message);
@@ -243,6 +263,49 @@ public class BlackjackServer extends Thread {
         for(ClientHandler client : clients) {
             client.sendMessage(message);
         }
+    }
+
+    public synchronized void sendNewTotals() {
+        for(int i = 0; i < players.size(); i++) {
+            clients.get(i).pw.println("tot");
+            clients.get(i).pw.println(players.get(i).getCash());
+        }
+    }
+
+    public boolean allBust() {
+        for(Player p : players) {
+            if(p.getHand().isBust())
+                continue;
+            return false;
+        }
+        return true;
+    }
+
+    public synchronized void resetGame() {
+        for(Player p : players) {
+            p.resetHand();
+            p.setBet(0);
+        }
+        dealer.resetHand();
+
+        sendHandValues();
+        sendBetValues();
+    }
+    
+    public synchronized void dealerTurn() {
+        while(dealer.getHandValue() < 17) {
+            dealer.dealCard(deck.drawCard());
+        }
+        sendHandValues();
+
+        for(Player p : players) {
+            if(!p.getHand().isBust() && p.getHandValue() > dealer.getHandValue()) {
+                p.setCash(p.getCash() + (p.getBet() * 2));
+            }
+            else if(!p.getHand().isBust() && dealer.getHandValue() == p.getHandValue())
+                p.setCash(p.getCash() + p.getBet());
+        }
+        sendNewTotals();
     }
 
     public static void main(String args[]){

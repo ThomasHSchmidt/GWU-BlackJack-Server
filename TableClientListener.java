@@ -43,7 +43,7 @@ public class TableClientListener extends Thread {
                 String msg = in.readLine();
                 if (msg.equals("tot")) {
                     msg = in.readLine();
-                    gui.setTotal(msg);
+                    gui.setTotal("$" + msg);
                 }
                 if(msg.equals("p1tot")) {
                     msg = in.readLine();
@@ -64,6 +64,10 @@ public class TableClientListener extends Thread {
                 if(msg.equals("p5tot")) {
                     msg = in.readLine();
                     gui.setp5Tot(msg);
+                }
+                if(msg.equals("dtot")) {
+                    msg = in.readLine();
+                    gui.setdTot(msg);
                 }
                 if(msg.equals("p1Bet")) {
                     msg = in.readLine();

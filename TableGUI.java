@@ -298,6 +298,9 @@ public class TableGUI extends JFrame {
     public void setp5Tot(String s) {
         p5tot.setText(s);
     }
+    public void setdTot(String s) {
+        dtot.setText(s);
+    }
 
 
         public void connectionErrorFrame(JFrame frame, String error)
