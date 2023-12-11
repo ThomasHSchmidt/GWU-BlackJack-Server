@@ -28,12 +28,11 @@ public class Hand {
 
         for(Card card : hand) {
             int add = card.getRank();
-            
+
             if(add < Card.FACE_CARD_VALUE)
                 handValue += add;
             else
                 handValue += Card.FACE_CARD_VALUE;
-            System.out.println("------" + add + "------");
         }
         
         return handValue;

@@ -84,6 +84,10 @@ public class BlackjackServer extends Thread {
         }
 
         public void run() {
+            // turn ends when player:
+            //      stands
+            //      double down
+            //      busts
             BufferedReader in = null;
             try {
                 in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
@@ -177,7 +181,6 @@ public class BlackjackServer extends Thread {
                             out.println(c2);
                             out.flush();
                             if(id == 0) {
-                                //TableGUI.setp1Tot(String.valueOf());
                                 System.out.println("Player 1 hand value: " + player.getHandValue());
                             }
                             if (id == 1) {
@@ -196,6 +199,7 @@ public class BlackjackServer extends Thread {
                         }
                         System.out.println("6");
                         dealing = false;
+                        msg = in.readLine();
                     }
                 }
                     
@@ -271,6 +275,8 @@ public class BlackjackServer extends Thread {
             }
         }
     }
+
+
 
     public static void main(String args[]){
         int port = Integer.parseInt(args[0]);
