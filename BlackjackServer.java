@@ -165,6 +165,7 @@ public class BlackjackServer extends Thread {
 
                     dealing = true;
                     if(dealing) {
+                        Hand hand;
                         System.out.println("5");
                         if(deck.getCardCount() <= 52)
                             deck.shuffle();
@@ -178,27 +179,37 @@ public class BlackjackServer extends Thread {
                                 System.out.println("Player 1 hand value: " + player.getHandValue());
                                 pw.println("p1tot");
                                 pw.println(String.valueOf(player.getHandValue()));
+                                hand = player.getHand();
+                                hand.printHand();
                             }
                             if (i == 1) {
                                 //TableGUI.setp2Tot(String.valueOf(player.getHandValue()));
                                 System.out.println("Player 2 hand value: " + player.getHandValue());
                                 pw.println("p2tot");
                                 pw.println(String.valueOf(player.getHandValue()));
+                                hand = player.getHand();
+                                hand.printHand();
                             }
                             if (i == 2) {
                                 System.out.println("Player 3 hand value: " + player.getHandValue());
                                 pw.println("p3tot");
                                 pw.println(String.valueOf(player.getHandValue()));
+                                hand = player.getHand();
+                                hand.printHand();
                             }
                             if (i == 3) {
                                 System.out.println("Player 4 hand value: " + player.getHandValue());
                                 pw.println("p4tot");
                                 pw.println(String.valueOf(player.getHandValue()));
+                                hand = player.getHand();
+                                hand.printHand();
                             }
                             if (i == 4) {
                                 System.out.println("Player 5 hand value: " + player.getHandValue());
                                 pw.println("p5tot");
                                 pw.println(String.valueOf(player.getHandValue()));
+                                hand = player.getHand();
+                                hand.printHand();
                             }
                             pw.println(c1);
                             pw.println(c2);
