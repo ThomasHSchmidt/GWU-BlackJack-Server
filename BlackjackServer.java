@@ -40,7 +40,9 @@ public class BlackjackServer extends Thread {
                 players.add(new Player("", players.size()));
 
                 //start the thread
-                (new ClientHandler(clientSock, players.size(), this.deck)).start();   
+                ClientHandler client = new ClientHandler(clientSock, players.size(), this.deck);
+                clients.add(client);
+                client.start();   
                 
             //exit serve if exception
             } catch(Exception e) { }
@@ -101,7 +103,7 @@ public class BlackjackServer extends Thread {
                         continue;
                     }
 
-                    if (msg.equals("Start")) {
+                    if (msg.equals("Start 0")) {
                         for(int i = 0; i < connections.size(); i++) {
                             if(id == i) {
                                 try {
@@ -141,7 +143,6 @@ public class BlackjackServer extends Thread {
                                 deck.shuffle();
                             for(int i = 0; i < connections.size(); i++) {
                                 System.out.println("11");
-                                System.out.println("12");
 
                                 c1 = players.get(i).dealCard(deck.drawCard());
                                 pw.println(c1);
@@ -154,7 +155,7 @@ public class BlackjackServer extends Thread {
                                 hand = players.get(i).getHand();
                                 hand.printHand();
 
-                                pw.flush();
+                                    pw.flush();
                             }
                             System.out.println("** Dealing Complete **");
                             dealing = false;

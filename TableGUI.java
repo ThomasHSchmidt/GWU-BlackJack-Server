@@ -241,7 +241,7 @@ public class TableGUI extends JFrame implements ActionListener {
             });
             start.addActionListener(new ActionListener(){  
                 public void actionPerformed(ActionEvent f5) { 
-				pw.println("Start");
+				pw.println("Start " + id.getSelectedIndex());
                 pw.flush();
                 }  
             });
