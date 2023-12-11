@@ -72,6 +72,11 @@ public class BlackjackServer extends Thread {
             catch(Exception e) { }
         }
 
+        public void sendMessage(String message) {
+            pw.println(message);
+            pw.flush();
+        }
+
         public void run() {
             // turn ends when player:
             //      stands
@@ -142,22 +147,23 @@ public class BlackjackServer extends Thread {
                                 deck.shuffle();
                             }
 
-                            for(int i = 0; i < connections.size(); i++) {
-                                System.out.println("11");
-                                pw = new PrintWriter(connections.get(i).getOutputStream());
+                            for(int i = 0; i < players.size(); i++) {
+                                System.out.println("Dealing to player " + i);
+                                // pw = new PrintWriter(connections.get(i).getOutputStream());
                                 c1 = players.get(i).dealCard(deck.drawCard());
-                                pw.println(c1);
+                                //pw.println(c1);
                                 c2 = players.get(i).dealCard(deck.drawCard());
-                                pw.println(c2);
+                                //pw.println(c2);
 
                                 System.out.println("Player " + (i + 1) + " hand value: " + players.get(i).getHandValue());
-                                for (int j = 0; j < connections.size(); j++) {
-                                    sendHandValues(j);
-                                }
+                                
+
                                 players.get(i).getHand().printHand();
                                     
                                 pw.flush();
                             }
+
+                            sendHandValues();
                             System.out.println("** Dealing Complete **");
                             dealing = false;
                             msg = in.readLine();
@@ -235,10 +241,22 @@ public class BlackjackServer extends Thread {
         }
     }
 
-    public void sendHandValues(int i) {
+    public synchronized void sendHandValues() {
+        String message = "";
+
+        for(int i = 0; i < players.size(); i++) {
+            message += "p" + (i + 1) + "tot\n";
+            if(i < players.size() - 1)
+                message += String.valueOf(players.get(i).getHandValue()) + "\n";
+            else
+                message += String.valueOf(players.get(i).getHandValue());
+        }
+        System.out.println("------");
+        System.out.println(message);
+        System.out.println("------");
+
         for(ClientHandler client : clients) {
-            client.pw.println("p" + (i + 1) + "tot");
-            client.pw.println(String.valueOf(players.get(i).getHandValue()));
+            client.sendMessage(message);
         }
     }
 
