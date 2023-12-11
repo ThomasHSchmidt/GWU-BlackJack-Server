@@ -262,13 +262,15 @@ public class TableGUI extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.pack();
     }
-    public  void createCardLabel(Token token) {
+
+    public static void createCardLabel(Token token) {
         Card card = new Card(token);
         String imagePath = card.getImagePath();
-        URL imageURL = getClass().getResource(imagePath);
+        URL imageURL = TableGUI.class.getResource(imagePath);
         if (imageURL == null) {
           System.err.println("Error: Image not found for path " + imagePath);
-        } else {
+        }
+        else {
             ImageIcon icon = new ImageIcon(imageURL);
             Image img = icon.getImage().getScaledInstance(75, 100, Image.SCALE_DEFAULT);
             ImageIcon resizedIcon = new ImageIcon(img);

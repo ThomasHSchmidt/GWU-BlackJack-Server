@@ -169,13 +169,13 @@ public class BlackjackServer extends Thread {
                                 pw.print("addCard");
                                 pw.println(token.getTokenRank());
                                 pw.println(token.getTokenSuit());
-                                //pw.println(c1);
+                                TableGUI.createCardLabel(token);
                                 c2 = players.get(i).dealCard(deck.drawCard());
                                 token = players.get(i).getHand().getLast(); 
                                 pw.print("addCard");
                                 pw.println(token.getTokenRank());
                                 pw.println(token.getTokenSuit());
-                                //pw.println(c2);
+                                TableGUI.createCardLabel(token);
 
                                 System.out.println("Player " + (i + 1) + " hand value: " + players.get(i).getHandValue());
 
