@@ -14,7 +14,7 @@ public class TableClientListener extends Thread {
     boolean dealing;
     String c1;
     String c2;
-    BufferedReader in;
+    
  
     public TableClientListener(Socket sock, int id)
     {
@@ -30,20 +30,35 @@ public class TableClientListener extends Thread {
                 TableGUI.setStar(starpos[2*i], starpos[(2*i)+1]);
             }
         }
-        while(true) {
+        BufferedReader in = null;
         try {
             in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+            while(true) {
             String msg = in.readLine();
-            System.out.println("fail1");
             if(msg.equals("p1tot")) {
-                System.out.println("fail2");
                 msg = in.readLine();
-                TableGUI.setp1Tot("14");
+                TableGUI.setp1Tot(msg);
             }
+            if(msg.equals("p2tot")) {
+                msg = in.readLine();
+                TableGUI.setp2Tot(msg);
+            }
+            if(msg.equals("p3tot")) {
+                msg = in.readLine();
+                TableGUI.setp3Tot(msg);
+            }
+            if(msg.equals("p4tot")) {
+                msg = in.readLine();
+                TableGUI.setp4Tot(msg);
+            }
+            if(msg.equals("p5tot")) {
+                msg = in.readLine();
+                TableGUI.setp5Tot(msg);
+            }
+        }
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
     }
         
         
