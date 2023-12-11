@@ -169,7 +169,6 @@ public class BlackjackServer extends Thread {
 
                         for(int i = 0; i < connections.size(); i++) {
                             if(id == i) {
-                                PrintWriter pw = new PrintWriter(connections.get(i).getOutputStream());
                                 player.dealCard(deck.drawCard());
 
                                 // Check if the player busts
