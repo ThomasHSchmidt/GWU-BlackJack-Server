@@ -126,8 +126,8 @@ public class TableGUI extends JFrame {
         p5Bet.setBounds(100, 350, 100, 100);
 
         p1tot.setForeground(Color.BLACK);
-        p1tot.setFont(new Font("Serif", Font.BOLD, 25));
-        p1tot.setBounds(630, 390, 100, 100);
+        p1tot.setFont(new Font("Serif", Font.BOLD, 50));
+        p1tot.setBounds(665, 410, 100, 100);
 
         p2tot.setForeground(Color.BLACK);
         p2tot.setFont(new Font("Serif", Font.BOLD, 25));
@@ -146,7 +146,7 @@ public class TableGUI extends JFrame {
         p5tot.setBounds(50, 390, 100, 100);
 
         dtot.setForeground(Color.BLACK);
-        dtot.setFont(new Font("Serif", Font.BOLD, 25));
+        dtot.setFont(new Font("Serif", Font.BOLD, 50));
         dtot.setBounds(400, 100, 100, 100);
                
         table.add(total);
@@ -182,8 +182,6 @@ public class TableGUI extends JFrame {
         connect = new JButton("Connect");
 
         JPanel tPanel = new JPanel(new FlowLayout());
-        tPanel.add(nameLabel);
-        tPanel.add(name);
         tPanel.add(ipLabel);
         tPanel.add(ip);
         tPanel.add(portLabel);
@@ -333,7 +331,7 @@ public class TableGUI extends JFrame {
 	private boolean connectToServer(JFrame frame)
 	{
 		// Ensure name, host, and port are given
-		if (name.getText().equals("") || ip.getText().equals("") || port.getText().equals("") || id.getSelectedItem() == null)
+		if (ip.getText().equals("") || port.getText().equals("") || id.getSelectedItem() == null)
 		{
 			connectionErrorFrame(frame, "Please enter a username, host, port, and Player ID.");
 			return false;

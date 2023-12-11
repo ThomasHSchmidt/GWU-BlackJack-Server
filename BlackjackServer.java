@@ -227,7 +227,7 @@ public class BlackjackServer extends Thread {
                                 pw.println("PBust");
                             }
 
-                            if (p.getHandValue() > dealer.getHandValue() && !dealer.getHand().isBust()) {
+                            if (p.getHandValue() > dealer.getHandValue() && !p.getHand().isBust()) {
                                 pw.println("PWin");
                             }
                             if (p.getHandValue() == dealer.getHandValue() && !dealer.getHand().isBust()) {
