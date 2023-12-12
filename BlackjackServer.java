@@ -40,7 +40,7 @@ public class BlackjackServer extends Thread {
         while(true) {
             try {
                 //accept incoming connection
-                if (connections.size() < 5) {
+                if (connections.size() <= 5) {
                     Socket clientSock = serverSock.accept();
                     connections.add(clientSock);
                     players.add(new Player("", players.size()));
@@ -51,6 +51,7 @@ public class BlackjackServer extends Thread {
                     client.start();   
                 } else {
                     TableGUI.isFull();
+                    System.exit(1);
                 }
                 
             //exit serve if exception
@@ -243,6 +244,9 @@ public class BlackjackServer extends Thread {
                             if (p.getHandValue() > dealer.getHandValue() && !p.getHand().isBust() && !dealer.getHand().isBust()) {
                                 pw.println("PWin");
                             }
+                            if (!p.getHand().isBust() && dealer.getHand().isBust()) {
+                                pw.println("PWin");
+                            }
                             if (p.getHandValue() == dealer.getHandValue() && !dealer.getHand().isBust()) {
                                 pw.println("Push");
                             }
@@ -288,29 +292,29 @@ public class BlackjackServer extends Thread {
     public synchronized void bettingPhase() throws IOException {
         String msg;
         for(int i = 0; i < connections.size(); i++) {
+            Boolean hasBet = false;
             PrintWriter pw1 = new PrintWriter(connections.get(i).getOutputStream());
             BufferedReader in1 = new BufferedReader(new InputStreamReader(connections.get(i).getInputStream()));
             System.out.println("Waiting for player " + (i+1) + " to bet");
-            while (!in1.readLine().equals("Bet")) {
-                in1.readLine();
-                //System.out.println("mid: " + msg);
-            }
-            try {
+            while (!hasBet) {
                 msg = in1.readLine();
-                System.out.println("in: " + msg);
-                int bet = Integer.parseInt(msg);
+                if (msg.equals("Bet")) {
+                    try {
+                        msg = in1.readLine();
+                        System.out.println("in: " + msg);
+                        int bet = Integer.parseInt(msg);
 
-                players.get(i).setBet(bet);
-                players.get(i).setCash(players.get(i).getCash() - bet);
+                        players.get(i).setBet(bet);
+                        players.get(i).setCash(players.get(i).getCash() - bet);
 
-                pw1.println("tot");
-                pw1.println(players.get(i).getCash());
-                System.out.println("Player " + (i+1) + " bet successful");
-                System.out.println("msg: " + msg);
-                // msg = in1.readLine();
-            } 
-            catch (NumberFormatException e) {
-                pw1.println("Invalid input. Please enter a valid numeric value for your bet next round.");
+                        System.out.println("Player " + (i+1) + " bet successful");
+                        System.out.println("msg: " + msg);
+                        hasBet = true;
+                    } 
+                    catch (NumberFormatException e) {
+                        pw1.println("Invalid input. Please enter a valid numeric value for your bet next round.");
+                    }
+                }
             }
         }
     }
@@ -368,8 +372,12 @@ public class BlackjackServer extends Thread {
             if(!p.getHand().isBust() && p.getHandValue() > dealer.getHandValue()) {
                 p.setCash(p.getCash() + (p.getBet() * 2));
             }
-            else if(!p.getHand().isBust() && dealer.getHandValue() == p.getHandValue())
+            else if (!p.getHand().isBust() && dealer.getHand().isBust()) {
+                p.setCash(p.getCash() + (p.getBet() * 2));
+            }
+            else if(!p.getHand().isBust() && dealer.getHandValue() == p.getHandValue()) {
                 p.setCash(p.getCash() + p.getBet());
+            }
         }
         sendNewTotals();
 

@@ -38,13 +38,13 @@ public class TableGUI extends JFrame {
     static JLabel p4tot = new JLabel("");
     static JLabel p5tot = new JLabel("");
     static JLabel dtot = new JLabel("");
+    private JLabel dealer;
     private static JLabel star = new JLabel();
     private static JLabel cardpng = new JLabel();
 
     private ImageIcon tablepng;
 
 
-    private JLabel nameLabel;
     private JTextField name;
     private JLabel ipLabel;
     private JTextField ip;
@@ -83,6 +83,7 @@ public class TableGUI extends JFrame {
         //leave = new JButton("Leave");
         start = new JButton("Start");
         table = new JLabel();
+        dealer = new JLabel("Dealer");
         tablepng = new ImageIcon(new ImageIcon("casino.png").getImage().getScaledInstance(800, 800, Image.SCALE_DEFAULT));
         table.setIcon(tablepng);
 
@@ -134,20 +135,24 @@ public class TableGUI extends JFrame {
         p2tot.setBounds(525, 500, 100, 100);
 
         p3tot.setForeground(Color.BLACK);
-        p3tot.setFont(new Font("Serif", Font.BOLD, 25));
-        p3tot.setBounds(340, 553, 100, 100);
+        p3tot.setFont(new Font("Serif", Font.BOLD, 50));
+        p3tot.setBounds(375, 580, 100, 100);
 
         p4tot.setForeground(Color.BLACK);
-        p4tot.setFont(new Font("Serif", Font.BOLD, 25));
-        p4tot.setBounds(190, 470, 100, 100);
+        p4tot.setFont(new Font("Serif", Font.BOLD, 50));
+        p4tot.setBounds(225, 500, 100, 100);
 
         p5tot.setForeground(Color.BLACK);
-        p5tot.setFont(new Font("Serif", Font.BOLD, 25));
-        p5tot.setBounds(50, 390, 100, 100);
+        p5tot.setFont(new Font("Serif", Font.BOLD, 50));
+        p5tot.setBounds(85, 410, 100, 100);
 
         dtot.setForeground(Color.BLACK);
         dtot.setFont(new Font("Serif", Font.BOLD, 50));
         dtot.setBounds(400, 100, 100, 100);
+
+        dealer.setForeground(Color.BLACK);
+        dealer.setFont(new Font("Serif", Font.BOLD, 50));
+        dealer.setBounds(340, 0, 400, 75);
                
         table.add(total);
         table.add(p1Bet);
@@ -163,13 +168,13 @@ public class TableGUI extends JFrame {
         table.add(dtot);
         table.add(star);
         table.add(cardpng);
+        table.add(dealer);
 
 
         tableCard.add(table, BorderLayout.CENTER);
         tableCard.add(bpanel, BorderLayout.SOUTH);
 
 
-        nameLabel = new JLabel("Name");
         name =  new JTextField("", 6);
         ipLabel = new JLabel("IP Address");
         ip =  new JTextField("", 8);
