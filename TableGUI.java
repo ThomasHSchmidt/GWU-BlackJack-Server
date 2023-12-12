@@ -1,14 +1,7 @@
 import java.awt.*;
-import java.awt.event.*;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.text.TabExpander;
 
 public class TableGUI extends JFrame {
 
@@ -51,17 +44,12 @@ public class TableGUI extends JFrame {
     private JLabel portLabel;
     private JTextField port;
     private JLabel idLabel;
-    private JComboBox id;
+    private JComboBox<Integer> id;
     private Integer[] playerIDs = {0, 1, 2, 3, 4};
     private JTextArea rules;
     private JButton connect;
     private Socket sock = null;
     private PrintWriter pw = null;
-    private JPanel playerPanel;
-	private JLabel playerTitle;
-	private JScrollPane playerScoller;
-	private JList<String> playerList;
-
     CardLayout crd;
 
 
@@ -268,23 +256,6 @@ public class TableGUI extends JFrame {
         this.add(cards);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.pack();
-    }
-
-    public static void createCardLabel(Token token) {
-        Card card = new Card(token);
-        String imagePath = card.getImagePath();
-        URL imageURL = TableGUI.class.getResource(imagePath);
-        if (imageURL == null) {
-          System.err.println("Error: Image not found for path " + imagePath);
-        }
-        else {
-            ImageIcon icon = new ImageIcon(imageURL);
-            Image img = icon.getImage().getScaledInstance(75, 100, Image.SCALE_DEFAULT);
-            ImageIcon resizedIcon = new ImageIcon(img);
-            cardpng.setIcon(resizedIcon);;
-            cardpng.setBounds(695, 475, 75, 100);
-
-        }
     }
 
     public void setStar(int x, int y) {

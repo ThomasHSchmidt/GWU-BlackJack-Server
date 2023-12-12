@@ -41,7 +41,6 @@ public class TableClientListener extends Thread {
             in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             while(true) {
                 String msg = in.readLine();
-                String msg2 = null;
                 if (msg.equals("tot")) {
                     msg = in.readLine();
                     gui.setTotal("$" + msg);
@@ -89,12 +88,6 @@ public class TableClientListener extends Thread {
                 if(msg.equals("p5Bet")) {
                     msg = in.readLine();
                     gui.setp5Bet(msg);
-                }
-                if(msg.equals("addCard")){
-                    msg = in.readLine();
-                    msg2 = in.readLine();
-                    Token token = new Token(Integer.parseInt(msg), Integer.parseInt(msg2));
-                    gui.createCardLabel(token);
                 }
                 if(msg.equals("PBust")){
                     JOptionPane.showMessageDialog(null, "Bust! You Lose.");

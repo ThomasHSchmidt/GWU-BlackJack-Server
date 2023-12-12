@@ -87,7 +87,7 @@ public class Hand {
         return this.getHandValue() > BLACKJACK;
     }
 
-    public boolean isBlackjack(boolean hasAce) {
+    public boolean isBlackjack() {
         return hand.size() == 2 && this.getHandValue() == Hand.BLACKJACK;
     }
 
