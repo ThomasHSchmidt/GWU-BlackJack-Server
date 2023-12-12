@@ -1,15 +1,10 @@
-import java.util.LinkedList;
-
 class Gambler {
     private Hand hand;
     private String name;
-    private int bet;
-    private int id;
 
-    public Gambler(String name, int id) {
+    public Gambler(String name) {
         this.name = name;
         this.hand = new Hand();
-        this.id = id;
     }
 
     public String getName() {

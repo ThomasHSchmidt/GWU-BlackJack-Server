@@ -64,7 +64,6 @@ public class BlackjackServer extends Thread {
         Socket sock;
         int id;
         Deck deck;
-        Player player;
         boolean dealing;
         String c1;
         String c2;
@@ -94,7 +93,6 @@ public class BlackjackServer extends Thread {
             //      busts
             try {
                 // Data being taken from the socket
-                String curName = "";
                 System.out.println("1");
                 boolean name = false;
                 playerIn = true;
@@ -116,7 +114,7 @@ public class BlackjackServer extends Thread {
                     {
                         System.out.println("3");
 
-                        curName = msg;
+                        // curName = msg;
                         name = false;
                         continue;
                     }
@@ -205,7 +203,7 @@ public class BlackjackServer extends Thread {
 
                         for(int i = 0; i < players.size(); i++) {
                             while (!msg.equals("Stand") && !players.get(i).getHand().isBust() && players.get(i).getHandValue() != 21) {
-                                PrintWriter pw1 = new PrintWriter(connections.get(i).getOutputStream());
+                                //PrintWriter pw1 = new PrintWriter(connections.get(i).getOutputStream());
                                 BufferedReader in1 = new BufferedReader(new InputStreamReader(connections.get(i).getInputStream()));
                                 if (msg.equals("Hit")) {
                                     c1 = players.get(i).dealCard(deck.drawCard());

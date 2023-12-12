@@ -1,7 +1,5 @@
 import java.util.*;
 
-import javax.lang.model.type.TypeKind;
-
 public class Hand {
     public static final int BLACKJACK = 21;
     private List<Card> hand;
