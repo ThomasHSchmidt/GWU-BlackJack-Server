@@ -1,7 +1,5 @@
 import java.util.*;
 
-import javax.swing.text.TabExpander;
-
 import java.net.*;
 import java.io.*;
 
@@ -32,9 +30,6 @@ public class BlackjackServer extends Thread {
             System.exit(1);
         }
     }
-    // public static int getID() {
-    //     return connections.size();
-    // }
 
     public void serve() {
         while(true) {
@@ -93,6 +88,7 @@ public class BlackjackServer extends Thread {
             //      busts
             try {
                 // Data being taken from the socket
+                String curName = "";
                 System.out.println("1");
                 boolean name = false;
                 playerIn = true;
@@ -102,59 +98,24 @@ public class BlackjackServer extends Thread {
                     sendBetValues();
 
                     String msg = in.readLine();
-
-                    if (msg.equals("NAME"))
-                    {
+                    if (msg.equals("NAME")) {
                         // Start name
                         System.out.println("2");
                         name = true;
                         continue;
                     }
-                    else if (name)
-                    {
+                    else if (name) {
                         System.out.println("3");
 
-                        // curName = msg;
+                        curName = msg;
                         name = false;
                         continue;
                     }
 
                     if (msg.equals("Start 0")) {
                         bettingPhase();
-                        // for(int i = 0; i < connections.size(); i++) {
-                        //     PrintWriter pw1 = new PrintWriter(connections.get(i).getOutputStream());
-                        //     BufferedReader in1 = new BufferedReader(new InputStreamReader(connections.get(i).getInputStream()));
-                        //     System.out.println("Waiting for player " + (i+1) + " to bet");
-                        //     while (!in1.readLine().equals("Bet")) {
-                        //         in1.readLine();
-                        //         //System.out.println("mid: " + msg);
-                        //     }
-                        //     try {
-                        //         msg = in1.readLine();
-                        //         System.out.println("in: " + msg);
-                        //         int bet = Integer.parseInt(msg);
-                            
-                        //         // Validate the bet amount
-                        //         if (bet < Player.MIN_BET || bet > players.get(i).getCash()) {
-                        //             pw.println("Invalid bet amount. Please place a bet within your available chips next round.");
-                        //             playerIn = false;
-                        //             return;
-                        //         }
-
-                        //         players.get(i).setBet(bet);
-                        //         players.get(i).setCash(players.get(i).getCash() - bet);
-
-                        //         pw.println("tot");
-                        //         pw.println(players.get(i).getCash());
-                        //         System.out.println("Player " + (i+1) + " bet successful");
-                        //         System.out.println("msg: " + msg);
-                        //         // msg = in1.readLine();
-                        //     } 
-                        //     catch (NumberFormatException e) {
-                        //         pw.println("Invalid input. Please enter a valid numeric value for your bet next round.");
-                        //     }
-                        // }
                         sendBetValues();
+
                         System.out.println("** Betting Complete **");
 
                         dealing = true;
@@ -167,23 +128,20 @@ public class BlackjackServer extends Thread {
 
                             for(int i = 0; i < players.size(); i++) {
                                 System.out.println("Dealing to player " + (i+1));
-                                // pw = new PrintWriter(connections.get(i).getOutputStream());
                                 c1 = players.get(i).dealCard(deck.drawCard());
                                 Token token = players.get(i).getHand().getLast();
                                 pw.print("addCard");
                                 pw.println(token.getTokenRank());
                                 pw.println(token.getTokenSuit());
-                                // TableGUI.createCardLabel(token);
+                                //TableGUI.createCardLabel(token);
                                 c2 = players.get(i).dealCard(deck.drawCard());
                                 token = players.get(i).getHand().getLast(); 
                                 pw.print("addCard");
                                 pw.println(token.getTokenRank());
                                 pw.println(token.getTokenSuit());
-                                // TableGUI.createCardLabel(token);
+                                //TableGUI.createCardLabel(token);
 
                                 System.out.println("Player " + (i + 1) + " hand value: " + players.get(i).getHandValue());
-
-                                
 
                                 players.get(i).getHand().printHand();
                                     
@@ -191,20 +149,21 @@ public class BlackjackServer extends Thread {
                             }
 
                             dealer.dealCard(deck.drawCard());
-
                             sendHandValues();
+
                             System.out.println("** Dealing Complete **");
+
                             dealing = false;
                             msg = in.readLine();
                         }
                     
-
                         System.out.println("** Player Hit **");
 
                         for(int i = 0; i < players.size(); i++) {
                             while (!msg.equals("Stand") && !players.get(i).getHand().isBust() && players.get(i).getHandValue() != 21) {
-                                //PrintWriter pw1 = new PrintWriter(connections.get(i).getOutputStream());
+                                PrintWriter pw1 = new PrintWriter(connections.get(i).getOutputStream());
                                 BufferedReader in1 = new BufferedReader(new InputStreamReader(connections.get(i).getInputStream()));
+
                                 if (msg.equals("Hit")) {
                                     c1 = players.get(i).dealCard(deck.drawCard());
                                     System.out.println("Player " + (i + 1) + " hand value: " + players.get(i).getHandValue());
@@ -223,8 +182,10 @@ public class BlackjackServer extends Thread {
                                         break;
                                     }
                                 }
-                                if(players.get(i).getHandValue() < 21)
+
+                                if(players.get(i).getHandValue() < 21){
                                     msg = in1.readLine();
+                                }
                             }
                             msg = "";
                         }
@@ -235,23 +196,25 @@ public class BlackjackServer extends Thread {
                         }
                         
                         for(Player p : players) {
-                            if (p.getHand().isBust()){
+                            if (p.getHand().isBust()) {
                                 pw.println("PBust");
                             }
-
-                            if (p.getHandValue() > dealer.getHandValue() && !p.getHand().isBust() && !dealer.getHand().isBust()) {
+                            else if (p.getHand().isBlackjack()) {
+                                pw.println("PBlackjack");
+                            }
+                            else if (p.getHandValue() > dealer.getHandValue() && !p.getHand().isBust() && !dealer.getHand().isBust()) {
                                 pw.println("PWin");
                             }
-                            if (!p.getHand().isBust() && dealer.getHand().isBust()) {
+                            else if (!p.getHand().isBust() && dealer.getHand().isBust()) {
                                 pw.println("PWin");
                             }
-                            if (p.getHandValue() == dealer.getHandValue() && !dealer.getHand().isBust()) {
+                            else if (p.getHandValue() == dealer.getHandValue() && !dealer.getHand().isBust()) {
                                 pw.println("Push");
                             }
-                            if (p.getHandValue() < dealer.getHandValue() && !dealer.getHand().isBust()) {
+                            else if (p.getHandValue() < dealer.getHandValue() && !dealer.getHand().isBust()) {
                                 pw.println("PLose");
                             }
-                            if(p.getCash() < 25) {
+                            else if(p.getCash() < 25) {
                                 pw.println("PBroke");
                             }
                         }
@@ -262,7 +225,6 @@ public class BlackjackServer extends Thread {
                     }
                 }
             } catch(Exception e) {
-
                 //note the loss of the connection
                 System.out.println("Connection lost: " + sock.getRemoteSocketAddress());
                 System.out.println("This error is occurring");
@@ -294,6 +256,7 @@ public class BlackjackServer extends Thread {
             PrintWriter pw1 = new PrintWriter(connections.get(i).getOutputStream());
             BufferedReader in1 = new BufferedReader(new InputStreamReader(connections.get(i).getInputStream()));
             System.out.println("Waiting for player " + (i+1) + " to bet");
+
             while (!hasBet) {
                 msg = in1.readLine();
                 if (msg.equals("Bet")) {
@@ -363,11 +326,18 @@ public class BlackjackServer extends Thread {
     public synchronized void dealerTurn() {
         while(dealer.getHandValue() < 17) {
             dealer.dealCard(deck.drawCard());
+            try {
+                this.sleep(1000);
+                sendHandValues();
+            } catch (Exception e) { }
         }
         sendHandValues();
 
         for(Player p : players) {
-            if(!p.getHand().isBust() && p.getHandValue() > dealer.getHandValue()) {
+            if (p.getHand().isBlackjack()) {
+                p.setCash(p.getCash() + p.getBet() + (p.getBet() / 2));
+            }
+            else if(!p.getHand().isBust() && p.getHandValue() > dealer.getHandValue()) {
                 p.setCash(p.getCash() + (p.getBet() * 2));
             }
             else if (!p.getHand().isBust() && dealer.getHand().isBust()) {
@@ -381,7 +351,7 @@ public class BlackjackServer extends Thread {
 
     }
 
-    public static void main(String args[]){
+    public static void main(String args[]) {
         int port = Integer.parseInt(args[0]);
         BlackjackServer server = new BlackjackServer(port);
         server.serve();

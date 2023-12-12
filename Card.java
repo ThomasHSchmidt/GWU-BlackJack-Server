@@ -21,10 +21,6 @@ public class Card {
         return token.getTokenRank() > 10 && token.getTokenRank() <= 13;
     }
 
-    public String getImagePath() {
-        return "CardFolder/" + this.getRank() + "_" + this.getSuit() + ".png";
-    }
-
     public String getTokenKey() {
         return this.token.key;
     }

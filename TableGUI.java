@@ -1,8 +1,6 @@
 import java.awt.*;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.URL;
-
 import javax.swing.*;
 
 public class TableGUI extends JFrame {
@@ -46,17 +44,12 @@ public class TableGUI extends JFrame {
     private JLabel portLabel;
     private JTextField port;
     private JLabel idLabel;
-    private JComboBox id;
+    private JComboBox<Integer> id;
     private Integer[] playerIDs = {0, 1, 2, 3, 4};
     private JTextArea rules;
     private JButton connect;
     private Socket sock = null;
     private PrintWriter pw = null;
-    private JPanel playerPanel;
-	private JLabel playerTitle;
-	private JScrollPane playerScoller;
-	private JList<String> playerList;
-
     CardLayout crd;
 
 
@@ -206,8 +199,7 @@ public class TableGUI extends JFrame {
             port.setEnabled(false);
 
             // Connect to server
-            if(!connectToServer(TableGUI.this))
-            {
+            if(!connectToServer(TableGUI.this)) {
                 // Re-enable inputs
                 name.setEnabled(true);
                 ip.setEnabled(true);
@@ -216,7 +208,8 @@ public class TableGUI extends JFrame {
 
                 // Change button text
                 connect.setText("Connect");
-            } else {
+            }
+            else {
                 
                 TableGUI.this.setTitle("BlackJack (Connected)");
                 crd.next(cards);
@@ -258,28 +251,9 @@ public class TableGUI extends JFrame {
         cards.add(connectCard);
         cards.add(tableCard);
 
-    
-
         this.add(cards);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.pack();
-    }
-
-    public /* static */ void createCardLabel(Token token) {
-        Card card = new Card(token);
-        String imagePath = card.getImagePath();
-        URL imageURL = TableGUI.class.getResource(imagePath);
-        if (imageURL == null) {
-          System.err.println("Error: Image not found for path " + imagePath);
-        }
-        else {
-            ImageIcon icon = new ImageIcon(imageURL);
-            Image img = icon.getImage().getScaledInstance(75, 100, Image.SCALE_DEFAULT);
-            ImageIcon resizedIcon = new ImageIcon(img);
-            cardpng.setIcon(resizedIcon);;
-            cardpng.setBounds(695, 475, 75, 100);
-
-        }
     }
 
     public void setStar(int x, int y) {
@@ -323,32 +297,26 @@ public class TableGUI extends JFrame {
     }
 
 
-        public void connectionErrorFrame(JFrame frame, String error)
-	{
+    public void connectionErrorFrame(JFrame frame, String error) {
 		JOptionPane.showMessageDialog(frame, error, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 
-	private boolean connectToServer(JFrame frame)
-	{
+	private boolean connectToServer(JFrame frame) {
 		// Ensure name, host, and port are given
-		if (ip.getText().equals("") || port.getText().equals("") || id.getSelectedItem() == null)
-		{
+		if (ip.getText().equals("") || port.getText().equals("") || id.getSelectedItem() == null) {
 			connectionErrorFrame(frame, "Please enter a host, port, and Player ID.");
 			return false;
 		}
       
-        try
-		{
+        try {
            sock = new Socket(ip.getText(),Integer.parseInt(port.getText()));
         }
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			connectionErrorFrame(frame, "Cannot connect to server");
 			return false;
         }
 
-        try
-		{
+        try {
             pw = new PrintWriter(sock.getOutputStream(), true);
 			// Login to server
             pw.println("SECRET");
@@ -359,8 +327,7 @@ public class TableGUI extends JFrame {
 			Thread t = new TableClientListener(sock, id.getSelectedIndex(), this);
     		t.start();
         }
-		catch(Exception e)
-		{
+		catch(Exception e) {
             connectionErrorFrame(frame, "Error logging in to server");
             return false;
         }
