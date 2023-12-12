@@ -90,6 +90,9 @@ public class TableClientListener extends Thread {
                 if(msg.equals("PBust")) {
                     JOptionPane.showMessageDialog(null, "Bust! You Lose.");
                 }
+                if(msg.equals("PBlackjack")) {
+                    JOptionPane.showMessageDialog(null, "BlackJack!");
+                }
                 if(msg.equals("PWin")) {
                     JOptionPane.showMessageDialog(null, "You Win! Congratulations!");
                 }

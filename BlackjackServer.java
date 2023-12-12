@@ -188,20 +188,22 @@ public class BlackjackServer extends Thread {
                             if (p.getHand().isBust()) {
                                 pw.println("PBust");
                             }
-
-                            if (p.getHandValue() > dealer.getHandValue() && !p.getHand().isBust() && !dealer.getHand().isBust()) {
+                            else if (p.getHand().isBlackjack()) {
+                                pw.println("PBlackjack");
+                            }
+                            else if (p.getHandValue() > dealer.getHandValue() && !p.getHand().isBust() && !dealer.getHand().isBust()) {
                                 pw.println("PWin");
                             }
-                            if (!p.getHand().isBust() && dealer.getHand().isBust()) {
+                            else if (!p.getHand().isBust() && dealer.getHand().isBust()) {
                                 pw.println("PWin");
                             }
-                            if (p.getHandValue() == dealer.getHandValue() && !dealer.getHand().isBust()) {
+                            else if (p.getHandValue() == dealer.getHandValue() && !dealer.getHand().isBust()) {
                                 pw.println("Push");
                             }
-                            if (p.getHandValue() < dealer.getHandValue() && !dealer.getHand().isBust()) {
+                            else if (p.getHandValue() < dealer.getHandValue() && !dealer.getHand().isBust()) {
                                 pw.println("PLose");
                             }
-                            if(p.getCash() < 25) {
+                            else if(p.getCash() < 25) {
                                 pw.println("PBroke");
                             }
                         }
