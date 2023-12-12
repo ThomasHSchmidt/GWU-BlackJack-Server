@@ -43,17 +43,18 @@ public class Hand {
             int add = card.getRank();
 
             if(add < Card.FACE_CARD_VALUE) {
-                if (add == 1 && handValue < 11){
+                if (add == 1 && handValue < 11) {
                     add = 11;
                 }
                 handValue += add;
             }
-            else
+            else {
                 handValue += Card.FACE_CARD_VALUE;
+            }
         }
         if (handValue > 21 && this.hasAce) {
             handValue -= 10;
-            if (!this.pocketAces){
+            if (!this.pocketAces) {
                 this.hasAce = false;
             }
         }
@@ -79,7 +80,7 @@ public class Hand {
     public boolean hasAce() {
         return this.hasAce;
     }
-    public boolean pocketAces(){
+    public boolean pocketAces() {
         return this.pocketAces;
     }
 

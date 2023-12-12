@@ -199,8 +199,7 @@ public class TableGUI extends JFrame {
             port.setEnabled(false);
 
             // Connect to server
-            if(!connectToServer(TableGUI.this))
-            {
+            if(!connectToServer(TableGUI.this)) {
                 // Re-enable inputs
                 name.setEnabled(true);
                 ip.setEnabled(true);
@@ -209,7 +208,8 @@ public class TableGUI extends JFrame {
 
                 // Change button text
                 connect.setText("Connect");
-            } else {
+            }
+            else {
                 
                 TableGUI.this.setTitle("BlackJack (Connected)");
                 crd.next(cards);
@@ -250,8 +250,6 @@ public class TableGUI extends JFrame {
 
         cards.add(connectCard);
         cards.add(tableCard);
-
-    
 
         this.add(cards);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -299,32 +297,26 @@ public class TableGUI extends JFrame {
     }
 
 
-        public void connectionErrorFrame(JFrame frame, String error)
-	{
+    public void connectionErrorFrame(JFrame frame, String error) {
 		JOptionPane.showMessageDialog(frame, error, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 
-	private boolean connectToServer(JFrame frame)
-	{
+	private boolean connectToServer(JFrame frame) {
 		// Ensure name, host, and port are given
-		if (ip.getText().equals("") || port.getText().equals("") || id.getSelectedItem() == null)
-		{
+		if (ip.getText().equals("") || port.getText().equals("") || id.getSelectedItem() == null) {
 			connectionErrorFrame(frame, "Please enter a host, port, and Player ID.");
 			return false;
 		}
       
-        try
-		{
+        try {
            sock = new Socket(ip.getText(),Integer.parseInt(port.getText()));
         }
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			connectionErrorFrame(frame, "Cannot connect to server");
 			return false;
         }
 
-        try
-		{
+        try {
             pw = new PrintWriter(sock.getOutputStream(), true);
 			// Login to server
             pw.println("SECRET");
@@ -335,8 +327,7 @@ public class TableGUI extends JFrame {
 			Thread t = new TableClientListener(sock, id.getSelectedIndex(), this);
     		t.start();
         }
-		catch(Exception e)
-		{
+		catch(Exception e) {
             connectionErrorFrame(frame, "Error logging in to server");
             return false;
         }

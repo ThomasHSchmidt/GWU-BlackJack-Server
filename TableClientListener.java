@@ -18,19 +18,17 @@ public class TableClientListener extends Thread {
     PrintWriter pw;
     
  
-    public TableClientListener(Socket sock, int id, TableGUI gui)
-    {
+    public TableClientListener(Socket sock, int id, TableGUI gui){
         try {
             pw = new PrintWriter(sock.getOutputStream());
             this.sock = sock;
             this.id = id;
             this.gui = gui;
         }
-        catch(Exception e) {}
+        catch(Exception e) { }
     }
 
-    public void run()
-    {
+    public void run() {
         for (int i = 0; i < 5; i++) {
             if (id == i) {
                 gui.setStar(starpos[2*i], starpos[(2*i)+1]);
@@ -89,22 +87,22 @@ public class TableClientListener extends Thread {
                     msg = in.readLine();
                     gui.setp5Bet(msg);
                 }
-                if(msg.equals("PBust")){
+                if(msg.equals("PBust")) {
                     JOptionPane.showMessageDialog(null, "Bust! You Lose.");
                 }
-                if(msg.equals("PWin")){
+                if(msg.equals("PWin")) {
                     JOptionPane.showMessageDialog(null, "You Win! Congratulations!");
                 }
-                if(msg.equals("Push")){
+                if(msg.equals("Push")) {
                     JOptionPane.showMessageDialog(null, "You pushed with the dealer!");
                 }
-                if(msg.equals("PLose")){
+                if(msg.equals("PLose")) {
                     JOptionPane.showMessageDialog(null, "Dealer's hand is better, you lose!");
                 }
-                if(msg.equals("PBroke")){
+                if(msg.equals("PBroke")) {
                     JOptionPane.showMessageDialog(null, "Congratulations! You're broke.");
                 }
-                if(msg.equals("PDouble")){
+                if(msg.equals("PDouble")) {
                     JOptionPane.showMessageDialog(null, "You don't have the funds to double down. Try another input.");
                     msg = null;
                 }
