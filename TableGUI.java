@@ -1,14 +1,9 @@
 import java.awt.*;
-import java.awt.event.*;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.text.TabExpander;
 
 public class TableGUI extends JFrame {
 
@@ -270,7 +265,7 @@ public class TableGUI extends JFrame {
         this.pack();
     }
 
-    public static void createCardLabel(Token token) {
+    public /* static */ void createCardLabel(Token token) {
         Card card = new Card(token);
         String imagePath = card.getImagePath();
         URL imageURL = TableGUI.class.getResource(imagePath);
