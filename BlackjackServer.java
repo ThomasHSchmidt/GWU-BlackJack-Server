@@ -179,6 +179,7 @@ public class BlackjackServer extends Thread {
                                         players.get(i).setCash(players.get(i).getCash() - players.get(i).getBet());
                                         players.get(i).setBet(players.get(i).getBet() * 2);
                                         c1 = players.get(i).dealCard(deck.drawCard());
+                                        sendHandValues();
                                         break;
                                     }
                                 }
